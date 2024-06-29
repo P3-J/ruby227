@@ -1,0 +1,145 @@
+[gd_scene load_steps=7 format=3 uid="uid://ck6ury47s8no4"]
+
+[ext_resource type="Texture2D" uid="uid://bevn7wi0w1ian" path="res://icon.svg" id="1_62ao0"]
+[ext_resource type="Script" path="res://scripts/clicker.cs" id="1_vnogt"]
+[ext_resource type="Script" path="res://scripts/arrow.cs" id="2_mccxp"]
+[ext_resource type="AudioStream" uid="uid://by5wtmrmjjamc" path="res://music/jdillaheadbop.mp3" id="4_yonrx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nbg80"]
+size = Vector2(128, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdrv6"]
+size = Vector2(128, 128)
+
+[node name="testing" type="Node2D"]
+
+[node name="clicker" type="Area2D" parent="."]
+position = Vector2(192, 304)
+script = ExtResource("1_vnogt")
+
+[node name="Sprite2D" type="Sprite2D" parent="clicker"]
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="clicker"]
+shape = SubResource("RectangleShape2D_nbg80")
+
+[node name="mainCam" type="Camera2D" parent="."]
+position = Vector2(576, 328)
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="arrow" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(4088, 416)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow2" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(3864, 232)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow2"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow2"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow3" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(4320, 248)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow3"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow3"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow4" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(5056, 296)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow4"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow4"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow5" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(5600, 304)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow5"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow5"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow6" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(5920, 304)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow6"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow6"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow7" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(5760, 376)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow7"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow7"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow8" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(4856, 376)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow8"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow8"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="arrow9" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(5448, 360)
+script = ExtResource("2_mccxp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/arrow9"]
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_62ao0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/arrow9"]
+shape = SubResource("RectangleShape2D_fdrv6")
+
+[node name="song" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_yonrx")
+volume_db = -15.901
+autoplay = true
+
+[connection signal="body_entered" from="clicker" to="clicker" method="_on_body_entered"]
+[connection signal="body_exited" from="clicker" to="clicker" method="_on_body_exited"]
