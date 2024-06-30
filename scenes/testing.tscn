@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://ck6ury47s8no4"]
+[gd_scene load_steps=5 format=3 uid="uid://ck6ury47s8no4"]
 
 [ext_resource type="PackedScene" uid="uid://w2pkpgdnddqc" path="res://scenes/pieces/arrow.tscn" id="1_oq0qo"]
-[ext_resource type="AudioStream" uid="uid://by5wtmrmjjamc" path="res://music/jdillaheadbop.mp3" id="4_yonrx"]
+[ext_resource type="Script" path="res://scripts/gamemanager.cs" id="1_pqw80"]
+[ext_resource type="AudioStream" uid="uid://bbctw0ql1wdwt" path="res://music/nft.wav" id="2_37dfd"]
 [ext_resource type="PackedScene" uid="uid://deisxds4xqlxd" path="res://scenes/pieces/input_field.tscn" id="6_dh6a5"]
 
 [node name="game" type="Node2D"]
+script = ExtResource("1_pqw80")
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -15,51 +17,83 @@ position = Vector2(124, 0)
 direction = "left"
 
 [node name="arrow2" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -352)
+position = Vector2(0, -256)
 direction = "left"
 
 [node name="arrow3" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -672)
+position = Vector2(0, -384)
 direction = "left"
 
 [node name="arrow4" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -992)
+position = Vector2(0, -832)
 direction = "left"
 
 [node name="arrow5" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1122)
+position = Vector2(0, -960)
 direction = "left"
 
 [node name="arrow6" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1344)
+position = Vector2(0, -1440)
 direction = "left"
 
 [node name="arrow7" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1664)
+position = Vector2(0, -1568)
 direction = "left"
 
 [node name="arrow8" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1536)
+position = Vector2(0, -2144)
 direction = "left"
 
 [node name="arrow9" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1856)
+position = Vector2(0, -1758)
 direction = "left"
 
 [node name="arrow10" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2176)
+position = Vector2(0, -2366)
 direction = "left"
 
 [node name="arrow11" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2306)
+position = Vector2(0, -2494)
 direction = "left"
 
 [node name="arrow12" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2528)
+position = Vector2(0, -2690)
 direction = "left"
 
 [node name="arrow13" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2848)
+position = Vector2(0, -3170)
+direction = "left"
+
+[node name="arrow14" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3298)
+direction = "left"
+
+[node name="arrow15" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3874)
+direction = "left"
+
+[node name="arrow16" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3488)
+direction = "left"
+
+[node name="arrow17" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -4092)
+direction = "left"
+
+[node name="arrow18" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -4668)
+direction = "left"
+
+[node name="arrow19" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -5276)
+direction = "left"
+
+[node name="arrow20" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -6074)
+direction = "left"
+
+[node name="arrow21" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -6398)
 direction = "left"
 
 [node name="right" type="Node2D" parent="Node2D"]
@@ -69,59 +103,107 @@ position = Vector2(372, 0)
 direction = "right"
 
 [node name="arrow2" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -544)
+position = Vector2(0, -320)
 direction = "right"
 
 [node name="arrow3" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -768)
+position = Vector2(0, -448)
 direction = "right"
 
 [node name="arrow4" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -288)
+position = Vector2(0, -768)
 direction = "right"
 
 [node name="arrow5" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1248)
+position = Vector2(0, -8100)
 direction = "right"
 
 [node name="arrow6" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1056)
+position = Vector2(0, -704)
 direction = "right"
 
 [node name="arrow7" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1696)
+position = Vector2(0, -832)
 direction = "right"
 
 [node name="arrow8" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1504)
+position = Vector2(0, -1152)
 direction = "right"
 
 [node name="arrow9" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1600)
-direction = "right"
-
-[node name="arrow10" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1824)
+position = Vector2(0, -1500)
 direction = "right"
 
 [node name="arrow11" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1344)
+position = Vector2(0, -1884)
 direction = "right"
 
 [node name="arrow12" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2304)
+position = Vector2(0, -2174)
 direction = "right"
 
 [node name="arrow13" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2112)
+position = Vector2(0, -2304)
 direction = "right"
 
 [node name="arrow14" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2752)
+position = Vector2(0, -2912)
 direction = "right"
 
 [node name="arrow15" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2560)
+position = Vector2(0, -3166)
+direction = "right"
+
+[node name="arrow16" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3296)
+direction = "right"
+
+[node name="arrow17" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3904)
+direction = "right"
+
+[node name="arrow18" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3712)
+direction = "right"
+
+[node name="arrow19" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -4320)
+direction = "right"
+
+[node name="arrow20" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -4574)
+direction = "right"
+
+[node name="arrow21" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -4704)
+direction = "right"
+
+[node name="arrow10" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -4930)
+direction = "right"
+
+[node name="arrow22" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -5278)
+direction = "right"
+
+[node name="arrow23" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -5662)
+direction = "right"
+
+[node name="arrow24" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -5952)
+direction = "right"
+
+[node name="arrow25" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -6082)
+direction = "right"
+
+[node name="arrow26" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -6690)
+direction = "right"
+
+[node name="arrow27" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -6944)
 direction = "right"
 
 [node name="up" type="Node2D" parent="Node2D"]
@@ -131,55 +213,103 @@ position = Vector2(248, 0)
 direction = "up"
 
 [node name="arrow2" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -224)
+position = Vector2(0, -1312)
 direction = "up"
 
 [node name="arrow3" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -514)
+position = Vector2(0, -992)
 direction = "up"
 
 [node name="arrow4" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -864)
+position = Vector2(0, -1792)
 direction = "up"
 
 [node name="arrow5" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -960)
+position = Vector2(0, -1984)
 direction = "up"
 
 [node name="arrow6" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1472)
+position = Vector2(0, -1664)
 direction = "up"
 
 [node name="arrow7" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1824)
+position = Vector2(0, -2464)
 direction = "up"
 
 [node name="arrow8" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -1952)
+position = Vector2(0, -3040)
 direction = "up"
 
 [node name="arrow9" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2242)
+position = Vector2(0, -2720)
 direction = "up"
 
 [node name="arrow10" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2592)
+position = Vector2(0, -3520)
 direction = "up"
 
 [node name="arrow11" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -2688)
+position = Vector2(0, -4160)
 direction = "up"
 
 [node name="arrow12" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -3200)
+position = Vector2(0, -4832)
 direction = "up"
 
 [node name="arrow13" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-position = Vector2(0, -3552)
+position = Vector2(0, -5088)
+direction = "up"
+
+[node name="arrow14" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -5696)
+direction = "up"
+
+[node name="arrow15" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -6368)
+direction = "up"
+
+[node name="arrow16" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -6624)
+direction = "up"
+
+[node name="arrow17" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -7072)
+direction = "up"
+
+[node name="arrow18" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -7744)
+direction = "up"
+
+[node name="arrow19" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -8000)
+direction = "up"
+
+[node name="arrow20" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3326)
+direction = "up"
+
+[node name="arrow21" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -3840)
+direction = "up"
+
+[node name="arrow22" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -9664)
+direction = "up"
+
+[node name="arrow23" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -9920)
+direction = "up"
+
+[node name="arrow24" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -5246)
+direction = "up"
+
+[node name="arrow25" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
+position = Vector2(0, -5824)
 direction = "up"
 
 [node name="song" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_yonrx")
+stream = ExtResource("2_37dfd")
 autoplay = true
 
 [node name="clickerController" type="Node2D" parent="."]
@@ -198,3 +328,19 @@ direction = "right"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(248, 448)
+
+[node name="hud" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_lock_ = true
+
+[node name="combo" type="Label" parent="hud"]
+layout_mode = 0
+offset_left = 436.0
+offset_top = 352.0
+offset_right = 492.0
+offset_bottom = 397.0
+theme_override_font_sizes/font_size = 32
+text = "32X"

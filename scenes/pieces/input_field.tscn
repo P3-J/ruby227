@@ -10,7 +10,9 @@ size = Vector2(124, 124)
 script = ExtResource("1_kaaxh")
 
 [node name="inputSprite" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.243137)
+modulate = Color(0.498039, 0.690196, 0.368627, 0.654902)
+position = Vector2(2, 9.53674e-07)
+scale = Vector2(1.03333, 1.33333)
 texture = ExtResource("1_kyhrm")
 
 [node name="inputCollision" type="CollisionShape2D" parent="."]

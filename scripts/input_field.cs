@@ -6,6 +6,10 @@ public partial class input_field : Area2D
 	
 	[Export]
 	string direction;
+	[Signal]
+	public delegate void HitEventHandler();
+	[Signal]
+	public delegate void MissEventHandler();
 	Sprite2D arrowSprite;
 	CharacterBody2D currentKey;
 
@@ -55,7 +59,10 @@ public partial class input_field : Area2D
 		if (currentKey != null){
 			currentKey.QueueFree();
 			currentKey = null;
-		} 
+			EmitSignal("Hit");
+		} else {
+			EmitSignal("Miss");
+		}
 	}
 
 	public void _on_body_entered(Node2D body)
