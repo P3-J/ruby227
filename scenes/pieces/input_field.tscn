@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://deisxds4xqlxd"]
+
+[ext_resource type="Script" path="res://scripts/input_field.cs" id="1_kaaxh"]
+[ext_resource type="Texture2D" uid="uid://bjik0qpeoxln" path="res://assets/arrowphoto.png" id="1_kyhrm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x0m2a"]
+size = Vector2(124, 124)
+
+[node name="inputField" type="Area2D"]
+script = ExtResource("1_kaaxh")
+
+[node name="inputSprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.243137)
+texture = ExtResource("1_kyhrm")
+
+[node name="inputCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_x0m2a")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

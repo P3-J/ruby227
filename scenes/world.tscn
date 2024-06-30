@@ -1,7 +1,26 @@
-[gd_scene load_steps=8 format=3 uid="uid://be2ea7siblocu"]
+[gd_scene load_steps=12 format=3 uid="uid://be2ea7siblocu"]
 
 [ext_resource type="Script" path="res://addons/qodot/src/nodes/qodot_map.gd" id="1_bxnhj"]
 [ext_resource type="Resource" uid="uid://c36hv0o6g0udo" path="res://addons/qodot/qodot_fgd.tres" id="2_dqw00"]
+[ext_resource type="PackedScene" uid="uid://ck6ury47s8no4" path="res://scenes/testing.tscn" id="3_1xlj7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nvi5t"]
+sky_top_color = Color(0.737255, 0, 0.705882, 1)
+sky_horizon_color = Color(0.741176, 0.533333, 0.735294, 1)
+ground_bottom_color = Color(0.227451, 0.133333, 0.235294, 1)
+ground_horizon_color = Color(0.741176, 0.533333, 0.735294, 1)
+
+[sub_resource type="Sky" id="Sky_t3e1g"]
+sky_material = SubResource("ProceduralSkyMaterial_nvi5t")
+
+[sub_resource type="Environment" id="Environment_ffr4x"]
+background_mode = 2
+sky = SubResource("Sky_t3e1g")
+tonemap_mode = 2
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.2049
+volumetric_fog_emission_energy = 55.37
+volumetric_fog_anisotropy = -0.04
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_swdg2"]
 
@@ -31,6 +50,14 @@ points = PackedVector3Array(-25, 1, -14, -25, -1, -14, 4, -1, -14, 4, 1, -14, -2
 
 [node name="world" type="Node3D"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ffr4x")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.217616, 0.450159, 0, 0.900319, 0.435231, -0.5, 0.376921, -0.779699, 0, 0, 0)
+light_energy = 2.5
+shadow_enabled = true
+
 [node name="QodotMap" type="Node3D" parent="."]
 script = ExtResource("1_bxnhj")
 map_file = "res://maps/map_one.map"
@@ -48,3 +75,20 @@ occluder = SubResource("ArrayOccluder3D_m533s")
 
 [node name="entity_0_brush_0_collision_shape" type="CollisionShape3D" parent="QodotMap/entity_0_worldspawn"]
 shape = SubResource("ConvexPolygonShape3D_ndyfv")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.00286106, -0.454193, 0.890899, -0.0014586, 0.890904, 0.45419, -0.999995, -1.16415e-10, -0.00321142, 9.18939, 7.92736, 0)
+current = true
+fov = 105.9
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Camera3D"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 501.0
+offset_bottom = 907.0
+
+[node name="SubViewport" type="SubViewport" parent="Camera3D/SubViewportContainer"]
+transparent_bg = true
+size = Vector2i(500, 900)
+
+[node name="game" parent="Camera3D/SubViewportContainer/SubViewport" instance=ExtResource("3_1xlj7")]
