@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://cola0rmveia2c"]
+
+[ext_resource type="Script" path="res://scripts/bullet.cs" id="1_4n7bp"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_shm2i"]
+radius = 0.7
+height = 3.0
+
+[node name="bullet" type="CharacterBody3D" node_paths=PackedStringArray("bulletBody", "collisionRay")]
+script = ExtResource("1_4n7bp")
+BulletSpeed = 30.0
+bulletBody = NodePath("bulletBody")
+collisionRay = NodePath("ray")
+
+[node name="bulletBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.0136957, 4.76837e-07, 0.00748205)
+mesh = SubResource("CapsuleMesh_shm2i")
+skeleton = NodePath("")
+
+[node name="ray" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -4)
+debug_shape_custom_color = Color(1, 1, 0, 1)
+debug_shape_thickness = 4

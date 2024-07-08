@@ -2,17 +2,18 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgoy3n7jamhq0"
-path.s3tc="res://.godot/imported/Brick_18-128x128.png-4e2eea7435011e3175ce9e7a6709456c.s3tc.ctex"
+uid="uid://ce42bbe31ecgj"
+path.s3tc="res://.godot/imported/low_poly_mech_really_0708185600_refine-08ea893b65017f29e6d354a4559d6a3b_Image_0.png-a2d382dd0e4c39fc04a5fe8175242664.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={}
 
 [deps]
 
-source_file="res://textures/128x128/Brick/Brick_18-128x128.png"
-dest_files=["res://.godot/imported/Brick_18-128x128.png-4e2eea7435011e3175ce9e7a6709456c.s3tc.ctex"]
+source_file="res://assets/mech2/low_poly_mech_really_0708185600_refine-08ea893b65017f29e6d354a4559d6a3b_Image_0.png"
+dest_files=["res://.godot/imported/low_poly_mech_really_0708185600_refine-08ea893b65017f29e6d354a4559d6a3b_Image_0.png-a2d382dd0e4c39fc04a5fe8175242664.s3tc.ctex"]
 
 [params]
 

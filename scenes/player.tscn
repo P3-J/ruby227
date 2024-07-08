@@ -1,18 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=5 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_45lky"]
-size = Vector3(5, 5, 5)
+[ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
+[ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex6j0"]
 size = Vector3(5, 5, 5)
 
-[node name="player" type="CharacterBody3D"]
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm")]
 script = ExtResource("1_exk0v")
+Bullet = ExtResource("2_rt76a")
+rightArm = NodePath("rightArm")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_45lky")
+[node name="mech" parent="." instance=ExtResource("2_5qtqp")]
+transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, 0, 1.11483, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ex6j0")
+
+[node name="rightArm" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
