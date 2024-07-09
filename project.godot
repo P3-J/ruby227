@@ -66,6 +66,10 @@ shoot={
 ]
 }
 
+[navigation]
+
+3d/default_cell_height=2.0
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

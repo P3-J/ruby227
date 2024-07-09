@@ -10,14 +10,15 @@ height = 3.0
 script = ExtResource("1_4n7bp")
 BulletSpeed = 30.0
 bulletBody = NodePath("bulletBody")
-collisionRay = NodePath("ray")
+collisionRay = NodePath("bulletBody/ray")
 
 [node name="bulletBody" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.0136957, 4.76837e-07, 0.00748205)
 mesh = SubResource("CapsuleMesh_shm2i")
 skeleton = NodePath("")
 
-[node name="ray" type="RayCast3D" parent="."]
+[node name="ray" type="RayCast3D" parent="bulletBody"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.0136957, -0.00748205, 4.77164e-07)
 target_position = Vector3(0, 0, -4)
 debug_shape_custom_color = Color(1, 1, 0, 1)
 debug_shape_thickness = 4

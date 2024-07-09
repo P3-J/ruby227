@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://vf2x0kmi1jhg"
+path="res://.godot/imported/mushroom3.obj-cd4bc1db0cf281d506d1eff6e27aacd2.mesh"
+
+[deps]
+
+files=["res://.godot/imported/mushroom3.obj-cd4bc1db0cf281d506d1eff6e27aacd2.mesh"]
+
+source_file="res://assets/trees/mushroom3.obj"
+dest_files=["res://.godot/imported/mushroom3.obj-cd4bc1db0cf281d506d1eff6e27aacd2.mesh", "res://.godot/imported/mushroom3.obj-cd4bc1db0cf281d506d1eff6e27aacd2.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

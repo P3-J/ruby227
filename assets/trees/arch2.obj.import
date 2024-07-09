@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://1p8cd6gt4pxg"
+path="res://.godot/imported/arch2.obj-8ef70d779b9c47318e402624008c4c26.mesh"
+
+[deps]
+
+files=["res://.godot/imported/arch2.obj-8ef70d779b9c47318e402624008c4c26.mesh"]
+
+source_file="res://assets/trees/arch2.obj"
+dest_files=["res://.godot/imported/arch2.obj-8ef70d779b9c47318e402624008c4c26.mesh", "res://.godot/imported/arch2.obj-8ef70d779b9c47318e402624008c4c26.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

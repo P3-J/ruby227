@@ -9,6 +9,9 @@ public partial class player : CharacterBody3D
 
     [Export] public PackedScene Bullet;
     [Export] private Marker3D rightArm;
+    [Export] AudioStreamPlayer booster;
+	[Export] AudioStreamPlayer rocket;
+    [Export] AudioStreamPlayer steam;
 
     public override void _PhysicsProcess(double delta)
     {
@@ -17,11 +20,18 @@ public partial class player : CharacterBody3D
         float rotationInput = 0f;
         if (Input.IsActionPressed("left"))
             rotationInput += 0.05f;
+            PlaySteamAudioIfCan();
         if (Input.IsActionPressed("right"))
             rotationInput -= 0.05f;
+            PlaySteamAudioIfCan();
+
+        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
+            steam.Stop();
+        }
+        
         RotateY(rotationInput);
 
-        Vector3 direction = new Vector3();
+        Vector3 direction = new();
         if (Input.IsActionPressed("up"))
             direction -= Transform.Basis.Z; 
         if (Input.IsActionPressed("down"))
@@ -45,6 +55,12 @@ public partial class player : CharacterBody3D
         fakeVelo.X = direction.X * MovementSpeed;
         fakeVelo.Z = direction.Z * MovementSpeed;
 
+        if (direction == Vector3.Zero){
+            booster.Stop();
+        } else if (!booster.Playing) {
+            booster.Play();
+        }
+
         Velocity = fakeVelo;
         MoveAndSlide();
     }
@@ -63,5 +79,13 @@ public partial class player : CharacterBody3D
         bulletInstance.Position = rightArm.GlobalPosition;
         bulletInstance.Call("SetDirection", -GlobalTransform.Basis.Z);
         GetParent().AddChild(bulletInstance);
+        rocket.Play();
+    }
+
+    public void PlaySteamAudioIfCan(){
+        if (!steam.Playing)
+        {
+            steam.Play();
+        }
     }
 }

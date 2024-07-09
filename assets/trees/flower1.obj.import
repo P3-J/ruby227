@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ytdu4wx1spkr"
+path="res://.godot/imported/flower1.obj-472eab443b7bddd3b10445edf7fde088.mesh"
+
+[deps]
+
+files=["res://.godot/imported/flower1.obj-472eab443b7bddd3b10445edf7fde088.mesh"]
+
+source_file="res://assets/trees/flower1.obj"
+dest_files=["res://.godot/imported/flower1.obj-472eab443b7bddd3b10445edf7fde088.mesh", "res://.godot/imported/flower1.obj-472eab443b7bddd3b10445edf7fde088.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

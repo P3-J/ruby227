@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://blakisxxldqgw"
+path="res://.godot/imported/wall1.obj-8e6d506dccc88c34def0a2ddcbd6b757.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wall1.obj-8e6d506dccc88c34def0a2ddcbd6b757.mesh"]
+
+source_file="res://assets/trees/wall1.obj"
+dest_files=["res://.godot/imported/wall1.obj-8e6d506dccc88c34def0a2ddcbd6b757.mesh", "res://.godot/imported/wall1.obj-8e6d506dccc88c34def0a2ddcbd6b757.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
