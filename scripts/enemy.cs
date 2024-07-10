@@ -1,5 +1,7 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 public partial class enemy : CharacterBody3D
 {
@@ -24,6 +26,9 @@ public partial class enemy : CharacterBody3D
 		Vector3 direction = navagent.GetNextPathPosition();
 		Vector3 _velocity = (direction - GlobalTransform.Origin).Normalized() * Speed;
 
+		// can also check if the climb itself to the next point is too sudden?
+		//https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_using_navigationlinks.html
+		// nav links!!!
 		/* if (navagent.TargetPosition.Y - GlobalPosition.Y > 5 && !IsOnFloor())
         {
             _velocity.Y = 400;
@@ -37,11 +42,12 @@ public partial class enemy : CharacterBody3D
 		} else if (!booster.Playing) {
 			booster.Play();
 		}
+		
 		MoveAndSlide();
 	}
 
 	public void RotateBody(Vector3 _direction){
-		body.LookAt(_direction);
+		/* body.LookAt(_direction); */
 	}
 
 	public void ShootBullet()
@@ -59,7 +65,7 @@ public partial class enemy : CharacterBody3D
 	private void _on_scanner_body_entered(Node3D body)
 	{
 		if (body.Name == "player"){
-			canMove = false;
+			canMove = true;
 			timer.Start();
 		}
 	}
@@ -73,5 +79,9 @@ public partial class enemy : CharacterBody3D
 
 	private void _on_shot_cooldown_timeout(){
 		ShootBullet();
+	}
+
+	private void _on_navigation_agent_3d_link_reached(Dictionary details){
+		GD.Print(details);
 	}
 }
