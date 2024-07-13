@@ -1,11 +1,10 @@
 using Godot;
 using Godot.Collections;
 using System;
-using System.Collections.Generic;
 
 public partial class enemy : CharacterBody3D
 {
-	public const float Speed = 5f;
+	public const float Speed = 10f;
 
 	[Export] NavigationAgent3D navagent;
 	[Export] CharacterBody3D player; // bad but gets the job done
@@ -17,25 +16,78 @@ public partial class enemy : CharacterBody3D
 	[Export] AudioStreamPlayer3D rocket;
 
 	Boolean canMove;
-	Boolean hasShot;
+	Vector3 velocity;
+	public const float Gravity = -9.8f;
 
-	public override void _Process(double delta)
+    bool target;
+    public override void _Ready()
+    {
+       SceneTreeTimer tr = GetTree().CreateTimer(1.0);
+	   tr.Timeout += OnTimeOut;
+	   
+    }
+
+	private void OnTimeOut()
+	{
+		target = true;
+		SetTargetPos(player.GlobalPosition);
+	}
+
+    public override void _PhysicsProcess(double delta)
+    {
+		velocity = Velocity;
+		
+		if (!IsOnFloor())
+        {
+            velocity.Y += Gravity * (float)delta;
+        }
+
+        if (!navagent.IsNavigationFinished() && target){
+			Vector3 next = navagent.GetNextPathPosition();
+			Vector3 dir = (next - GlobalPosition).Normalized();
+			velocity.X = dir.X * Speed;
+			velocity.Z = dir.Z * Speed;
+		} else {
+			velocity.X = 0;
+			velocity.Z = 0;
+		}
+
+		if (navagent.IsNavigationFinished()){
+			SetTargetPos(player.GlobalPosition);
+		}
+
+		Velocity = velocity;
+		MoveAndSlide();
+    }
+
+	public void SetTargetPos(Vector3 pos)
+	{
+		var map = GetWorld3D().NavigationMap;
+		var p = NavigationServer3D.MapGetClosestPoint(map, pos);
+		navagent.TargetPosition = p;
+	}
+
+
+    public override void _Process(double delta)
 	{
 
-		navagent.TargetPosition = player.GlobalPosition;
+	/* 	navagent.TargetPosition = player.GlobalPosition;
 		Vector3 direction = navagent.GetNextPathPosition();
-		Vector3 _velocity = (direction - GlobalTransform.Origin).Normalized() * Speed;
+		Vector3 _velocity = (direction - GlobalTransform.Origin).Normalized() * Speed; */
 
 		// can also check if the climb itself to the next point is too sudden?
 		//https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_using_navigationlinks.html
 		// nav links!!!
+		// los for fire? when below player to avoid shooting into walls
+		// asap los stop fire -> keep navigating 
 		/* if (navagent.TargetPosition.Y - GlobalPosition.Y > 5 && !IsOnFloor())
         {
             _velocity.Y = 400;
         } */
 
-		RotateBody(direction);
-		Velocity = _velocity;
+		//RotateBody(direction);
+
+		/* Velocity = _velocity;
 		if (!canMove){
 			Velocity = Vector3.Zero;
 			booster.Stop();
@@ -43,11 +95,19 @@ public partial class enemy : CharacterBody3D
 			booster.Play();
 		}
 		
-		MoveAndSlide();
+		MoveAndSlide(); */
 	}
 
 	public void RotateBody(Vector3 _direction){
-		/* body.LookAt(_direction); */
+		body.LookAt(_direction);
+	}
+
+	public void Jump()
+	{
+		if (IsOnFloor())
+        {
+            velocity.Y += 15;
+        }
 	}
 
 	public void ShootBullet()
@@ -82,6 +142,6 @@ public partial class enemy : CharacterBody3D
 	}
 
 	private void _on_navigation_agent_3d_link_reached(Dictionary details){
-		GD.Print(details);
+		Jump();
 	}
 }

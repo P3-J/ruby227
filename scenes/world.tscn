@@ -203,8 +203,8 @@ transform = Transform3D(-0.919321, 0, -0.393509, 0, 1, 0, 0.393509, 0, -0.919321
 end_position = Vector3(14.1659, 10.2424, -0.457399)
 
 [node name="NavigationLink3D2" type="NavigationLink3D" parent="QodotMap/NavigationRegion3D"]
-transform = Transform3D(-0.147948, 0, 0.988995, 0, 1, 0, -0.988995, 0, -0.147948, 27.8214, -1.02022, -26.3636)
-end_position = Vector3(10.1891, 3.31495, -0.0542145)
+transform = Transform3D(-0.147948, 0, 0.988995, 0, 1, 0, -0.988995, 0, -0.147948, 27.8214, -1.02022, -20.6214)
+end_position = Vector3(19.144, 3.315, -0.054)
 
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
 transform = Transform3D(-0.998362, 0, -0.0572156, 0, 1, 0, 0.0572156, 0, -0.998362, 28.588, 4.50143, -50.7957)
