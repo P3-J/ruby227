@@ -30,7 +30,6 @@ public partial class enemy : CharacterBody3D
 	private void OnTimeOut()
 	{
 		target = true;
-		SetTargetPos(player.GlobalPosition);
 	}
 
     public override void _PhysicsProcess(double delta)
@@ -41,19 +40,19 @@ public partial class enemy : CharacterBody3D
         {
             velocity.Y += Gravity * (float)delta;
         }
+		Vector3 next = Vector3.Zero;
+		if (target && IsOnFloor()){
+			SetTargetPos(player.GlobalPosition);
+			next = navagent.GetNextPathPosition();
+		}
 
         if (!navagent.IsNavigationFinished() && target){
-			Vector3 next = navagent.GetNextPathPosition();
 			Vector3 dir = (next - GlobalPosition).Normalized();
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
 		} else {
 			velocity.X = 0;
 			velocity.Z = 0;
-		}
-
-		if (navagent.IsNavigationFinished()){
-			SetTargetPos(player.GlobalPosition);
 		}
 
 		Velocity = velocity;

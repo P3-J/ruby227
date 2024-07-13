@@ -6,8 +6,9 @@
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_85yn1"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_oejdi"]
-size = Vector3(5, 5, 5)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_glr7o"]
+radius = 2.0
+height = 10.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k0e46"]
 size = Vector3(60, 5, 60)
@@ -22,10 +23,11 @@ booster = NodePath("booster")
 rocket = NodePath("rocket")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.999971, 0, 0, 0, 1, 0, 0, 0, 0.999971, -0.0740434, -1, 0)
-shape = SubResource("BoxShape3D_oejdi")
+transform = Transform3D(0.999971, 0, 0, 0, 1, 0, 0, 0, 0.999971, -0.0740434, 1.29088, 0)
+shape = SubResource("CapsuleShape3D_glr7o")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+debug_enabled = true
 
 [node name="bodyController" type="Node3D" parent="."]
 
