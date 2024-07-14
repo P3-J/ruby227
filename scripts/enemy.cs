@@ -6,11 +6,12 @@ public partial class enemy : CharacterBody3D
 {
 	public const float Speed = 10f;
 
-	[Export] NavigationAgent3D navagent;
+	[Export] private NavigationAgent3D navagent;
 	[Export] CharacterBody3D player; // bad but gets the job done
 	[Export] Node3D body;
 	[Export] public PackedScene Bullet;
 	[Export] Timer timer;
+	[Export] Timer retargetTimer;
 
 	[Export] AudioStreamPlayer3D booster;
 	[Export] AudioStreamPlayer3D rocket;
@@ -60,9 +61,8 @@ public partial class enemy : CharacterBody3D
 			velocity.Z = dir.Z * Speed;
 		} 
 
-		Velocity = velocity;
+		navagent.Velocity = velocity;
 		MoveAndSlide();
-		
     }
 
 	public void GetHit(){
@@ -72,14 +72,15 @@ public partial class enemy : CharacterBody3D
 	public void SetTargetPos(Vector3 pos)
 	{
 		var map = GetWorld3D().NavigationMap;
+		GD.Randomize();
 		var p = NavigationServer3D.MapGetClosestPoint(map, pos);
 		navagent.TargetPosition = p;
 	}
 
 	private void _on_navigation_agent_3d_target_reached(){
-		if (navagent.IsTargetReachable())
-			SetTargetPos(player.GlobalPosition);
-			GD.Print("reached");
+		
+		SetTargetPos(player.GlobalPosition);
+		GD.Print("reached");
 	}
 
 	public void RotateBody(Vector3 _direction){
@@ -124,13 +125,16 @@ public partial class enemy : CharacterBody3D
 	}
 
 	private void _on_navigation_agent_3d_velocity_computed(Vector3 safevelo){
-		Velocity = velocity;
-		MoveAndSlide();
+		Velocity = safevelo;
 	}
 	private void _on_shot_cooldown_timeout(){
 		ShootBullet();
 	}
 	private void _on_navigation_agent_3d_link_reached(Dictionary details){
 		Jump();
+	}
+	private void _on_retarget_timeout(){
+		SetTargetPos(player.GlobalPosition);
+		retargetTimer.Start();
 	}
 }
