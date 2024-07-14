@@ -8,13 +8,13 @@ public partial class enemy : CharacterBody3D
 
 	[Export] private NavigationAgent3D navagent;
 	[Export] CharacterBody3D player; // bad but gets the job done
-	[Export] Node3D body;
+	Node3D body;
 	[Export] public PackedScene Bullet;
-	[Export] Timer timer;
-	[Export] Timer retargetTimer;
+	Timer timer;
+	Timer retargetTimer;
 
-	[Export] AudioStreamPlayer3D booster;
-	[Export] AudioStreamPlayer3D rocket;
+	AudioStreamPlayer3D booster;
+	AudioStreamPlayer3D rocket;
 
 	Boolean canMove = true;
 	Vector3 velocity;
@@ -22,14 +22,29 @@ public partial class enemy : CharacterBody3D
 	Vector3 next = Vector3.Zero;
 
 
-	int HP = 3;
-	int cHP = 3;
+	int HP = 2;
+	int cHP = 2;
     bool target;
     public override void _Ready()
     {
-       SceneTreeTimer tr = GetTree().CreateTimer(1.0);
-	   tr.Timeout += OnTimeOut;
-	   
+
+		navagent = GetNode<NavigationAgent3D>("NavigationAgent3D");
+		body = GetNode<Node3D>("bodyController");
+		timer = GetNode<Timer>("shotCooldown");
+
+		retargetTimer = GetNode<Timer>("shotCooldown");
+		booster = GetNode<AudioStreamPlayer3D>("booster");
+		rocket  =GetNode<AudioStreamPlayer3D>("rocket");
+
+		// export not good all the time whaat... especially currently for signals???
+        navagent.Connect("target_reached", new Callable(this, nameof(OnNavigationAgentTargetReached)));
+        navagent.Connect("velocity_computed", new Callable(this, nameof(OnNavigationAgentVelocityComputed)));
+        navagent.Connect("link_reached", new Callable(this, nameof(OnNavigationAgentLinkReached))); 
+
+		SceneTreeTimer tr = GetTree().CreateTimer(1.0);
+		tr.Timeout += OnTimeOut;
+
+       
     }
 
 	private void OnTimeOut()
@@ -47,6 +62,7 @@ public partial class enemy : CharacterBody3D
 		velocity = Velocity;
 		if (IsOnFloor())
 			next = navagent.GetNextPathPosition();
+			RotateBody(player.GlobalPosition);
 
 		if (!IsOnFloor())
         {
@@ -67,6 +83,8 @@ public partial class enemy : CharacterBody3D
 
 	public void GetHit(){
         cHP -= 1;
+		if (cHP <= 0)
+			QueueFree();
     }
 
 	public void SetTargetPos(Vector3 pos)
@@ -77,11 +95,6 @@ public partial class enemy : CharacterBody3D
 		navagent.TargetPosition = p;
 	}
 
-	private void _on_navigation_agent_3d_target_reached(){
-		
-		SetTargetPos(player.GlobalPosition);
-		GD.Print("reached");
-	}
 
 	public void RotateBody(Vector3 _direction){
 		body.LookAt(_direction, Vector3.Up);
@@ -110,28 +123,38 @@ public partial class enemy : CharacterBody3D
 
 	private void _on_scanner_body_entered(Node3D body)
 	{
-		/* if (body.Name == "player"){
-			canMove = false;
+		if (body.Name == "player"){
+			canMove = true;
 			Velocity = Vector3.Zero;
 			timer.Start();
-		} */
+		}
 	}
 	private void _on_scanner_body_exited(Node3D body)
 	{
-		/* if (body.Name == "player"){
+		if (body.Name == "player"){
 			canMove = true;
 			SetTargetPos(player.GlobalPosition);
-		} */
+		}
 	}
 
-	private void _on_navigation_agent_3d_velocity_computed(Vector3 safevelo){
-		Velocity = safevelo;
-	}
+	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)
+    {
+        Velocity = safevelo;
+    }
+
+    private void OnNavigationAgentTargetReached()
+    {
+        SetTargetPos(player.GlobalPosition);
+        GD.Print("Target reached");
+    }
+
+    private void OnNavigationAgentLinkReached(Dictionary data)
+    {
+        Jump();
+    } 
+
 	private void _on_shot_cooldown_timeout(){
 		ShootBullet();
-	}
-	private void _on_navigation_agent_3d_link_reached(Dictionary details){
-		Jump();
 	}
 	private void _on_retarget_timeout(){
 		SetTargetPos(player.GlobalPosition);

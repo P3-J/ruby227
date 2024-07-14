@@ -7,21 +7,16 @@
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_glr7o"]
-radius = 2.0
+radius = 3.0
 height = 8.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k0e46"]
 size = Vector3(60, 20, 60)
 
-[node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent", "body", "timer", "retargetTimer", "booster", "rocket")]
+[node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
 script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
-body = NodePath("bodyController")
 Bullet = ExtResource("2_5bxl6")
-timer = NodePath("shotCooldown")
-retargetTimer = NodePath("retarget")
-booster = NodePath("booster")
-rocket = NodePath("rocket")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.999971, 0, 0, 0, 1, 0, 0, 0, 0.999971, -0.0740434, 0.175617, 0.625505)
@@ -29,16 +24,18 @@ shape = SubResource("CapsuleShape3D_glr7o")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 avoidance_enabled = true
-height = 2.0
 radius = 4.0
 debug_enabled = true
 
 [node name="bodyController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.819349)
 
 [node name="body" parent="bodyController" instance=ExtResource("1_yi6j0")]
-transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, 0, 0, 0)
+transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.019232, 0, -0.999284)
 
 [node name="scanner" type="Area3D" parent="."]
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="scanner"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69237, 0)
@@ -50,19 +47,16 @@ one_shot = true
 
 [node name="booster" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4_85yn1")
-volume_db = -80.0
+volume_db = -4.348
 
 [node name="rocket" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5_617fx")
-volume_db = -80.0
+volume_db = -10.435
 
 [node name="retarget" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
 
-[connection signal="link_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_link_reached"]
-[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
-[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
 [connection signal="body_entered" from="scanner" to="." method="_on_scanner_body_entered"]
 [connection signal="body_exited" from="scanner" to="." method="_on_scanner_body_exited"]
 [connection signal="timeout" from="shotCooldown" to="." method="_on_shot_cooldown_timeout"]

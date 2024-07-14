@@ -36,10 +36,10 @@ offset_bottom = 502.0
 
 [node name="hptext" type="RichTextLabel" parent="guid"]
 layout_mode = 0
-offset_left = 224.0
-offset_top = 43.0
-offset_right = 340.0
-offset_bottom = 97.0
+offset_left = 5.0
+offset_top = 4.0
+offset_right = 121.0
+offset_bottom = 58.0
 theme_override_font_sizes/normal_font_size = 20
 text = "3/3 ❤️"
 

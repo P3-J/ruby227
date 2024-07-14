@@ -5,7 +5,7 @@ public partial class player : CharacterBody3D
 {
     private const float Gravity = -4.8f;
     private const float JumpForce = 75.0f;
-    private const float MovementSpeed = 20F;
+    private const float MovementSpeed = 15F;
 
     int HP = 3;
     int cHP = 3;
@@ -23,10 +23,10 @@ public partial class player : CharacterBody3D
 
         float rotationInput = 0f;
         if (Input.IsActionPressed("left"))
-            rotationInput += 0.05f;
+            rotationInput += 0.02f;
             PlaySteamAudioIfCan();
         if (Input.IsActionPressed("right"))
-            rotationInput -= 0.05f;
+            rotationInput -= 0.02f;
             PlaySteamAudioIfCan();
 
         if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
