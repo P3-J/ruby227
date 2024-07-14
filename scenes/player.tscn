@@ -10,13 +10,14 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex6j0"]
 size = Vector3(5, 5, 5)
 
-[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam")]
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "hudText")]
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 rightArm = NodePath("rightArm")
 booster = NodePath("booster")
 rocket = NodePath("rocket")
 steam = NodePath("steam")
+hudText = NodePath("guid/hptext")
 
 [node name="mech" parent="." instance=ExtResource("2_5qtqp")]
 transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, 0, 1.11483, 0)
@@ -32,6 +33,15 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 550.0
 offset_bottom = 502.0
+
+[node name="hptext" type="RichTextLabel" parent="guid"]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 43.0
+offset_right = 340.0
+offset_bottom = 97.0
+theme_override_font_sizes/normal_font_size = 20
+text = "3/3 ❤️"
 
 [node name="booster" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hgwbl")

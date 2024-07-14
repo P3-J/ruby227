@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cola0rmveia2c"]
+[gd_scene load_steps=4 format=3 uid="uid://cola0rmveia2c"]
 
 [ext_resource type="Script" path="res://scripts/bullet.cs" id="1_4n7bp"]
+[ext_resource type="PackedScene" uid="uid://c5mxi6blb072k" path="res://scenes/explosion.tscn" id="2_ugt12"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_shm2i"]
 radius = 0.7
@@ -11,6 +12,7 @@ script = ExtResource("1_4n7bp")
 BulletSpeed = 30.0
 bulletBody = NodePath("bulletBody")
 collisionRay = NodePath("bulletBody/ray")
+explosion = ExtResource("2_ugt12")
 
 [node name="bulletBody" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.0136957, 4.76837e-07, 0.00748205)
@@ -19,6 +21,6 @@ skeleton = NodePath("")
 
 [node name="ray" type="RayCast3D" parent="bulletBody"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.0136957, -0.00748205, 4.77164e-07)
-target_position = Vector3(0, 0, -4)
+target_position = Vector3(0, 0, 2)
 debug_shape_custom_color = Color(1, 1, 0, 1)
 debug_shape_thickness = 4

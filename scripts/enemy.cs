@@ -15,10 +15,14 @@ public partial class enemy : CharacterBody3D
 	[Export] AudioStreamPlayer3D booster;
 	[Export] AudioStreamPlayer3D rocket;
 
-	Boolean canMove;
+	Boolean canMove = true;
 	Vector3 velocity;
 	public const float Gravity = -9.8f;
+	Vector3 next = Vector3.Zero;
 
+
+	int HP = 3;
+	int cHP = 3;
     bool target;
     public override void _Ready()
     {
@@ -30,33 +34,39 @@ public partial class enemy : CharacterBody3D
 	private void OnTimeOut()
 	{
 		target = true;
+		SetTargetPos(player.GlobalPosition);
 	}
 
     public override void _PhysicsProcess(double delta)
     {
+		if (!target){
+			return;
+		}
+
 		velocity = Velocity;
-		
+		if (IsOnFloor())
+			next = navagent.GetNextPathPosition();
+
 		if (!IsOnFloor())
         {
             velocity.Y += Gravity * (float)delta;
         }
-		Vector3 next = Vector3.Zero;
-		if (target && IsOnFloor()){
-			SetTargetPos(player.GlobalPosition);
-			next = navagent.GetNextPathPosition();
-		}
 
-        if (!navagent.IsNavigationFinished() && target){
-			Vector3 dir = (next - GlobalPosition).Normalized();
+		RotateBody(player.GlobalPosition);
+
+		Vector3 dir = GlobalPosition.DirectionTo(next);
+        if (dir != Vector3.Zero && canMove){
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
-		} else {
-			velocity.X = 0;
-			velocity.Z = 0;
-		}
+		} 
 
 		Velocity = velocity;
 		MoveAndSlide();
+		
+    }
+
+	public void GetHit(){
+        cHP -= 1;
     }
 
 	public void SetTargetPos(Vector3 pos)
@@ -66,39 +76,14 @@ public partial class enemy : CharacterBody3D
 		navagent.TargetPosition = p;
 	}
 
-
-    public override void _Process(double delta)
-	{
-
-	/* 	navagent.TargetPosition = player.GlobalPosition;
-		Vector3 direction = navagent.GetNextPathPosition();
-		Vector3 _velocity = (direction - GlobalTransform.Origin).Normalized() * Speed; */
-
-		// can also check if the climb itself to the next point is too sudden?
-		//https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_using_navigationlinks.html
-		// nav links!!!
-		// los for fire? when below player to avoid shooting into walls
-		// asap los stop fire -> keep navigating 
-		/* if (navagent.TargetPosition.Y - GlobalPosition.Y > 5 && !IsOnFloor())
-        {
-            _velocity.Y = 400;
-        } */
-
-		//RotateBody(direction);
-
-		/* Velocity = _velocity;
-		if (!canMove){
-			Velocity = Vector3.Zero;
-			booster.Stop();
-		} else if (!booster.Playing) {
-			booster.Play();
-		}
-		
-		MoveAndSlide(); */
+	private void _on_navigation_agent_3d_target_reached(){
+		if (navagent.IsTargetReachable())
+			SetTargetPos(player.GlobalPosition);
+			GD.Print("reached");
 	}
 
 	public void RotateBody(Vector3 _direction){
-		body.LookAt(_direction);
+		body.LookAt(_direction, Vector3.Up);
 	}
 
 	public void Jump()
@@ -114,6 +99,7 @@ public partial class enemy : CharacterBody3D
         CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
         bulletInstance.Position = GlobalPosition;
         bulletInstance.Call("SetDirection", (player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
+		bulletInstance.Call("Setowner", "enemy");
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
 		if (!canMove){
@@ -123,23 +109,27 @@ public partial class enemy : CharacterBody3D
 
 	private void _on_scanner_body_entered(Node3D body)
 	{
-		if (body.Name == "player"){
-			canMove = true;
+		/* if (body.Name == "player"){
+			canMove = false;
+			Velocity = Vector3.Zero;
 			timer.Start();
-		}
+		} */
 	}
-
 	private void _on_scanner_body_exited(Node3D body)
 	{
-		if (body.Name == "player"){
+		/* if (body.Name == "player"){
 			canMove = true;
-		}
+			SetTargetPos(player.GlobalPosition);
+		} */
 	}
 
+	private void _on_navigation_agent_3d_velocity_computed(Vector3 safevelo){
+		Velocity = velocity;
+		MoveAndSlide();
+	}
 	private void _on_shot_cooldown_timeout(){
 		ShootBullet();
 	}
-
 	private void _on_navigation_agent_3d_link_reached(Dictionary details){
 		Jump();
 	}

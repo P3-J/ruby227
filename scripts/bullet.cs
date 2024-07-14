@@ -9,6 +9,9 @@ public partial class bullet : CharacterBody3D
 
 	[Export] MeshInstance3D bulletBody;
 	[Export] RayCast3D collisionRay;
+	[Export] PackedScene explosion;
+
+	public string owner;
 
     public override void _Ready()
     {
@@ -22,8 +25,11 @@ public partial class bullet : CharacterBody3D
 		
 		if (collisionRay.IsColliding()){
 			GodotObject collider = collisionRay.GetCollider();
-			if (collider is not CharacterBody3D)
+			if ((string)collider.Get("name") != owner)
 			{
+				if (collider is not StaticBody3D)
+					collider.Call("GetHit");
+				GenerateExplosion(collisionRay.GetCollisionPoint());
 				QueueFree();
 			}
 		}
@@ -33,9 +39,22 @@ public partial class bullet : CharacterBody3D
 		MoveAndSlide();
 	}
 
+	public void Setowner(string passedowner){
+		owner = passedowner;
+	}
+
 	public void SetDirection(Vector3 newDire)
 	{
 		_direction = newDire.Normalized();
+	}
+
+	public void GenerateExplosion(Vector3 pos)
+	{
+		GpuParticles3D explosionInstance = explosion.Instantiate() as GpuParticles3D;
+        explosionInstance.Position = pos;
+		explosionInstance.Emitting = true;
+        GetParent().AddChild(explosionInstance);
+		GD.Print("done");
 	}
 
 }

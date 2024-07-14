@@ -7,11 +7,15 @@ public partial class player : CharacterBody3D
     private const float JumpForce = 75.0f;
     private const float MovementSpeed = 20F;
 
+    int HP = 3;
+    int cHP = 3;
+
     [Export] public PackedScene Bullet;
     [Export] private Marker3D rightArm;
     [Export] AudioStreamPlayer booster;
 	[Export] AudioStreamPlayer rocket;
     [Export] AudioStreamPlayer steam;
+    [Export] RichTextLabel hudText;
 
     public override void _PhysicsProcess(double delta)
     {
@@ -65,6 +69,15 @@ public partial class player : CharacterBody3D
         MoveAndSlide();
     }
 
+    public void RefreshHud(){
+        hudText.Text = cHP.ToString() + "/" + HP.ToString() + " ❤️";
+    }
+
+    public void GetHit(){
+        cHP -= 1;
+        RefreshHud();
+    }
+
     public override void _Input(InputEvent @event)
     {
         if (Input.IsActionJustPressed("shoot"))
@@ -78,6 +91,7 @@ public partial class player : CharacterBody3D
         CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
         bulletInstance.Position = rightArm.GlobalPosition;
         bulletInstance.Call("SetDirection", -GlobalTransform.Basis.Z);
+        bulletInstance.Call("Setowner", "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
     }
