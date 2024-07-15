@@ -32,7 +32,7 @@ public partial class enemy : CharacterBody3D
 		body = GetNode<Node3D>("bodyController");
 		timer = GetNode<Timer>("shotCooldown");
 
-		retargetTimer = GetNode<Timer>("shotCooldown");
+		retargetTimer = GetNode<Timer>("retarget");
 		booster = GetNode<AudioStreamPlayer3D>("booster");
 		rocket  =GetNode<AudioStreamPlayer3D>("rocket");
 
@@ -62,14 +62,15 @@ public partial class enemy : CharacterBody3D
 		velocity = Velocity;
 		if (IsOnFloor())
 			next = navagent.GetNextPathPosition();
-			RotateBody(player.GlobalPosition);
+			if (canMove)
+				RotateBody(navagent.TargetPosition);
+			else
+				RotateBody(player.GlobalPosition);
 
 		if (!IsOnFloor())
         {
             velocity.Y += Gravity * (float)delta;
         }
-
-		RotateBody(player.GlobalPosition);
 
 		Vector3 dir = GlobalPosition.DirectionTo(next);
         if (dir != Vector3.Zero && canMove){
@@ -90,7 +91,6 @@ public partial class enemy : CharacterBody3D
 	public void SetTargetPos(Vector3 pos)
 	{
 		var map = GetWorld3D().NavigationMap;
-		GD.Randomize();
 		var p = NavigationServer3D.MapGetClosestPoint(map, pos);
 		navagent.TargetPosition = p;
 	}
@@ -124,7 +124,7 @@ public partial class enemy : CharacterBody3D
 	private void _on_scanner_body_entered(Node3D body)
 	{
 		if (body.Name == "player"){
-			canMove = true;
+			canMove = false;
 			Velocity = Vector3.Zero;
 			timer.Start();
 		}
@@ -155,6 +155,7 @@ public partial class enemy : CharacterBody3D
 
 	private void _on_shot_cooldown_timeout(){
 		ShootBullet();
+		GD.Print("area");
 	}
 	private void _on_retarget_timeout(){
 		SetTargetPos(player.GlobalPosition);

@@ -7,13 +7,15 @@
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_glr7o"]
-radius = 3.0
+radius = 2.5
 height = 8.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k0e46"]
 size = Vector3(60, 20, 60)
 
 [node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
+wall_min_slide_angle = 0.785398
+floor_max_angle = 1.309
 script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")
@@ -23,9 +25,10 @@ transform = Transform3D(0.999971, 0, 0, 0, 1, 0, 0, 0, 0.999971, -0.0740434, 0.1
 shape = SubResource("CapsuleShape3D_glr7o")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 5.0
+target_desired_distance = 10.0
 avoidance_enabled = true
 radius = 4.0
-debug_enabled = true
 
 [node name="bodyController" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.819349)
@@ -34,8 +37,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.819349)
 transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.019232, 0, -0.999284)
 
 [node name="scanner" type="Area3D" parent="."]
-monitoring = false
-monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="scanner"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69237, 0)
