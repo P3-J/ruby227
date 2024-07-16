@@ -17,6 +17,13 @@ public partial class player : CharacterBody3D
     [Export] AudioStreamPlayer steam;
     [Export] RichTextLabel hudText;
 
+    Timer shotcooldown;
+
+    public override void _Ready()
+    {
+        shotcooldown = GetNode<Timer>("shotcooldown");
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         Vector3 fakeVelo = Velocity;
@@ -80,8 +87,9 @@ public partial class player : CharacterBody3D
 
     public override void _Input(InputEvent @event)
     {
-        if (Input.IsActionJustPressed("shoot"))
+        if (Input.IsActionJustPressed("shoot") && shotcooldown.IsStopped())
         {
+            shotcooldown.Start();
             ShootBullet();
         }
     }

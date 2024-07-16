@@ -12,6 +12,8 @@ public partial class enemy : CharacterBody3D
 	[Export] public PackedScene Bullet;
 	Timer timer;
 	Timer retargetTimer;
+	RayCast3D los;
+	bool targetinlos;
 
 	AudioStreamPlayer3D booster;
 	AudioStreamPlayer3D rocket;
@@ -31,6 +33,7 @@ public partial class enemy : CharacterBody3D
 		navagent = GetNode<NavigationAgent3D>("NavigationAgent3D");
 		body = GetNode<Node3D>("bodyController");
 		timer = GetNode<Timer>("shotCooldown");
+		los = GetNode<RayCast3D>("los");
 
 		retargetTimer = GetNode<Timer>("retarget");
 		booster = GetNode<AudioStreamPlayer3D>("booster");
@@ -59,6 +62,23 @@ public partial class enemy : CharacterBody3D
 			return;
 		}
 
+		los.LookAt(player.GlobalPosition);
+		var collider = los.GetCollider();
+		if (collider is CharacterBody3D){
+			GD.Print(collider.GetType(), collider.Get("name"));
+			if ((string)collider.Get("name") == "player"){
+				
+				canMove = false;
+				Velocity = Vector3.Zero;
+				if (timer.IsStopped())
+					timer.Start();
+			}
+		} else {
+			canMove = true;
+			SetTargetPos(player.GlobalPosition);
+		}
+
+
 		velocity = Velocity;
 		if (IsOnFloor())
 			next = navagent.GetNextPathPosition();
@@ -66,6 +86,7 @@ public partial class enemy : CharacterBody3D
 				RotateBody(navagent.TargetPosition);
 			else
 				RotateBody(player.GlobalPosition);
+
 
 		if (!IsOnFloor())
         {
@@ -121,22 +142,6 @@ public partial class enemy : CharacterBody3D
 		}
     }
 
-	private void _on_scanner_body_entered(Node3D body)
-	{
-		if (body.Name == "player"){
-			canMove = false;
-			Velocity = Vector3.Zero;
-			timer.Start();
-		}
-	}
-	private void _on_scanner_body_exited(Node3D body)
-	{
-		if (body.Name == "player"){
-			canMove = true;
-			SetTargetPos(player.GlobalPosition);
-		}
-	}
-
 	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)
     {
         Velocity = safevelo;
@@ -155,7 +160,6 @@ public partial class enemy : CharacterBody3D
 
 	private void _on_shot_cooldown_timeout(){
 		ShootBullet();
-		GD.Print("area");
 	}
 	private void _on_retarget_timeout(){
 		SetTargetPos(player.GlobalPosition);

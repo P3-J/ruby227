@@ -7,8 +7,9 @@
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ex6j0"]
-size = Vector3(5, 5, 5)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c5rbk"]
+radius = 2.75
+height = 7.5
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "hudText")]
 script = ExtResource("1_exk0v")
@@ -22,8 +23,15 @@ hudText = NodePath("guid/hptext")
 [node name="mech" parent="." instance=ExtResource("2_5qtqp")]
 transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, 0, 1.11483, 0)
 
+[node name="SpotLight3D" type="SpotLight3D" parent="mech"]
+transform = Transform3D(0.0128751, 0, -0.199585, 0, 0.2, 0, 0.199585, 0, 0.0128751, 2.65143e-08, 0, -0.606577)
+light_energy = 1.988
+spot_range = 23.1214
+spot_angle = 35.5491
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_ex6j0")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0995221, 1.11757, 0)
+shape = SubResource("CapsuleShape3D_c5rbk")
 
 [node name="rightArm" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
@@ -54,3 +62,6 @@ volume_db = -9.025
 [node name="steam" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_00jq5")
 volume_db = -12.893
+
+[node name="shotcooldown" type="Timer" parent="."]
+one_shot = true
