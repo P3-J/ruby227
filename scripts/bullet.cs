@@ -48,6 +48,10 @@ public partial class bullet : CharacterBody3D
 		_direction = newDire.Normalized();
 	}
 
+	public void _on_queuefree_timeout(){
+		QueueFree();
+	}
+
 	public void GenerateExplosion(Vector3 pos)
 	{
 		GpuParticles3D explosionInstance = explosion.Instantiate() as GpuParticles3D;

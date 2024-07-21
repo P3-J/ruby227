@@ -3,8 +3,8 @@ using System;
 
 public partial class player : CharacterBody3D
 {
-    private const float Gravity = -4.8f;
-    private const float JumpForce = 75.0f;
+    private const float Gravity = -2.8f;
+    private const float JumpForce = 55.0f;
     private const float MovementSpeed = 15F;
 
     int HP = 3;

@@ -39,7 +39,6 @@ public partial class enemy : CharacterBody3D
 		booster = GetNode<AudioStreamPlayer3D>("booster");
 		rocket  =GetNode<AudioStreamPlayer3D>("rocket");
 
-		// export not good all the time whaat... especially currently for signals???
         navagent.Connect("target_reached", new Callable(this, nameof(OnNavigationAgentTargetReached)));
         navagent.Connect("velocity_computed", new Callable(this, nameof(OnNavigationAgentVelocityComputed)));
         navagent.Connect("link_reached", new Callable(this, nameof(OnNavigationAgentLinkReached))); 
@@ -56,6 +55,8 @@ public partial class enemy : CharacterBody3D
 		SetTargetPos(player.GlobalPosition);
 	}
 
+	
+
     public override void _PhysicsProcess(double delta)
     {
 		if (!target){
@@ -63,20 +64,7 @@ public partial class enemy : CharacterBody3D
 		}
 
 		los.LookAt(player.GlobalPosition);
-		var collider = los.GetCollider();
-		if (collider is CharacterBody3D){
-			GD.Print(collider.GetType(), collider.Get("name"));
-			if ((string)collider.Get("name") == "player"){
-				
-				canMove = false;
-				Velocity = Vector3.Zero;
-				if (timer.IsStopped())
-					timer.Start();
-			}
-		} else {
-			canMove = true;
-			SetTargetPos(player.GlobalPosition);
-		}
+		ColliderMovementController();
 
 
 		velocity = Velocity;
@@ -86,7 +74,6 @@ public partial class enemy : CharacterBody3D
 				RotateBody(navagent.TargetPosition);
 			else
 				RotateBody(player.GlobalPosition);
-
 
 		if (!IsOnFloor())
         {
@@ -121,11 +108,28 @@ public partial class enemy : CharacterBody3D
 		body.LookAt(_direction, Vector3.Up);
 	}
 
+	public void ColliderMovementController(){
+		//Raycast look at player, stop if in los, or move if not
+		var collider = los.GetCollider();
+		if (collider is CharacterBody3D){
+			if ((string)collider.Get("name") == "player"){
+				canMove = false;
+				if (IsOnFloor())
+					Velocity = Vector3.Zero;
+				if (timer.IsStopped())
+					timer.Start();
+			}
+		} else {
+			canMove = true;
+			SetTargetPos(player.GlobalPosition);
+		}
+	}
+
 	public void Jump()
 	{
 		if (IsOnFloor())
         {
-            velocity.Y += 15;
+            velocity.Y += 10;
         }
 	}
 
