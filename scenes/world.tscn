@@ -1,7 +1,8 @@
-[gd_scene load_steps=137 format=3 uid="uid://be2ea7siblocu"]
+[gd_scene load_steps=142 format=3 uid="uid://be2ea7siblocu"]
 
 [ext_resource type="Script" path="res://addons/qodot/src/nodes/qodot_map.gd" id="1_bxnhj"]
 [ext_resource type="Script" path="res://scripts/world.cs" id="1_fkfjl"]
+[ext_resource type="PackedScene" uid="uid://62rfvhsq7pmg" path="res://scenes/ender.tscn" id="2_cao76"]
 [ext_resource type="Resource" uid="uid://c36hv0o6g0udo" path="res://addons/qodot/qodot_fgd.tres" id="3_ili1l"]
 [ext_resource type="Texture2D" uid="uid://cyqc2x6x5bjv0" path="res://textures/128x128/Stone/Stone_11-128x128.png" id="4_krrq0"]
 [ext_resource type="Texture2D" uid="uid://cnwdunvmduprc" path="res://textures/128x128/Dirt/Dirt_15-128x128.png" id="6_3oxj4"]
@@ -30,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://8ggbaiu407jl" path="res://textures/128x128/Metal/Metal_05-128x128.png" id="24_f2nv4"]
 [ext_resource type="Texture2D" uid="uid://dpanbxjjoowqp" path="res://textures/128x128/Plaster/Plaster_04-128x128.png" id="24_iscxs"]
 [ext_resource type="PackedScene" uid="uid://b0vtq76m7r3eg" path="res://scenes/bossman.tscn" id="30_dfnou"]
+[ext_resource type="AudioStream" uid="uid://cad2jer7hnut1" path="res://music/May_the_fourth_be_with_you.mp3" id="30_nwm7y"]
 [ext_resource type="PackedScene" uid="uid://bdgnwy0jieigu" path="res://scenes/laser.tscn" id="31_2buc7"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="31_lhtsh"]
 
@@ -606,13 +608,112 @@ points = PackedVector3Array(63.2946, 16, 53.8548, 43.0102, 16, 59.29, 43.0102, -
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_gmfki"]
 points = PackedVector3Array(-86, 12, 46, -86, 10, 46, -56, 10, 52, -56, 12, 52, -86, 12, 70, -86, 10, 70, -56, 10, 64, -56, 12, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oellv"]
-render_priority = 0
-shader = ExtResource("6_p33ai")
-shader_parameter/pixel_size = 6
+[sub_resource type="Animation" id="Animation_2adko"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("laser:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-87.6308, -182.317, -31.0775)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("laser2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-89.0675, -182.317, 128.003)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("laser3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-160.474, -182.317, 48.7388)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("laser4:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-15.887, -182.317, 49.4653)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("bossman:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-85.996, -132.556, -349.566)]
+}
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_08id5"]
-size = Vector2(3, 3)
+[sub_resource type="Animation" id="Animation_y0seo"]
+resource_name = "entry"
+length = 5.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["laser_fight", -1, 1.0, false],
+"method": &"play"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("bossman:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-85.996, -132.556, -349.566), Vector3(-88.6156, -177.443, 48.7547)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"AwakeBoss"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_ppxs1"]
 resource_name = "laser_fight"
@@ -667,99 +768,6 @@ tracks/3/keys = {
 "values": [Vector3(-15.887, -182.317, 49.4653), Vector3(-159.781, -182.317, 49.4653)]
 }
 
-[sub_resource type="Animation" id="Animation_2adko"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("laser:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-87.6308, -182.317, -31.0775)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("laser2:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-89.0675, -182.317, 128.003)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("laser3:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-160.474, -182.317, 48.7388)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("laser4:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-15.887, -182.317, 49.4653)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../bossman:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-85.996, -132.556, -349.566)]
-}
-
-[sub_resource type="Animation" id="Animation_y0seo"]
-resource_name = "entry"
-length = 5.0
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimationPlayer")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(5),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": ["laser_fight", -1, 1.0, false],
-"method": &"play"
-}]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../bossman:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-85.996, -132.556, -349.566), Vector3(-88.6156, -177.443, 48.7547)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cp5m5"]
 _data = {
 "RESET": SubResource("Animation_2adko"),
@@ -767,9 +775,29 @@ _data = {
 "laser_fight": SubResource("Animation_ppxs1")
 }
 
-[node name="world" type="Node3D" node_paths=PackedStringArray("PlayerCamBase")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ivtcu"]
+size = Vector3(10, 3, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1frn"]
+bg_color = Color(0.0901961, 0, 0.172549, 0.129412)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nw6b"]
+bg_color = Color(0.6, 0, 0, 0.380392)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oellv"]
+render_priority = 0
+shader = ExtResource("6_p33ai")
+shader_parameter/pixel_size = 6
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_08id5"]
+size = Vector2(3, 3)
+
+[node name="world" type="Node3D" node_paths=PackedStringArray("PlayerCamBase", "bossman", "bossmusic")]
 script = ExtResource("1_fkfjl")
 PlayerCamBase = NodePath("player/camBase")
+bossman = NodePath("bossfightstuff/bossman")
+Ending = ExtResource("2_cao76")
+bossmusic = NodePath("bossfightstuff/bossmusic")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_287ca")
@@ -1010,13 +1038,75 @@ shape = SubResource("ConvexPolygonShape3D_gmfki")
 transform = Transform3D(-0.145703, 0, 0.989328, 0, 1, 0, -0.989328, 0, -0.145703, 3.40175, -2.30833, 65.9805)
 end_position = Vector3(17.5554, 2.7321, -14.3279)
 
-[node name="world" type="Node3D" parent="."]
+[node name="bossfightstuff" type="Node3D" parent="."]
 
-[node name="plekib" type="AudioStreamPlayer" parent="world"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="bossfightstuff"]
+libraries = {
+"": SubResource("AnimationLibrary_cp5m5")
+}
+
+[node name="laser" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
+transform = Transform3D(0.00801097, 0, -0.999968, 0, 1, 0, 0.999968, 0, 0.00801097, -87.6308, -182.317, -31.0775)
+
+[node name="laser2" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
+transform = Transform3D(0.00801097, 0, -0.999968, 0, 1, 0, 0.999968, 0, 0.00801097, -89.0675, -182.317, 128.003)
+
+[node name="laser3" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -160.474, -182.317, 48.7388)
+
+[node name="laser4" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
+transform = Transform3D(0.999988, 0, -0.00499162, 0, 1, 0, 0.00499162, 0, 0.999988, -15.887, -182.317, 49.4653)
+
+[node name="bossman" parent="bossfightstuff" node_paths=PackedStringArray("player") instance=ExtResource("30_dfnou")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -85.996, -132.556, -349.566)
+player = NodePath("../../player")
+Bullet = ExtResource("31_lhtsh")
+
+[node name="bossfighttrigger" type="Area3D" parent="bossfightstuff"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.6423, -136.863, 57.3869)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="bossfightstuff/bossfighttrigger"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.32501, 0, 0.723389)
+shape = SubResource("BoxShape3D_ivtcu")
+
+[node name="bosshud" type="Control" parent="bossfightstuff"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="bosshp" type="ProgressBar" parent="bossfightstuff/bosshud"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 27.0
+offset_right = 544.0
+offset_bottom = 54.0
+theme_override_styles/background = SubResource("StyleBoxFlat_f1frn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6nw6b")
+max_value = 10.0
+value = 10.0
+
+[node name="bossname" type="Label" parent="bossfightstuff/bosshud"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 306.0
+offset_top = 3.0
+offset_right = 400.0
+offset_bottom = 29.0
+text = "P2"
+
+[node name="bossmusic" type="AudioStreamPlayer" parent="bossfightstuff"]
+stream = ExtResource("30_nwm7y")
+
+[node name="worldstuffs" type="Node3D" parent="."]
+
+[node name="plekib" type="AudioStreamPlayer" parent="worldstuffs"]
 stream = ExtResource("10_jced4")
+volume_db = -10.0
 autoplay = true
 
-[node name="SpotLight3D" type="SpotLight3D" parent="world"]
+[node name="SpotLight3D" type="SpotLight3D" parent="worldstuffs"]
 transform = Transform3D(1, 0, 0, 0, 0.122545, 0.992463, 0, -0.992463, 0.122545, -25.1682, -135.198, 0)
 light_color = Color(1, 0.2, 0.905882, 1)
 light_energy = 11.605
@@ -1024,7 +1114,7 @@ shadow_enabled = true
 spot_range = 152.282
 spot_angle = 103.07
 
-[node name="SpotLight3D2" type="SpotLight3D" parent="world"]
+[node name="SpotLight3D2" type="SpotLight3D" parent="worldstuffs"]
 transform = Transform3D(1, 0, 0, 0, 0.122545, 0.992463, 0, -0.992463, 0.122545, -25.1682, -135.198, 121.157)
 light_color = Color(1, 0.2, 0.905882, 1)
 light_energy = 11.605
@@ -1032,7 +1122,7 @@ shadow_enabled = true
 spot_range = 152.282
 spot_angle = 103.07
 
-[node name="SpotLight3D3" type="SpotLight3D" parent="world"]
+[node name="SpotLight3D3" type="SpotLight3D" parent="worldstuffs"]
 transform = Transform3D(1, 0, 0, 0, 0.122545, 0.992463, 0, -0.992463, 0.122545, -131.781, -135.198, 0)
 light_color = Color(1, 0.2, 0.905882, 1)
 light_energy = 11.605
@@ -1040,7 +1130,7 @@ shadow_enabled = true
 spot_range = 152.282
 spot_angle = 103.07
 
-[node name="SpotLight3D4" type="SpotLight3D" parent="world"]
+[node name="SpotLight3D4" type="SpotLight3D" parent="worldstuffs"]
 transform = Transform3D(1, 0, 0, 0, 0.122545, 0.992463, 0, -0.992463, 0.122545, -131.781, -135.198, 121.157)
 light_color = Color(1, 0.2, 0.905882, 1)
 light_energy = 11.605
@@ -1048,7 +1138,7 @@ shadow_enabled = true
 spot_range = 152.282
 spot_angle = 103.07
 
-[node name="SpotLight3D5" type="SpotLight3D" parent="world"]
+[node name="SpotLight3D5" type="SpotLight3D" parent="worldstuffs"]
 transform = Transform3D(1, 0, 0, 0, 0.122545, 0.992463, 0, -0.992463, 0.122545, -130.841, -139.934, 54.0965)
 light_color = Color(1, 0.2, 0.905882, 1)
 light_energy = 11.605
@@ -1057,7 +1147,7 @@ spot_range = 152.282
 spot_angle = 103.07
 
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
-transform = Transform3D(0.106143, 0, 0.994351, 0, 1, 0, -0.994351, 0, 0.106143, 108.166, 6.26761, 102.649)
+transform = Transform3D(0.106143, 0, 0.994351, 0, 1, 0, -0.994351, 0, 0.106143, 105.229, 2.8585, 110.492)
 
 [node name="camBase" type="Node3D" parent="player"]
 
@@ -1078,27 +1168,18 @@ floor_max_angle = 1.6633
 floor_snap_length = 0.23
 player = NodePath("../player")
 
-[node name="bossman" parent="." node_paths=PackedStringArray("player") instance=ExtResource("30_dfnou")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -85.996, -132.556, -349.566)
+[node name="enemy7" parent="." node_paths=PackedStringArray("navagent", "player") instance=ExtResource("9_rphmn")]
+transform = Transform3D(0.766594, 0, 0.642132, 0, 1, 0, -0.642132, 0, 0.766594, 18.1084, -1.28957, 46.9655)
+floor_max_angle = 1.6633
+floor_snap_length = 0.23
+navagent = NodePath("../enemy6/NavigationAgent3D")
 player = NodePath("../player")
-Bullet = ExtResource("31_lhtsh")
 
-[node name="bossfightstuff" type="Node3D" parent="."]
+[node name="enemy8" parent="." node_paths=PackedStringArray("navagent", "player") instance=ExtResource("9_rphmn")]
+transform = Transform3D(0.766594, 0, 0.642132, 0, 1, 0, -0.642132, 0, 0.766594, -99.0029, 16.241, 38.0766)
+floor_max_angle = 1.6633
+floor_snap_length = 0.23
+navagent = NodePath("../enemy6/NavigationAgent3D")
+player = NodePath("../player")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="bossfightstuff"]
-libraries = {
-"": SubResource("AnimationLibrary_cp5m5")
-}
-autoplay = "entry"
-
-[node name="laser" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(0.00801097, 0, -0.999968, 0, 1, 0, 0.999968, 0, 0.00801097, -87.6308, -182.317, -31.0775)
-
-[node name="laser2" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(0.00801097, 0, -0.999968, 0, 1, 0, 0.999968, 0, 0.00801097, -89.0675, -182.317, 128.003)
-
-[node name="laser3" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -160.474, -182.317, 48.7388)
-
-[node name="laser4" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(0.999988, 0, -0.00499162, 0, 1, 0, 0.00499162, 0, 0.999988, -15.887, -182.317, 49.4653)
+[connection signal="body_entered" from="bossfightstuff/bossfighttrigger" to="." method="_on_bossfighttrigger_body_entered"]

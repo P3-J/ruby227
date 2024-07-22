@@ -1,5 +1,7 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Linq;
 
 public partial class bullet : CharacterBody3D
 {
@@ -22,16 +24,14 @@ public partial class bullet : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
 	{
-		
+		string[] names = new string[] {"enemy", "player", "bossman"};
 		if (collisionRay.IsColliding()){
 			GodotObject collider = collisionRay.GetCollider();
-			if ((string)collider.Get("name") != owner)
-			{
-				if (collider is not StaticBody3D)
-					collider.Call("GetHit");
-				GenerateExplosion(collisionRay.GetCollisionPoint());
-				QueueFree();
+			if (names.Contains((string)collider.Get("name"))){
+				collider.Call("GetHit");
 			}
+			GenerateExplosion(collisionRay.GetCollisionPoint());
+			QueueFree();
 		}
 
 		_velocity = _direction * BulletSpeed;
@@ -58,7 +58,6 @@ public partial class bullet : CharacterBody3D
         explosionInstance.Position = pos;
 		explosionInstance.Emitting = true;
         GetParent().AddChild(explosionInstance);
-		GD.Print("done");
 	}
 
 }

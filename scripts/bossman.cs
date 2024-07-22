@@ -7,6 +7,8 @@ public partial class bossman : AnimatableBody3D
 	// alternative simple state machine, commands from parent
 	[Export] CharacterBody3D player;
 	[Export] public PackedScene Bullet;
+	[Signal]
+	public delegate void BossHitEventHandler();
 	const int HP = 10;
 	int cHP = 10;
 
@@ -19,13 +21,9 @@ public partial class bossman : AnimatableBody3D
 		shotspot = GetNode<Marker3D>("shotspot");
 		bossanim = GetNode<AnimationPlayer>("bossanimmanager");
 	}
-	public override void _Process(double delta)
-	{
-
-
-
+	public void StartSequence(){
+		shottimer.Start();
 	}
-
 
 	public void ShootBullet()
     {
@@ -34,6 +32,12 @@ public partial class bossman : AnimatableBody3D
         bulletInstance.Call("SetDirection", (shotspot.GlobalPosition - GlobalTransform.Origin).Normalized() * 10);
 		bulletInstance.Call("Setowner", "enemy");
         GetParent().AddChild(bulletInstance);
+    }
+
+	public void GetHit(){
+		GD.Print("got hit");
+        cHP -= 1;
+        EmitSignal("BossHit", cHP);
     }
 
 

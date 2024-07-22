@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://bouds4hoq7qsh"]
+
+[ext_resource type="Script" path="res://scripts/startscript.cs" id="1_mfv1s"]
+[ext_resource type="PackedScene" uid="uid://be2ea7siblocu" path="res://scenes/world.tscn" id="2_oie0a"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qx7we"]
+sky_top_color = Color(0.882353, 0.992157, 0.976471, 1)
+sky_horizon_color = Color(0.720588, 0.748039, 0.744118, 1)
+sky_energy_multiplier = 0.6
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.720588, 0.748039, 0.744118, 1)
+
+[sub_resource type="Sky" id="Sky_j3bat"]
+sky_material = SubResource("ProceduralSkyMaterial_qx7we")
+
+[sub_resource type="Environment" id="Environment_7w6oh"]
+background_mode = 2
+sky = SubResource("Sky_j3bat")
+tonemap_mode = 2
+ssao_enabled = true
+
+[node name="start" type="Node3D"]
+script = ExtResource("1_mfv1s")
+world = ExtResource("2_oie0a")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7w6oh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.5, -2.18557e-08, 0, -4.37114e-08, 1, -0.5, 0.866025, 3.78552e-08, 0, 0, 0)
+light_color = Color(0.568627, 0.478431, 0, 1)
+light_energy = 0.1
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="Button" type="Button" parent="."]
+offset_left = 240.0
+offset_top = 282.0
+offset_right = 407.0
+offset_bottom = 313.0
+text = "ENTER"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

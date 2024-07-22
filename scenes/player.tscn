@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=8 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
@@ -10,12 +10,6 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c5rbk"]
 radius = 2.75
 height = 7.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ax0n8"]
-bg_color = Color(0.0901961, 0, 0.172549, 0.129412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aa5i1"]
-bg_color = Color(0.6, 0, 0, 0.380392)
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "hudText")]
 script = ExtResource("1_exk0v")
@@ -49,7 +43,6 @@ offset_right = 550.0
 offset_bottom = 502.0
 
 [node name="hptext" type="RichTextLabel" parent="guid"]
-visible = false
 layout_mode = 0
 offset_left = 5.0
 offset_top = 4.0
@@ -57,27 +50,6 @@ offset_right = 121.0
 offset_bottom = 58.0
 theme_override_font_sizes/normal_font_size = 20
 text = "3/3 ❤️"
-
-[node name="ProgressBar" type="ProgressBar" parent="guid"]
-visible = false
-layout_mode = 0
-offset_left = 100.0
-offset_top = 27.0
-offset_right = 544.0
-offset_bottom = 54.0
-theme_override_styles/background = SubResource("StyleBoxFlat_ax0n8")
-theme_override_styles/fill = SubResource("StyleBoxFlat_aa5i1")
-value = 85.0
-
-[node name="Label" type="Label" parent="guid"]
-visible = false
-texture_filter = 1
-layout_mode = 0
-offset_left = 300.0
-offset_top = 3.0
-offset_right = 394.0
-offset_bottom = 29.0
-text = "P221"
 
 [node name="booster" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hgwbl")

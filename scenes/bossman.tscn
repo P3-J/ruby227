@@ -6,6 +6,9 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_52aqm"]
 size = Vector3(9.30426, 16.0492, 10.1658)
 
+[sub_resource type="Animation" id="Animation_bcdhv"]
+length = 0.001
+
 [sub_resource type="Animation" id="Animation_8wnvj"]
 resource_name = "spinattack"
 length = 4.0
@@ -60,9 +63,6 @@ tracks/1/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_bcdhv"]
-length = 0.001
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4uhp0"]
 _data = {
 "RESET": SubResource("Animation_bcdhv"),
@@ -81,7 +81,6 @@ shape = SubResource("BoxShape3D_52aqm")
 
 [node name="shottimer" type="Timer" parent="."]
 wait_time = 7.0
-autostart = true
 
 [node name="shotspot" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.4627, -4.01688, 0)
