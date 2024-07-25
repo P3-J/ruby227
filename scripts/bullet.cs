@@ -24,10 +24,11 @@ public partial class bullet : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
 	{
-		string[] names = new string[] {"enemy", "player", "bossman"};
 		if (collisionRay.IsColliding()){
 			GodotObject collider = collisionRay.GetCollider();
-			if (names.Contains((string)collider.Get("name"))){
+			string colliderName = (string)collider.Get("name");
+			if (colliderName != "entity_0_worldspawn" && colliderName != owner){
+				// little hardcoding never killed anyone L
 				collider.Call("GetHit");
 			}
 			GenerateExplosion(collisionRay.GetCollisionPoint());

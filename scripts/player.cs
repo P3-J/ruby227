@@ -15,13 +15,18 @@ public partial class player : CharacterBody3D
     [Export] AudioStreamPlayer booster;
 	[Export] AudioStreamPlayer rocket;
     [Export] AudioStreamPlayer steam;
-    [Export] RichTextLabel hudText;
+    [Export] ProgressBar hpBar;
 
     Timer shotcooldown;
+    GpuParticles3D leftshoulder;
+    GpuParticles3D rightshoulder;
 
     public override void _Ready()
     {
         shotcooldown = GetNode<Timer>("shotcooldown");
+        leftshoulder = GetNode<GpuParticles3D>("mech/leftshoulder");
+        rightshoulder = GetNode<GpuParticles3D>("mech/rightshoulder");
+        SetupHud();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -68,8 +73,10 @@ public partial class player : CharacterBody3D
 
         if (direction == Vector3.Zero){
             booster.Stop();
+            ShoulderParticleController(false);
         } else if (!booster.Playing) {
             booster.Play();
+            ShoulderParticleController(true);
         }
 
         Velocity = fakeVelo;
@@ -77,7 +84,11 @@ public partial class player : CharacterBody3D
     }
 
     public void RefreshHud(){
-        hudText.Text = cHP.ToString() + "/" + HP.ToString() + " ❤️";
+        Tween tween = GetTree().CreateTween();
+        tween.TweenProperty(hpBar, "value", cHP, 0.5);
+    }
+    public void SetupHud(){
+        hpBar.MaxValue = HP;
     }
 
     public void GetHit(){
@@ -110,4 +121,10 @@ public partial class player : CharacterBody3D
             steam.Play();
         }
     }
+
+    public void ShoulderParticleController(bool state){
+        leftshoulder.Emitting  = state;
+        rightshoulder.Emitting = state;
+    }
+
 }

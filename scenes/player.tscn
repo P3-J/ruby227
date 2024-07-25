@@ -1,24 +1,50 @@
-[gd_scene load_steps=8 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=15 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
+[ext_resource type="Texture2D" uid="uid://8wphi2e5jxcj" path="res://assets/bar1.png" id="4_c51ff"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_hgwbl"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
+
+[sub_resource type="Curve" id="Curve_sirhu"]
+_data = [Vector2(0.0759494, 0.426952), 0.0, 0.0, 0, 0, Vector2(0.493671, 0.90995), 0.0, 0.0, 0, 0, Vector2(0.898734, 0.435139), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_pr6ym"]
+curve = SubResource("Curve_sirhu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1ieln"]
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0, 4)
+scale_curve = SubResource("CurveTexture_pr6ym")
+turbulence_noise_strength = 1.67
+turbulence_noise_scale = 1.584
+turbulence_noise_speed_random = 0.81
+turbulence_influence_min = 0.235
+turbulence_influence_max = 0.235
+turbulence_initial_displacement_min = -9.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_nlf8a"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c5rbk"]
 radius = 2.75
 height = 7.5
 
-[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "hudText")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_io0ff"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fww2e"]
+bg_color = Color(0.6, 0.898039, 0.313726, 1)
+
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "hpBar")]
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 rightArm = NodePath("rightArm")
 booster = NodePath("booster")
 rocket = NodePath("rocket")
 steam = NodePath("steam")
-hudText = NodePath("guid/hptext")
+hpBar = NodePath("guid/hpbar")
 
 [node name="mech" parent="." instance=ExtResource("2_5qtqp")]
 transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, 0, 1.11483, 0)
@@ -28,6 +54,20 @@ transform = Transform3D(0.0128751, 0, -0.199585, 0, 0.2, 0, 0.199585, 0, 0.01287
 light_energy = 2.5
 spot_range = 31.0229
 spot_angle = 42.3616
+
+[node name="leftshoulder" type="GPUParticles3D" parent="mech"]
+transform = Transform3D(-8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, -0.254, 0.411, -0.566)
+emitting = false
+lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_1ieln")
+draw_pass_1 = SubResource("SphereMesh_nlf8a")
+
+[node name="rightshoulder" type="GPUParticles3D" parent="mech"]
+transform = Transform3D(-8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, -0.254271, 0.410572, 0.530391)
+emitting = false
+lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_1ieln")
+draw_pass_1 = SubResource("SphereMesh_nlf8a")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0995221, 1.11757, 0)
@@ -43,13 +83,33 @@ offset_right = 550.0
 offset_bottom = 502.0
 
 [node name="hptext" type="RichTextLabel" parent="guid"]
+visible = false
 layout_mode = 0
-offset_left = 5.0
-offset_top = 4.0
-offset_right = 121.0
-offset_bottom = 58.0
+offset_left = 234.0
+offset_top = 7.0
+offset_right = 395.0
+offset_bottom = 40.0
 theme_override_font_sizes/normal_font_size = 20
 text = "3/3 ❤️"
+
+[node name="Sprite2D" type="Sprite2D" parent="guid"]
+texture_filter = 1
+position = Vector2(20, 466)
+scale = Vector2(0.645161, 1.89516)
+texture = ExtResource("4_c51ff")
+
+[node name="hpbar" type="ProgressBar" parent="guid"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 13.0
+offset_top = 354.0
+offset_right = 27.0
+offset_bottom = 568.0
+theme_override_styles/background = SubResource("StyleBoxTexture_io0ff")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fww2e")
+value = 100.0
+fill_mode = 3
+show_percentage = false
 
 [node name="booster" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hgwbl")

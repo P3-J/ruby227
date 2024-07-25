@@ -91,6 +91,7 @@ public partial class enemy : CharacterBody3D
     }
 
 	public void GetHit(){
+		GD.Print("hit");
         cHP -= 1;
 		if (cHP <= 0)
 			QueueFree();
