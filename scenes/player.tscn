@@ -189,5 +189,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.482948, 1.42955, 0.0438538)
 shape = SubResource("BoxShape3D_1xqye")
 
 [node name="enemytimer" type="Timer" parent="detectionarea"]
+autostart = true
 
 [connection signal="timeout" from="detectionarea/enemytimer" to="." method="_on_enemytimer_timeout"]

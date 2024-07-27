@@ -30,6 +30,7 @@ public partial class player : CharacterBody3D
     int HP = 3;
     int cHP = 3;
     bool playDropSound = false;
+    bool canSeeEnemy = false;
     CharacterBody3D CurrentTarget = null;
 
 
@@ -64,7 +65,6 @@ public partial class player : CharacterBody3D
         
         RotateY(rotationInput);
         HandleCameraTurning();
-        TargeterPosition();
 
         Vector3 direction = new();
         if (Input.IsActionPressed("up"))
@@ -73,8 +73,12 @@ public partial class player : CharacterBody3D
             direction += Transform.Basis.Z; 
         direction = direction.Normalized();
 
-        if (CurrentTarget != null && CurrentTarget.IsInsideTree()){
-            ReposSquare(CurrentTarget.GlobalTransform.Origin);
+
+        if (CurrentTarget != null) {
+            TargeterPosition();
+            if (CurrentTarget.IsInsideTree() && canSeeEnemy){
+                ReposSquare(CurrentTarget.GlobalTransform.Origin);
+            }
         }
 
 
@@ -127,12 +131,11 @@ public partial class player : CharacterBody3D
     }
 
     public void TargeterPosition(){
+        MissileTargeter.LookAt(CurrentTarget.GlobalPosition);
         if (MissileTargeter.IsColliding()){
-            var collider = MissileTargeter.GetCollider();
-            if (collider is CharacterBody3D){
-                CharacterBody3D enemy = (CharacterBody3D)collider;
-                CurrentTarget = enemy;
-            }
+            canSeeEnemy = true;
+        } else {
+            canSeeEnemy = false;
         }
     }
 
@@ -192,7 +195,8 @@ public partial class player : CharacterBody3D
             float Distance = 1000.0f; //cutoff
             foreach (Node3D enemy in enemies)
             {
-                if (enemy is CharacterBody3D){
+                if (enemy is CharacterBody3D && (string)enemy.Get("name") != "player"){
+                    GD.Print((string)enemy.Get("Name"));
                     float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
                     if (distanceTo < Distance){
                         Distance = distanceTo;
