@@ -1,4 +1,4 @@
-[gd_scene load_steps=142 format=3 uid="uid://be2ea7siblocu"]
+[gd_scene load_steps=139 format=3 uid="uid://be2ea7siblocu"]
 
 [ext_resource type="Script" path="res://addons/qodot/src/nodes/qodot_map.gd" id="1_bxnhj"]
 [ext_resource type="Script" path="res://scripts/world.cs" id="1_fkfjl"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://cnwdunvmduprc" path="res://textures/128x128/Dirt/Dirt_15-128x128.png" id="6_3oxj4"]
 [ext_resource type="Texture2D" uid="uid://bg7y6ktnw5ucu" path="res://textures/Ground/Materials/grass_02.png" id="6_6axfv"]
 [ext_resource type="PackedScene" uid="uid://dw2i435p3nkp5" path="res://scenes/player.tscn" id="6_av7ui"]
-[ext_resource type="Shader" path="res://scenes/shaders/pixelator.gdshader" id="6_p33ai"]
 [ext_resource type="Texture2D" uid="uid://d0x7srdkm85fe" path="res://textures/128x128/Metal/Metal_17-128x128.png" id="7_8i4kj"]
 [ext_resource type="Texture2D" uid="uid://gcu3w1ngg1v6" path="res://textures/128x128/Metal/Metal_20-128x128.png" id="7_lwrnb"]
 [ext_resource type="Texture2D" uid="uid://dlmainyskk27o" path="res://textures/128x128/Metal/Metal_03-128x128.png" id="9_74mre"]
@@ -787,17 +786,8 @@ bg_color = Color(0.0901961, 0, 0.172549, 0.129412)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nw6b"]
 bg_color = Color(0.6, 0, 0, 0.380392)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oellv"]
-render_priority = 0
-shader = ExtResource("6_p33ai")
-shader_parameter/pixel_size = 4
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_08id5"]
-size = Vector2(3, 3)
-
-[node name="world" type="Node3D" node_paths=PackedStringArray("PlayerCamBase", "bossman", "bossmusic")]
+[node name="world" type="Node3D" node_paths=PackedStringArray("bossman", "bossmusic")]
 script = ExtResource("1_fkfjl")
-PlayerCamBase = NodePath("player/camBase")
 bossman = NodePath("bossfightstuff/bossman")
 Ending = ExtResource("2_cao76")
 bossmusic = NodePath("bossfightstuff/bossmusic")
@@ -1158,21 +1148,10 @@ shadow_enabled = true
 spot_range = 33.7022
 spot_angle = 69.354
 
+[node name="enemypostimer" type="Timer" parent="worldstuffs"]
+
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
 transform = Transform3D(0.106143, 0, 0.994351, 0, 1, 0, -0.994351, 0, 0.106143, 53.5798, 2.8585, 115.238)
-
-[node name="camBase" type="Node3D" parent="player"]
-
-[node name="Camera3D" type="Camera3D" parent="player/camBase"]
-transform = Transform3D(1, -6.51926e-08, 1.63913e-07, 1.37947e-08, 0.955428, 0.295225, -1.78814e-07, -0.295225, 0.955428, 1.52588e-05, 7.43237, 9.57194)
-current = true
-fov = 83.7
-size = 22.186
-
-[node name="pixelator" type="MeshInstance3D" parent="player/camBase/Camera3D"]
-transform = Transform3D(1, 1.11759e-08, -1.11759e-08, -2.10479e-07, 0.0822341, -0.996613, -4.47035e-08, 0.996613, 0.0822341, -0.0235291, 0.0511169, -0.285915)
-material_override = SubResource("ShaderMaterial_oellv")
-mesh = SubResource("PlaneMesh_08id5")
 
 [node name="enemy6" parent="." node_paths=PackedStringArray("player") instance=ExtResource("9_rphmn")]
 transform = Transform3D(0.766594, 0, 0.642132, 0, 1, 0, -0.642132, 0, 0.766594, 71.5057, 5.97554, 103.931)
@@ -1195,3 +1174,4 @@ navagent = NodePath("../enemy6/NavigationAgent3D")
 player = NodePath("../player")
 
 [connection signal="body_entered" from="bossfightstuff/bossfighttrigger" to="." method="_on_bossfighttrigger_body_entered"]
+[connection signal="timeout" from="worldstuffs/enemypostimer" to="." method="_on_enemypostimer_timeout"]
