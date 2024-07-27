@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=22 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://8wphi2e5jxcj" path="res://assets/bar1.png" id="4_c51ff"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_hgwbl"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
+[ext_resource type="Texture2D" uid="uid://dju83523yxk8b" path="res://assets/crosshair.png" id="5_nsyep"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://d4mign5r2hgcl" path="res://sounds/dropsound.mp3" id="9_ik3sr"]
@@ -109,13 +110,15 @@ offset_bottom = 40.0
 theme_override_font_sizes/normal_font_size = 20
 text = "3/3 ❤️"
 
-[node name="Sprite2D" type="Sprite2D" parent="guid"]
+[node name="cover" type="Sprite2D" parent="guid"]
+modulate = Color(1, 1, 1, 0.662745)
 texture_filter = 1
 position = Vector2(18, 353.5)
 scale = Vector2(0.645161, 1.89516)
 texture = ExtResource("4_c51ff")
 
 [node name="hpbar" type="ProgressBar" parent="guid"]
+modulate = Color(1, 1, 1, 0.654902)
 texture_filter = 1
 layout_mode = 0
 offset_left = 11.0
@@ -129,15 +132,12 @@ fill_mode = 3
 show_percentage = false
 metadata/_edit_group_ = true
 
-[node name="tsquare" type="ColorRect" parent="guid"]
-modulate = Color(1, 1, 1, 0.352941)
-self_modulate = Color(1, 0.298039, 0.235294, 1)
-layout_mode = 0
-offset_left = 236.0
-offset_top = 236.0
-offset_right = 256.0
-offset_bottom = 256.0
-pivot_offset = Vector2(10, 10)
+[node name="tsquare" type="Sprite2D" parent="guid"]
+modulate = Color(1, 1, 1, 0.329412)
+texture_filter = 1
+position = Vector2(256, 256)
+scale = Vector2(2, 2)
+texture = ExtResource("5_nsyep")
 
 [node name="booster" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hgwbl")
@@ -165,20 +165,20 @@ one_shot = true
 [node name="camBase" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="camBase"]
-transform = Transform3D(1, -6.51926e-08, 1.63913e-07, 1.37947e-08, 0.955428, 0.295225, -1.78814e-07, -0.295225, 0.955428, 1.52588e-05, 7.43237, 9.57194)
+transform = Transform3D(1, -6.59702e-08, 1.66771e-07, 1.37947e-08, 0.955428, 0.295225, -1.78814e-07, -0.295225, 0.955428, 1.52588e-05, 10.4324, 11.5719)
 current = true
 fov = 83.7
 size = 22.186
 
 [node name="pixelator" type="MeshInstance3D" parent="camBase/Camera3D"]
 transform = Transform3D(1, 1.11759e-08, -1.11759e-08, -2.10479e-07, 0.0822341, -0.996613, -4.47035e-08, 0.996613, 0.0822341, -0.0235291, 0.0511169, -0.285915)
-visible = false
 material_override = SubResource("ShaderMaterial_37j6b")
 mesh = SubResource("PlaneMesh_2y7q1")
 
 [node name="targeter" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13149, -0.681591)
-target_position = Vector3(0, 0, -30)
+target_position = Vector3(0, 0, -50)
+collide_with_areas = true
 debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)
 debug_shape_thickness = 5
 
@@ -189,6 +189,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.482948, 1.42955, 0.0438538)
 shape = SubResource("BoxShape3D_1xqye")
 
 [node name="enemytimer" type="Timer" parent="detectionarea"]
+wait_time = 0.5
 autostart = true
 
 [connection signal="timeout" from="detectionarea/enemytimer" to="." method="_on_enemytimer_timeout"]

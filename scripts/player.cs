@@ -19,7 +19,7 @@ public partial class player : CharacterBody3D
     GpuParticles3D leftshoulder;
     GpuParticles3D rightshoulder;
     RayCast3D MissileTargeter;
-    ColorRect TSquare;
+    Sprite2D TSquare;
     Camera3D playercam;
     Timer EnemyTimer;
     Area3D DetArea;
@@ -40,7 +40,7 @@ public partial class player : CharacterBody3D
         leftshoulder = GetNode<GpuParticles3D>("mech/leftshoulder");
         rightshoulder = GetNode<GpuParticles3D>("mech/rightshoulder");
         MissileTargeter = GetNode<RayCast3D>("targeter");
-        TSquare = GetNode<ColorRect>("guid/tsquare");
+        TSquare = GetNode<Sprite2D>("guid/tsquare");
         playercam = GetNode<Camera3D>("camBase/Camera3D");
         EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
         DetArea = GetNode<Area3D>("detectionarea");
@@ -74,11 +74,9 @@ public partial class player : CharacterBody3D
         direction = direction.Normalized();
 
 
-        if (CurrentTarget != null) {
+        if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
             TargeterPosition();
-            if (CurrentTarget.IsInsideTree() && canSeeEnemy){
-                ReposSquare(CurrentTarget.GlobalTransform.Origin);
-            }
+            ReposSquare(CurrentTarget.GlobalTransform.Origin);
         }
 
 
@@ -132,7 +130,7 @@ public partial class player : CharacterBody3D
 
     public void TargeterPosition(){
         MissileTargeter.LookAt(CurrentTarget.GlobalPosition);
-        if (MissileTargeter.IsColliding()){
+        if (MissileTargeter.IsColliding() && MissileTargeter.GetCollider() is CharacterBody3D){
             canSeeEnemy = true;
         } else {
             canSeeEnemy = false;
@@ -141,11 +139,11 @@ public partial class player : CharacterBody3D
 
     public void ReposSquare(Vector3 globaltransform){
         Vector2 screenpos = playercam.UnprojectPosition(globaltransform);
-
-        if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform)){
+        screenpos.Y -= 15;
+        if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
             TSquare.Position = TSquare.Position.MoveToward(screenpos, 5f);
         } else {
-            TSquare.Position = TSquare.Position.MoveToward(new Vector2(236, 236), 5f);
+            TSquare.Position = TSquare.Position.MoveToward(new Vector2(256, 256), 5f);
         }
 
     }
@@ -192,11 +190,10 @@ public partial class player : CharacterBody3D
         if (DetArea.HasOverlappingBodies()){
             Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
 
-            float Distance = 1000.0f; //cutoff
+            float Distance = 10000.0f; //cutoff
             foreach (Node3D enemy in enemies)
             {
                 if (enemy is CharacterBody3D && (string)enemy.Get("name") != "player"){
-                    GD.Print((string)enemy.Get("Name"));
                     float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
                     if (distanceTo < Distance){
                         Distance = distanceTo;
