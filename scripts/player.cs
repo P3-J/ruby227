@@ -21,6 +21,8 @@ public partial class player : CharacterBody3D
     RayCast3D MissileTargeter;
     ColorRect TSquare;
     Camera3D playercam;
+    Timer EnemyTimer;
+    Area3D DetArea;
     private const float Gravity = -2.8f;
     private const float JumpForce = 55.0f;
     private const float MovementSpeed = 15F;
@@ -39,6 +41,8 @@ public partial class player : CharacterBody3D
         MissileTargeter = GetNode<RayCast3D>("targeter");
         TSquare = GetNode<ColorRect>("guid/tsquare");
         playercam = GetNode<Camera3D>("camBase/Camera3D");
+        EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
+        DetArea = GetNode<Area3D>("detectionarea");
         SetupHud();
     }
 
@@ -69,7 +73,7 @@ public partial class player : CharacterBody3D
             direction += Transform.Basis.Z; 
         direction = direction.Normalized();
 
-        if (CurrentTarget != null){
+        if (CurrentTarget != null && CurrentTarget.IsInsideTree()){
             ReposSquare(CurrentTarget.GlobalTransform.Origin);
         }
 
@@ -174,6 +178,29 @@ public partial class player : CharacterBody3D
         bulletInstance.Call("Setowner", "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
+    }
+
+    public void _on_enemytimer_timeout(){
+        ScanForEnemies();
+        EnemyTimer.Start();
+    }
+
+    public void ScanForEnemies(){
+        if (DetArea.HasOverlappingBodies()){
+            Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
+
+            float Distance = 1000.0f; //cutoff
+            foreach (Node3D enemy in enemies)
+            {
+                if (enemy is CharacterBody3D){
+                    float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
+                    if (distanceTo < Distance){
+                        Distance = distanceTo;
+                        CurrentTarget = (CharacterBody3D)enemy;
+                    }
+                }
+            }
+        }
     }
 
     public void PlaySteamAudioIfCan(){

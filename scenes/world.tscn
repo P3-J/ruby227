@@ -1148,8 +1148,6 @@ shadow_enabled = true
 spot_range = 33.7022
 spot_angle = 69.354
 
-[node name="enemypostimer" type="Timer" parent="worldstuffs"]
-
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
 transform = Transform3D(0.106143, 0, 0.994351, 0, 1, 0, -0.994351, 0, 0.106143, 53.5798, 2.8585, 115.238)
 
@@ -1174,4 +1172,3 @@ navagent = NodePath("../enemy6/NavigationAgent3D")
 player = NodePath("../player")
 
 [connection signal="body_entered" from="bossfightstuff/bossfighttrigger" to="." method="_on_bossfighttrigger_body_entered"]
-[connection signal="timeout" from="worldstuffs/enemypostimer" to="." method="_on_enemypostimer_timeout"]

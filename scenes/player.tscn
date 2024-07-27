@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=21 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
@@ -47,6 +47,9 @@ shader_parameter/pixel_size = 4
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_2y7q1"]
 size = Vector2(3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
+size = Vector3(60.1721, 23.0809, 63.3477)
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "jumpboostsound", "dropsound", "hpBar", "PlayerCamBase")]
 script = ExtResource("1_exk0v")
@@ -178,3 +181,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13149, -0.681591)
 target_position = Vector3(0, 0, -30)
 debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)
 debug_shape_thickness = 5
+
+[node name="detectionarea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="detectionarea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.482948, 1.42955, 0.0438538)
+shape = SubResource("BoxShape3D_1xqye")
+
+[node name="enemytimer" type="Timer" parent="detectionarea"]
+
+[connection signal="timeout" from="detectionarea/enemytimer" to="." method="_on_enemytimer_timeout"]

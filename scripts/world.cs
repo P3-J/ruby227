@@ -9,14 +9,11 @@ public partial class world : Node3D
 
 	AnimationPlayer animsequencer;
 	ProgressBar enemyHpBar;
-	Timer enemypostimer;
-
 
     public override void _Ready()
     {
         animsequencer = GetNode<AnimationPlayer>("bossfightstuff/AnimationPlayer");
 		enemyHpBar = GetNode<ProgressBar>("bossfightstuff/bosshud/bosshp");
-		enemypostimer = GetNode<Timer>("worldstuffs/enemypostimer");
 
 		enemyHpBar.Visible = false;
 		Callable bosshit= new Callable(this, nameof(UpdateBossUI));
@@ -38,10 +35,6 @@ public partial class world : Node3D
 		if (body is CharacterBody3D && body.Name == "player"){
 			animsequencer.Play("entry");
 		}
-	}
-
-	public void _on_enemypostimer_timeout(){
-		
 	}
 
 	public void AwakeBoss(){
