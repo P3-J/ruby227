@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6cbq2dhdul7p"
-path.s3tc="res://.godot/imported/concrete_wall_01.jpg-692adf9b43ee8c1c55834c26123de73b.s3tc.ctex"
+uid="uid://c4f6d5wjas6u4"
+path.s3tc="res://.godot/imported/building_10_emiss.png-5f430f0d2fd4976a55e7bc3e5a83c0b1.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/Concrete/Materials/concrete_wall_01.jpg"
-dest_files=["res://.godot/imported/concrete_wall_01.jpg-692adf9b43ee8c1c55834c26123de73b.s3tc.ctex"]
+source_file="res://textures/newwithe/building_10_emiss.png"
+dest_files=["res://.godot/imported/building_10_emiss.png-5f430f0d2fd4976a55e7bc3e5a83c0b1.s3tc.ctex"]
 
 [params]
 

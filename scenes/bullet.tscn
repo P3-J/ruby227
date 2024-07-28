@@ -1,14 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://cola0rmveia2c"]
+[gd_scene load_steps=10 format=3 uid="uid://cola0rmveia2c"]
 
 [ext_resource type="Script" path="res://scripts/bullet.cs" id="1_4n7bp"]
 [ext_resource type="PackedScene" uid="uid://c5mxi6blb072k" path="res://scenes/explosion.tscn" id="2_ugt12"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vwyva"]
 albedo_color = Color(0.0235294, 0.0705882, 0.0705882, 1)
+emission_enabled = true
+emission = Color(0.0980392, 0.0980392, 0.0980392, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_shm2i"]
 material = SubResource("StandardMaterial3D_vwyva")
-radius = 0.65
+radius = 0.55
 height = 3.0
 
 [sub_resource type="Curve" id="Curve_wgpx4"]
@@ -24,7 +26,12 @@ emission_sphere_radius = 1.0
 gravity = Vector3(0, 0, -5)
 scale_curve = SubResource("CurveTexture_xst7e")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tdlbb"]
+emission_enabled = true
+emission = Color(0.611765, 0.611765, 0.611765, 1)
+
 [sub_resource type="SphereMesh" id="SphereMesh_6vhel"]
+material = SubResource("StandardMaterial3D_tdlbb")
 radius = 0.3
 height = 0.5
 

@@ -77,6 +77,8 @@ public partial class player : CharacterBody3D
         if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
             TargeterPosition();
             ReposSquare(CurrentTarget.GlobalTransform.Origin);
+        } else {
+            ResetTargetingSquare();
         }
 
 
@@ -128,26 +130,6 @@ public partial class player : CharacterBody3D
         RefreshHud();
     }
 
-    public void TargeterPosition(){
-        MissileTargeter.LookAt(CurrentTarget.GlobalPosition);
-        if (MissileTargeter.IsColliding() && MissileTargeter.GetCollider() is CharacterBody3D){
-            canSeeEnemy = true;
-        } else {
-            canSeeEnemy = false;
-        }
-    }
-
-    public void ReposSquare(Vector3 globaltransform){
-        Vector2 screenpos = playercam.UnprojectPosition(globaltransform);
-        screenpos.Y -= 15;
-        if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
-            TSquare.Position = TSquare.Position.MoveToward(screenpos, 5f);
-        } else {
-            TSquare.Position = TSquare.Position.MoveToward(new Vector2(256, 256), 5f);
-        }
-
-    }
-
     public void HandleCameraTurning(){
          if (Input.IsActionPressed("camleft")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
@@ -184,6 +166,31 @@ public partial class player : CharacterBody3D
     public void _on_enemytimer_timeout(){
         ScanForEnemies();
         EnemyTimer.Start();
+    }
+
+    public void TargeterPosition(){
+        MissileTargeter.LookAt(CurrentTarget.GlobalPosition);
+        if (MissileTargeter.IsColliding() && MissileTargeter.GetCollider() is CharacterBody3D){
+            canSeeEnemy = true;
+        } else {
+            canSeeEnemy = false;
+        }
+    }
+
+    public void ReposSquare(Vector3 globaltransform){
+        Vector2 screenpos = playercam.UnprojectPosition(globaltransform);
+        screenpos.Y -= 15; // OFFSET so sprite is centered.
+
+        if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
+            TSquare.Position = TSquare.Position.MoveToward(screenpos, 5f);
+        } else {
+            ResetTargetingSquare();
+        }
+    }
+
+    public void ResetTargetingSquare(){
+        // reset targeting square to center of screen
+        TSquare.Position = TSquare.Position.MoveToward(new Vector2(256, 256), 5f);
     }
 
     public void ScanForEnemies(){
