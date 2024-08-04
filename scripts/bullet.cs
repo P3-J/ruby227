@@ -33,6 +33,7 @@ public partial class bullet : CharacterBody3D
 			}
 			GenerateExplosion(collisionRay.GetCollisionPoint());
 			QueueFree();
+			
 		}
 
 		_velocity = _direction * BulletSpeed;
@@ -40,7 +41,7 @@ public partial class bullet : CharacterBody3D
 		MoveAndSlide();
 	}
 
-	public void Setowner(string passedowner){
+	public void SetOwner(string passedowner){
 		owner = passedowner;
 	}
 

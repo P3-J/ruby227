@@ -30,7 +30,7 @@ public partial class bossman : AnimatableBody3D
         CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
         bulletInstance.Position = GlobalPosition;
         bulletInstance.Call("SetDirection", (shotspot.GlobalPosition - GlobalTransform.Origin).Normalized() * 10);
-		bulletInstance.Call("Setowner", "enemy");
+		bulletInstance.Call("SetOwner", "enemy");
         GetParent().AddChild(bulletInstance);
     }
 

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci2ycnggo67yx"
-path.s3tc="res://.godot/imported/Metal_06-128x128.png-ba599e9fbcd9164855d78bac49251175.s3tc.ctex"
+uid="uid://dmx5qfyoi56jh"
+path.s3tc="res://.godot/imported/skyman.jpg-c91673cab09a56c6be710aa9649e2fe7.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/128x128/Metal/Metal_06-128x128.png"
-dest_files=["res://.godot/imported/Metal_06-128x128.png-ba599e9fbcd9164855d78bac49251175.s3tc.ctex"]
+source_file="res://assets/skyman.jpg"
+dest_files=["res://.godot/imported/skyman.jpg-c91673cab09a56c6be710aa9649e2fe7.s3tc.ctex"]
 
 [params]
 

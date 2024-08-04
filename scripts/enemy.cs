@@ -139,7 +139,7 @@ public partial class enemy : CharacterBody3D
         CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
         bulletInstance.Position = GlobalPosition;
         bulletInstance.Call("SetDirection", (player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
-		bulletInstance.Call("Setowner", "enemy");
+		bulletInstance.Call("SetOwner", "enemy");
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
 		if (!canMove){

@@ -32,6 +32,8 @@ public partial class player : CharacterBody3D
     bool playDropSound = false;
     bool canSeeEnemy = false;
     CharacterBody3D CurrentTarget = null;
+    Marker3D MissileLaunchSpot;
+    MeshInstance3D MissileMesh;
 
 
     public override void _Ready()
@@ -44,6 +46,8 @@ public partial class player : CharacterBody3D
         playercam = GetNode<Camera3D>("camBase/Camera3D");
         EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
         DetArea = GetNode<Area3D>("detectionarea");
+        MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncher/missilelauncherspot");
+        MissileMesh = GetNode<MeshInstance3D>("mech/missilelauncher");
         SetupHud();
     }
 
@@ -64,7 +68,7 @@ public partial class player : CharacterBody3D
         }
         
         RotateY(rotationInput);
-        HandleCameraTurning();
+        HandleCameraTurning(); // includes the left launcher rotation currently, should be based on targeter, doesnt have to be tho
 
         Vector3 direction = new();
         if (Input.IsActionPressed("up"))
@@ -135,12 +139,16 @@ public partial class player : CharacterBody3D
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y += 3f;
 			PlayerCamBase.RotationDegrees = v;
+            v.Z = -90;
+            MissileMesh.RotationDegrees = v;
 		}
 
 		 if (Input.IsActionPressed("camright")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y -= 3f;
 			PlayerCamBase.RotationDegrees = v;
+            v.Z = -90;
+            MissileMesh.RotationDegrees = v;
 		}
     }
 
@@ -149,16 +157,34 @@ public partial class player : CharacterBody3D
         if (Input.IsActionJustPressed("shoot") && shotcooldown.IsStopped())
         {
             shotcooldown.Start();
-            ShootBullet();
+            ShootBullet(GlobalTransform);
+        }
+        if (Input.IsActionJustPressed("shootleft")) {
+            Vector2 pos2 = TSquare.GlobalPosition;
+            pos2.Y += 10; // sprite a bit higher then origin point so lower it.
+            Vector3 pos3 = playercam.ProjectPosition(pos2, 50);
+            ShootBullet(pos3);
         }
     }
 
-    public void ShootBullet()
+    public void ShootBullet(Transform3D pos)
     {
         CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
         bulletInstance.Position = rightArm.GlobalPosition;
-        bulletInstance.Call("SetDirection", -GlobalTransform.Basis.Z);
-        bulletInstance.Call("Setowner", "player");
+        bulletInstance.Call("SetDirection", -pos.Basis.Z);
+        bulletInstance.Call("SetOwner", "player");
+        GetParent().AddChild(bulletInstance);
+        rocket.Play();
+    }
+
+    public void ShootBullet(Vector3 targetPosition)
+    {
+        // meant for left arm
+        CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
+        bulletInstance.Position = MissileLaunchSpot.GlobalPosition;
+        Vector3 direction = (targetPosition - MissileLaunchSpot.GlobalPosition).Normalized();
+        bulletInstance.Call("SetDirection", direction);
+        bulletInstance.Call("SetOwner", "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
     }
@@ -180,6 +206,8 @@ public partial class player : CharacterBody3D
     public void ReposSquare(Vector3 globaltransform){
         Vector2 screenpos = playercam.UnprojectPosition(globaltransform);
         screenpos.Y -= 15; // OFFSET so sprite is centered.
+        /// text next to it indicating distance / else Zero 
+        /// do anti of unproject - project position into world to aim
 
         if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
             TSquare.Position = TSquare.Position.MoveToward(screenpos, 5f);
