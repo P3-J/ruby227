@@ -47,7 +47,7 @@ bg_color = Color(0.6, 0.898039, 0.313726, 1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_37j6b"]
 render_priority = 0
 shader = ExtResource("10_7obu6")
-shader_parameter/pixel_size = 4
+shader_parameter/pixel_size = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_2y7q1"]
 size = Vector2(3, 3)
