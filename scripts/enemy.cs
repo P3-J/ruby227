@@ -21,7 +21,9 @@ public partial class enemy : CharacterBody3D
 	Boolean canMove = true;
 	Vector3 velocity;
 	public const float Gravity = -9.8f;
+	public const float jumpstr = 10f;
 	Vector3 next = Vector3.Zero;
+	RayCast3D groundcheck;
 
 
 	int HP = 2;
@@ -38,6 +40,7 @@ public partial class enemy : CharacterBody3D
 		retargetTimer = GetNode<Timer>("retarget");
 		booster = GetNode<AudioStreamPlayer3D>("booster");
 		rocket  =GetNode<AudioStreamPlayer3D>("rocket");
+		groundcheck = GetNode<RayCast3D>("groundcheck");
 
         navagent.Connect("target_reached", new Callable(this, nameof(OnNavigationAgentTargetReached)));
         navagent.Connect("velocity_computed", new Callable(this, nameof(OnNavigationAgentVelocityComputed)));
@@ -66,6 +69,8 @@ public partial class enemy : CharacterBody3D
 		los.LookAt(player.GlobalPosition);
 		ColliderMovementController();
 
+		// i think it has a false positive when connecting to the wall
+		// and from that it generates a constant push to the wall, jump would need to be a one time velocity 
 
 		velocity = Velocity;
 		if (IsOnFloor())
@@ -78,6 +83,7 @@ public partial class enemy : CharacterBody3D
 		if (!IsOnFloor())
         {
             velocity.Y += Gravity * (float)delta;
+			GD.Print("applying");
         }
 
 		Vector3 dir = GlobalPosition.DirectionTo(next);
@@ -88,6 +94,7 @@ public partial class enemy : CharacterBody3D
 
 		navagent.Velocity = velocity;
 		MoveAndSlide();
+		GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor());
     }
 
 	public void GetHit(){
@@ -115,8 +122,6 @@ public partial class enemy : CharacterBody3D
 		if (collider is CharacterBody3D){
 			if ((string)collider.Get("name") == "player"){
 				canMove = false;
-				if (IsOnFloor())
-					Velocity = Vector3.Zero;
 				if (timer.IsStopped())
 					timer.Start();
 			}
@@ -130,7 +135,7 @@ public partial class enemy : CharacterBody3D
 	{
 		if (IsOnFloor())
         {
-            velocity.Y += 10;
+            velocity.Y +=  jumpstr;
         }
 	}
 

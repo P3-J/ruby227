@@ -182,6 +182,7 @@ size = 22.186
 
 [node name="pixelator" type="MeshInstance3D" parent="camBase/Camera3D"]
 transform = Transform3D(1, 1.11759e-08, -1.11759e-08, -2.10479e-07, 0.0822341, -0.996613, -4.47035e-08, 0.996613, 0.0822341, -0.0235291, 0.0511169, -0.285915)
+visible = false
 material_override = SubResource("ShaderMaterial_37j6b")
 mesh = SubResource("PlaneMesh_2y7q1")
 

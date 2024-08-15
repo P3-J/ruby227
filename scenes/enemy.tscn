@@ -6,20 +6,17 @@
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_85yn1"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_glr7o"]
-radius = 2.5
-height = 8.0
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
 
 [node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
-wall_min_slide_angle = 0.785398
-floor_max_angle = 1.309
+floor_max_angle = 0.350811
 script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.999971, 0, 0, 0, 1, 0, 0, 0, 0.999971, -0.0740434, 0.175617, 0.625505)
-shape = SubResource("CapsuleShape3D_glr7o")
+[node name="body" type="CollisionShape3D" parent="."]
+transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.145983, 0.449474, 1.32738)
+shape = SubResource("CapsuleShape3D_qe4x2")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 3.0
@@ -27,6 +24,7 @@ target_desired_distance = 5.0
 path_postprocessing = 1
 avoidance_enabled = true
 radius = 4.0
+debug_enabled = true
 
 [node name="bodyController" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.819349)
@@ -51,10 +49,15 @@ wait_time = 3.0
 autostart = true
 
 [node name="los" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49167, 1.01892)
 target_position = Vector3(0, 0, -30)
 collide_with_areas = true
 debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 5
+
+[node name="groundcheck" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.259906, -4.16901, 0.732345)
+debug_shape_custom_color = Color(0.984314, 1, 0, 1)
 
 [connection signal="timeout" from="shotCooldown" to="." method="_on_shot_cooldown_timeout"]
 [connection signal="timeout" from="retarget" to="." method="_on_retarget_timeout"]
