@@ -9,7 +9,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
 
 [node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
-floor_max_angle = 0.350811
+floor_snap_length = 0.0
 script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")

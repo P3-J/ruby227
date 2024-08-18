@@ -1760,7 +1760,7 @@ transform = Transform3D(2.50584, 0, -1.64947, 0, 3, 0, 1.64947, 0, 2.50584, 89.0
 transform = Transform3D(2.50584, 0, -1.64947, 0, 3, 0, 1.64947, 0, 2.50584, 89.2769, -3.94543, 125.363)
 
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
-transform = Transform3D(0.106143, 0, 0.994351, 0, 1, 0, -0.994351, 0, 0.106143, 542.18, 38.5707, 225.606)
+transform = Transform3D(0.106143, 0, 0.994351, 0, 1, 0, -0.994351, 0, 0.106143, 504.341, 38.5707, 225.606)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.09013, 0)
@@ -1771,7 +1771,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_dsrhm")
 metadata/_edit_lock_ = true
 
 [node name="enemy8" parent="enemies" node_paths=PackedStringArray("player") instance=ExtResource("9_rphmn")]
-transform = Transform3D(0.766594, 0, 0.642132, 0, 1, 0, -0.642132, 0, 0.766594, 354.588, 50.4003, 242.818)
+transform = Transform3D(0.766594, 0, 0.642132, 0, 1, 0, -0.642132, 0, 0.766594, 376.33, 50.4003, 242.818)
 floor_max_angle = 1.6633
 floor_snap_length = 0.23
 player = NodePath("../../player")

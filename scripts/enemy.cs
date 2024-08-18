@@ -69,8 +69,7 @@ public partial class enemy : CharacterBody3D
 		los.LookAt(player.GlobalPosition);
 		ColliderMovementController();
 
-		// i think it has a false positive when connecting to the wall
-		// and from that it generates a constant push to the wall, jump would need to be a one time velocity 
+		// issue is having x,z velocity when hitting a wall.
 
 		velocity = Velocity;
 		if (IsOnFloor())
@@ -80,13 +79,20 @@ public partial class enemy : CharacterBody3D
 			else
 				RotateBody(player.GlobalPosition);
 
-		if (!IsOnFloor())
+		if (IsOnWall()){
+			ReflectOffWall();
+		}
+
+		if (!groundcheck.IsColliding())
         {
             velocity.Y += Gravity * (float)delta;
 			GD.Print("applying");
         }
 
-		Vector3 dir = GlobalPosition.DirectionTo(next);
+		Vector3 dir = Vector3.Zero;
+		if (groundcheck.IsColliding()){
+			dir = GlobalPosition.DirectionTo(next);
+		}
         if (dir != Vector3.Zero && canMove){
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
@@ -94,7 +100,7 @@ public partial class enemy : CharacterBody3D
 
 		navagent.Velocity = velocity;
 		MoveAndSlide();
-		GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor());
+		GD.Print(velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
     }
 
 	public void GetHit(){
@@ -102,6 +108,15 @@ public partial class enemy : CharacterBody3D
         cHP -= 1;
 		if (cHP <= 0)
 			QueueFree();
+    }
+
+	private void ReflectOffWall()
+    {
+        // Get the normal of the wall surface
+        Vector3 wallNormal = GetLastSlideCollision().GetNormal();
+        velocity = velocity.Bounce(wallNormal);
+        velocity *= 5f; 
+		GD.Print("Reflecting my actions");
     }
 
 	public void SetTargetPos(Vector3 pos)
@@ -135,6 +150,7 @@ public partial class enemy : CharacterBody3D
 	{
 		if (IsOnFloor())
         {
+			velocity.Y = 0;
             velocity.Y +=  jumpstr;
         }
 	}
