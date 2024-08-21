@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
+radius = 0.75
 
 [node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
 floor_snap_length = 0.0
@@ -52,11 +53,12 @@ autostart = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49167, 1.01892)
 target_position = Vector3(0, 0, -30)
 collide_with_areas = true
-debug_shape_custom_color = Color(1, 0, 0, 1)
-debug_shape_thickness = 5
+debug_shape_custom_color = Color(0.379437, 0.473598, 1, 1)
+debug_shape_thickness = 1
 
 [node name="groundcheck" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.259906, -4.16901, 0.732345)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14707, -4.48832, 1.33549)
+target_position = Vector3(0, -0.75, 0)
 debug_shape_custom_color = Color(0.984314, 1, 0, 1)
 
 [connection signal="timeout" from="shotCooldown" to="." method="_on_shot_cooldown_timeout"]

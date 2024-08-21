@@ -1627,7 +1627,7 @@ shape = SubResource("ConvexPolygonShape3D_l3sww")
 
 [node name="navlink1" type="NavigationLink3D" parent="links"]
 transform = Transform3D(-0.145703, 0, 0.989328, 0, 1, 0, -0.989328, 0, -0.145703, 422.508, 32.8437, 235.441)
-end_position = Vector3(3, 16, 35.453)
+end_position = Vector3(-0.111023, 15.2439, 34.4669)
 
 [node name="bossfightstuff" type="Node3D" parent="."]
 
@@ -1699,7 +1699,6 @@ texture_albedo = ExtResource("27_gcb10")
 
 [node name="plekib" type="AudioStreamPlayer" parent="worldstuffs"]
 stream = ExtResource("27_2u4b3")
-autoplay = true
 
 [node name="SpotLight3D" type="SpotLight3D" parent="worldstuffs"]
 transform = Transform3D(1, 0, 0, 0, 0.122545, 0.992463, 0, -0.992463, 0.122545, -25.1682, -135.198, 0)
@@ -1771,7 +1770,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_dsrhm")
 metadata/_edit_lock_ = true
 
 [node name="enemy8" parent="enemies" node_paths=PackedStringArray("player") instance=ExtResource("9_rphmn")]
-transform = Transform3D(0.766594, 0, 0.642132, 0, 1, 0, -0.642132, 0, 0.766594, 376.33, 50.4003, 242.818)
+transform = Transform3D(0.766594, 0, 0.642132, 0, 1, 0, -0.642132, 0, 0.766594, 444.575, 50.0052, 243.486)
 floor_max_angle = 1.6633
 floor_snap_length = 0.23
 player = NodePath("../../player")

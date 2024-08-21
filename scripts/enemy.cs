@@ -21,7 +21,7 @@ public partial class enemy : CharacterBody3D
 	Boolean canMove = true;
 	Vector3 velocity;
 	public const float Gravity = -9.8f;
-	public const float jumpstr = 10f;
+	public const float jumpstr = 15f;
 	Vector3 next = Vector3.Zero;
 	RayCast3D groundcheck;
 
@@ -65,34 +65,21 @@ public partial class enemy : CharacterBody3D
 		if (!target){
 			return;
 		}
-
-		los.LookAt(player.GlobalPosition);
-		ColliderMovementController();
-
-		// issue is having x,z velocity when hitting a wall.
-
+		//los.LookAt(player.GlobalPosition);
+		//ColliderMovementController();
 		velocity = Velocity;
-		if (IsOnFloor())
+		if (IsOnFloor() && groundcheck.IsColliding()) {
 			next = navagent.GetNextPathPosition();
-			if (canMove)
-				RotateBody(navagent.TargetPosition);
-			else
-				RotateBody(player.GlobalPosition);
-
-		if (IsOnWall()){
-			ReflectOffWall();
+			RotateBody(navagent.TargetPosition);
 		}
-
+			
 		if (!groundcheck.IsColliding())
         {
             velocity.Y += Gravity * (float)delta;
 			GD.Print("applying");
         }
 
-		Vector3 dir = Vector3.Zero;
-		if (groundcheck.IsColliding()){
-			dir = GlobalPosition.DirectionTo(next);
-		}
+		Vector3	dir = GlobalPosition.DirectionTo(next);
         if (dir != Vector3.Zero && canMove){
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
@@ -100,7 +87,7 @@ public partial class enemy : CharacterBody3D
 
 		navagent.Velocity = velocity;
 		MoveAndSlide();
-		GD.Print(velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
+		GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
     }
 
 	public void GetHit(){
@@ -108,15 +95,6 @@ public partial class enemy : CharacterBody3D
         cHP -= 1;
 		if (cHP <= 0)
 			QueueFree();
-    }
-
-	private void ReflectOffWall()
-    {
-        // Get the normal of the wall surface
-        Vector3 wallNormal = GetLastSlideCollision().GetNormal();
-        velocity = velocity.Bounce(wallNormal);
-        velocity *= 5f; 
-		GD.Print("Reflecting my actions");
     }
 
 	public void SetTargetPos(Vector3 pos)
@@ -127,7 +105,7 @@ public partial class enemy : CharacterBody3D
 	}
 
 
-	public void RotateBody(Vector3 _direction){
+	public void RotateBody(Vector3 _direction){	
 		body.LookAt(_direction, Vector3.Up);
 	}
 
@@ -136,7 +114,7 @@ public partial class enemy : CharacterBody3D
 		var collider = los.GetCollider();
 		if (collider is CharacterBody3D){
 			if ((string)collider.Get("name") == "player"){
-				canMove = false;
+				//canMove = false;
 				if (timer.IsStopped())
 					timer.Start();
 			}
