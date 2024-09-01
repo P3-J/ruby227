@@ -31,6 +31,7 @@ public partial class player : CharacterBody3D
     int cHP = 3;
     bool playDropSound = false;
     bool canSeeEnemy = false;
+    bool targetLocked = false;
     CharacterBody3D CurrentTarget = null;
     Marker3D MissileLaunchSpot;
     MeshInstance3D MissileMesh;
@@ -83,6 +84,7 @@ public partial class player : CharacterBody3D
             ReposSquare(CurrentTarget.GlobalTransform.Origin);
         } else {
             ResetTargetingSquare();
+            targetLocked = false;
         }
 
 
@@ -161,7 +163,12 @@ public partial class player : CharacterBody3D
         }
         if (Input.IsActionJustPressed("shootleft")) {
             Vector2 pos2 = TSquare.GlobalPosition;
-            pos2.Y += 10; // sprite a bit higher then origin point so lower it.
+
+            if (targetLocked){
+               pos2.Y += 10; // sprite a bit higher then origin point so lower it.
+            } else {
+                pos2.Y -= 30; // boost even more on a not locked target.
+            }
             Vector3 pos3 = playercam.ProjectPosition(pos2, 50);
             ShootBullet(pos3);
         }
@@ -211,8 +218,10 @@ public partial class player : CharacterBody3D
 
         if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
             TSquare.Position = TSquare.Position.MoveToward(screenpos, 5f);
+            targetLocked = true;
         } else {
             ResetTargetingSquare();
+            targetLocked = false;
         }
     }
 

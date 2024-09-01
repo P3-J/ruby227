@@ -65,8 +65,15 @@ public partial class enemy : CharacterBody3D
 		if (!target){
 			return;
 		}
-		//los.LookAt(player.GlobalPosition);
-		//ColliderMovementController();
+		los.LookAt(player.GlobalPosition);
+
+		Vector3 origin = los.GlobalPosition;
+		Vector3 colPoint = los.GetCollisionPoint();
+		float distance = origin.DistanceTo(colPoint);
+		ColliderMovementController(distance);
+
+		if (distance > 50f){return;} // simple aggro range check
+
 		velocity = Velocity;
 		if (IsOnFloor() && groundcheck.IsColliding()) {
 			next = navagent.GetNextPathPosition();
@@ -76,18 +83,22 @@ public partial class enemy : CharacterBody3D
 		if (!groundcheck.IsColliding())
         {
             velocity.Y += Gravity * (float)delta;
-			GD.Print("applying");
         }
 
+		if (!canMove){
+			velocity.X = 0;
+			velocity.Z = 0;
+		}
+
 		Vector3	dir = GlobalPosition.DirectionTo(next);
-        if (dir != Vector3.Zero && canMove){
+        if (dir != Vector3.Zero && canMove && groundcheck.IsColliding()){
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
 		} 
 
 		navagent.Velocity = velocity;
 		MoveAndSlide();
-		GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
+		//GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
     }
 
 	public void GetHit(){
@@ -106,21 +117,30 @@ public partial class enemy : CharacterBody3D
 
 
 	public void RotateBody(Vector3 _direction){	
+		if (!canMove) {
+			body.LookAt(player.GlobalPosition, Vector3.Up);
+			Vector3 rot = body.Rotation;
+			rot.X = 0;
+			rot.Z = 0;
+			body.Rotation = rot;
+			return;
+		}
 		body.LookAt(_direction, Vector3.Up);
 	}
 
-	public void ColliderMovementController(){
+	public void ColliderMovementController(float distance){
 		//Raycast look at player, stop if in los, or move if not
 		var collider = los.GetCollider();
-		if (collider is CharacterBody3D){
+		
+		if (collider is CharacterBody3D && distance < 60F){
 			if ((string)collider.Get("name") == "player"){
-				//canMove = false;
+				canMove = false;
 				if (timer.IsStopped())
 					timer.Start();
 			}
 		} else {
 			canMove = true;
-			SetTargetPos(player.GlobalPosition);
+			//SetTargetPos(player.GlobalPosition); this causes constant recalculations
 		}
 	}
 
@@ -165,6 +185,7 @@ public partial class enemy : CharacterBody3D
 	private void _on_shot_cooldown_timeout(){
 		ShootBullet();
 	}
+	
 	private void _on_retarget_timeout(){
 		SetTargetPos(player.GlobalPosition);
 		retargetTimer.Start();

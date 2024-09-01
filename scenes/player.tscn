@@ -53,7 +53,7 @@ shader_parameter/pixel_size = 2
 size = Vector2(3, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
-size = Vector3(60.1721, 23.0809, 63.3477)
+size = Vector3(80.172, 25.081, 80.348)
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "jumpboostsound", "dropsound", "hpBar", "PlayerCamBase")]
 script = ExtResource("1_exk0v")
