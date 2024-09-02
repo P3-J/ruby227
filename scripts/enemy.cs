@@ -16,6 +16,7 @@ public partial class enemy : CharacterBody3D
 	Timer retargetTimer;
 	RayCast3D los;
 	bool targetinlos;
+	bool hasAggro;
 
 	AudioStreamPlayer3D booster;
 	AudioStreamPlayer3D rocket;
@@ -23,7 +24,7 @@ public partial class enemy : CharacterBody3D
 	Boolean canMove = true;
 	Vector3 velocity;
 	public const float Gravity = -9.8f;
-	public const float jumpstr = 15f;
+	public const float jumpstr = 10f;
 	Vector3 next = Vector3.Zero;
 	RayCast3D groundcheck;
 
@@ -31,6 +32,13 @@ public partial class enemy : CharacterBody3D
 	int HP = 2;
 	int cHP = 2;
     bool target;
+
+	/// <summary>
+	///  TO FIX
+	///  los can target other enemies, this should not be a factor
+	///  look at, is looking at the final destination. not good
+	///  randomize speed, instead of latency to introduce some randomness? 
+	/// </summary>
     public override void _Ready()
     {
 
@@ -76,10 +84,12 @@ public partial class enemy : CharacterBody3D
 			distance = origin.DistanceTo(colPoint);
 			GD.Print(distance);
 		}
-		GD.Print(los.GetCollider());
 		ColliderMovementController(distance);
 
-		if (distance > AggroDistance){return;} // simple aggro range check
+		if (!hasAggro){
+			AggroCheck(distance);
+			return;
+		}
 
 		velocity = Velocity;
 		if (IsOnFloor() && groundcheck.IsColliding()) {
@@ -91,11 +101,6 @@ public partial class enemy : CharacterBody3D
         {
             velocity.Y += Gravity * (float)delta;
         }
-
-		if (!canMove){
-			velocity.X = 0;
-			velocity.Z = 0;
-		}
 
 		Vector3	dir = GlobalPosition.DirectionTo(next);
         if (next != Vector3.Zero && canMove && groundcheck.IsColliding()){
@@ -112,6 +117,13 @@ public partial class enemy : CharacterBody3D
 	private void EnableHeadIndicator(){
 		// if spotted , or in aggro range -> light up red dot on head to indicate target to player
 		// either 3d model , or 3d sprite facing player. 3d can emit
+	}
+
+	public void AggroCheck(float distance){
+		if (distance > AggroDistance){
+			return;
+		} 
+		hasAggro = true;
 	}
 
 	public void GetHit(){
@@ -132,13 +144,13 @@ public partial class enemy : CharacterBody3D
 	public void RotateBody(Vector3 _direction){	
 		if (!canMove) {
 			body.LookAt(player.GlobalPosition, Vector3.Up);
-			Vector3 rot = body.Rotation;
-			rot.X = 0;
-			rot.Z = 0;
-			body.Rotation = rot;
-			return;
+		} else {
+			body.LookAt(_direction, Vector3.Up);
 		}
-		body.LookAt(_direction, Vector3.Up);
+		Vector3 rot = body.Rotation;
+		rot.X = 0;
+		rot.Z = 0;
+		body.Rotation = rot;
 	}
 
 	public void ColliderMovementController(float distance){
@@ -149,6 +161,10 @@ public partial class enemy : CharacterBody3D
 			if ((string)collider.Get("name") == "player"){
 				canMove = false;
 				RotateBody(player.GlobalPosition);
+				if (IsOnFloor()){
+					velocity.X = 0;
+					velocity.Z = 0;
+				}
 				if (timer.IsStopped())
 					timer.Start();
 			}
@@ -188,7 +204,7 @@ public partial class enemy : CharacterBody3D
     private void OnNavigationAgentTargetReached()
     {
         SetTargetPos(player.GlobalPosition);
-        GD.Print("Target reached");
+        // wait some time to randomize the movement 
     }
 
     private void OnNavigationAgentLinkReached(Dictionary data)
@@ -202,6 +218,9 @@ public partial class enemy : CharacterBody3D
 	
 	private void _on_retarget_timeout(){
 		SetTargetPos(player.GlobalPosition);
+		GD.Randomize();
+		int randi = GD.RandRange(1, 4);
+		retargetTimer.WaitTime = randi;
 		retargetTimer.Start();
 	}
 }
