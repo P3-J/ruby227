@@ -182,7 +182,6 @@ size = 22.186
 
 [node name="pixelator" type="MeshInstance3D" parent="camBase/Camera3D"]
 transform = Transform3D(1, 1.11759e-08, -1.11759e-08, -2.10479e-07, 0.0822341, -0.996613, -4.47035e-08, 0.996613, 0.0822341, -0.0235291, 0.0511169, -0.285915)
-visible = false
 material_override = SubResource("ShaderMaterial_37j6b")
 mesh = SubResource("PlaneMesh_2y7q1")
 
@@ -194,6 +193,7 @@ debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)
 debug_shape_thickness = 5
 
 [node name="detectionarea" type="Area3D" parent="."]
+collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="detectionarea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.482948, 1.42955, 0.0438538)

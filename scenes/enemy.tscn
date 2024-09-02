@@ -23,7 +23,6 @@ path_desired_distance = 3.0
 target_desired_distance = 5.0
 avoidance_enabled = true
 radius = 4.0
-debug_enabled = true
 
 [node name="bodyController" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.819349)
@@ -48,7 +47,7 @@ wait_time = 3.0
 autostart = true
 
 [node name="los" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49167, 1.01892)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.67586, 1.01892)
 target_position = Vector3(0, 0, -120)
 collide_with_areas = true
 debug_shape_custom_color = Color(0.379437, 0.473598, 1, 1)

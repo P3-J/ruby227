@@ -10,6 +10,8 @@ public partial class enemy : CharacterBody3D
 	[Export] CharacterBody3D player; // bad but gets the job done
 	Node3D body;
 	[Export] public PackedScene Bullet;
+	[Export] float ShootDistance = 60f;
+	[Export] float AggroDistance = 90f;
 	Timer timer;
 	Timer retargetTimer;
 	RayCast3D los;
@@ -67,12 +69,17 @@ public partial class enemy : CharacterBody3D
 		}
 		los.LookAt(player.GlobalPosition);
 
-		Vector3 origin = los.GlobalPosition;
-		Vector3 colPoint = los.GetCollisionPoint();
-		float distance = origin.DistanceTo(colPoint);
+		float distance = 999;
+		if (los.GetCollider() == player){
+			Vector3 origin = los.GlobalPosition;
+			Vector3 colPoint = los.GetCollisionPoint();
+			distance = origin.DistanceTo(colPoint);
+			GD.Print(distance);
+		}
+		GD.Print(los.GetCollider());
 		ColliderMovementController(distance);
 
-		if (distance > 50f){return;} // simple aggro range check
+		if (distance > AggroDistance){return;} // simple aggro range check
 
 		velocity = Velocity;
 		if (IsOnFloor() && groundcheck.IsColliding()) {
@@ -91,7 +98,7 @@ public partial class enemy : CharacterBody3D
 		}
 
 		Vector3	dir = GlobalPosition.DirectionTo(next);
-        if (dir != Vector3.Zero && canMove && groundcheck.IsColliding()){
+        if (next != Vector3.Zero && canMove && groundcheck.IsColliding()){
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
 		} 
@@ -100,6 +107,12 @@ public partial class enemy : CharacterBody3D
 		MoveAndSlide();
 		//GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
     }
+
+
+	private void EnableHeadIndicator(){
+		// if spotted , or in aggro range -> light up red dot on head to indicate target to player
+		// either 3d model , or 3d sprite facing player. 3d can emit
+	}
 
 	public void GetHit(){
 		GD.Print("hit");
@@ -132,9 +145,10 @@ public partial class enemy : CharacterBody3D
 		//Raycast look at player, stop if in los, or move if not
 		var collider = los.GetCollider();
 		
-		if (collider is CharacterBody3D && distance < 60F){
+		if (collider is CharacterBody3D && distance < ShootDistance){
 			if ((string)collider.Get("name") == "player"){
 				canMove = false;
+				RotateBody(player.GlobalPosition);
 				if (timer.IsStopped())
 					timer.Start();
 			}

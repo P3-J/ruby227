@@ -37,7 +37,7 @@ height = 0.5
 
 [node name="bullet" type="CharacterBody3D" node_paths=PackedStringArray("bulletBody", "collisionRay")]
 script = ExtResource("1_4n7bp")
-BulletSpeed = 30.0
+BulletSpeed = 50.0
 bulletBody = NodePath("bulletBody")
 collisionRay = NodePath("bulletBody/ray")
 explosion = ExtResource("2_ugt12")
