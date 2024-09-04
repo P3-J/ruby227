@@ -1,13 +1,15 @@
-[gd_scene load_steps=23 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=26 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
 [ext_resource type="Texture2D" uid="uid://8wphi2e5jxcj" path="res://assets/bar1.png" id="4_c51ff"]
+[ext_resource type="PackedScene" uid="uid://db3mfp21buc4h" path="res://assets/gunz/gunleft.tscn" id="4_hfw4h"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_hgwbl"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
 [ext_resource type="Texture2D" uid="uid://dju83523yxk8b" path="res://assets/crosshair.png" id="5_nsyep"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
+[ext_resource type="Texture2D" uid="uid://5r64uu74y2pm" path="res://assets/cooldown.png" id="6_5rnmn"]
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://d4mign5r2hgcl" path="res://sounds/dropsound.mp3" id="9_ik3sr"]
 [ext_resource type="Shader" path="res://scenes/shaders/pixelator.gdshader" id="10_7obu6"]
@@ -32,8 +34,12 @@ turbulence_initial_displacement_min = -9.5
 
 [sub_resource type="SphereMesh" id="SphereMesh_nlf8a"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_joaq7"]
+albedo_color = Color(0.133196, 0.133196, 0.133196, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_hd3d1"]
-size = Vector3(0.2, 0.4, 0.2)
+material = SubResource("StandardMaterial3D_joaq7")
+size = Vector3(0.05, 0.2, 0.07)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c5rbk"]
 radius = 2.75
@@ -90,12 +96,20 @@ lifetime = 0.2
 process_material = SubResource("ParticleProcessMaterial_1ieln")
 draw_pass_1 = SubResource("SphereMesh_nlf8a")
 
-[node name="missilelauncher" type="MeshInstance3D" parent="mech"]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.089576, 0.68137, -0.358159)
-mesh = SubResource("BoxMesh_hd3d1")
+[node name="missilelauncherswivel" type="Node3D" parent="mech"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13633, 0.732759, -0.364261)
 
-[node name="missilelauncherspot" type="Marker3D" parent="mech/missilelauncher"]
-transform = Transform3D(1, -3.72529e-09, 5.05065e-15, 3.72529e-09, 1, -5.55112e-17, -5.63698e-15, 1.11022e-16, 1, 0.00361902, 0.204066, 0)
+[node name="missilelauncher" parent="mech/missilelauncherswivel" instance=ExtResource("4_hfw4h")]
+transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.25, -0.107758, 0, 0)
+skeleton = NodePath("../..")
+
+[node name="missilelauncherspot" type="Marker3D" parent="mech/missilelauncherswivel/missilelauncher"]
+transform = Transform3D(1.59944e-07, -4, 3.49691e-07, -4, -1.59944e-07, -2.02026e-14, 3.65307e-14, -3.49691e-07, -4, -2.01328, -0.0729828, -0.00679374)
+
+[node name="missilelauncherbase" type="MeshInstance3D" parent="mech/missilelauncherswivel"]
+transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)
+mesh = SubResource("BoxMesh_hd3d1")
+skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0995221, 1.11757, 0)
@@ -107,18 +121,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
 [node name="guid" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 550.0
-offset_bottom = 502.0
-
-[node name="hptext" type="RichTextLabel" parent="guid"]
-visible = false
-layout_mode = 0
-offset_left = 234.0
-offset_top = 7.0
-offset_right = 395.0
-offset_bottom = 40.0
-theme_override_font_sizes/normal_font_size = 20
-text = "3/3 ❤️"
+offset_right = 512.0
+offset_bottom = 480.0
 
 [node name="cover" type="Sprite2D" parent="guid"]
 modulate = Color(1, 1, 1, 0.662745)
@@ -142,12 +146,59 @@ fill_mode = 3
 show_percentage = false
 metadata/_edit_group_ = true
 
-[node name="tsquare" type="Sprite2D" parent="guid"]
+[node name="tsquarecontroller" type="Node2D" parent="guid"]
+position = Vector2(256, 256)
+
+[node name="tsquare" type="Sprite2D" parent="guid/tsquarecontroller"]
 modulate = Color(1, 1, 1, 0.329412)
 texture_filter = 1
-position = Vector2(256, 256)
 scale = Vector2(2, 2)
 texture = ExtResource("5_nsyep")
+
+[node name="shooterright" type="Sprite2D" parent="guid/tsquarecontroller"]
+texture_filter = 1
+position = Vector2(48, 0)
+rotation = 1.5708
+scale = Vector2(3, 3)
+texture = ExtResource("6_5rnmn")
+
+[node name="shooterbar" type="ProgressBar" parent="guid/tsquarecontroller/shooterright"]
+modulate = Color(0.830335, 0.830335, 0.830335, 1)
+show_behind_parent = true
+texture_filter = 1
+offset_left = 1.0
+offset_top = -7.0
+offset_right = 3.0
+offset_bottom = 7.0
+theme_override_styles/background = SubResource("StyleBoxTexture_io0ff")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fww2e")
+value = 100.0
+fill_mode = 3
+show_percentage = false
+metadata/_edit_group_ = true
+
+[node name="shooterleft" type="Sprite2D" parent="guid/tsquarecontroller"]
+texture_filter = 1
+position = Vector2(-48, 0)
+rotation = 1.5708
+scale = Vector2(3, 3)
+texture = ExtResource("6_5rnmn")
+flip_v = true
+
+[node name="shooterbar" type="ProgressBar" parent="guid/tsquarecontroller/shooterleft"]
+modulate = Color(0.830335, 0.830335, 0.830335, 1)
+show_behind_parent = true
+texture_filter = 1
+offset_left = 1.0
+offset_top = -7.0
+offset_right = 3.0
+offset_bottom = 7.0
+theme_override_styles/background = SubResource("StyleBoxTexture_io0ff")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fww2e")
+value = 100.0
+fill_mode = 3
+show_percentage = false
+metadata/_edit_group_ = true
 
 [node name="booster" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hgwbl")
@@ -170,6 +221,10 @@ pitch_scale = 0.7
 stream = ExtResource("9_ik3sr")
 
 [node name="shotcooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="shotcooldownleft" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true
 
 [node name="camBase" type="Node3D" parent="."]

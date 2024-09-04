@@ -1,24 +1,198 @@
-[gd_scene load_steps=7 format=3 uid="uid://bouds4hoq7qsh"]
+[gd_scene load_steps=18 format=3 uid="uid://bouds4hoq7qsh"]
 
 [ext_resource type="Script" path="res://scripts/startscript.cs" id="1_mfv1s"]
 [ext_resource type="PackedScene" uid="uid://be2ea7siblocu" path="res://scenes/world.tscn" id="2_oie0a"]
 [ext_resource type="FontFile" uid="uid://c0refmyi4sn8q" path="res://assets/fonts/CrtOverscan-Regular.ttf" id="3_b7ewf"]
+[ext_resource type="Texture2D" uid="uid://dj50l3my82wkw" path="res://assets/p3.png" id="4_rgn7d"]
+[ext_resource type="AudioStream" uid="uid://dk8e60w3fl8f5" path="res://music/saspray.mp3" id="5_e186y"]
+[ext_resource type="AudioStream" uid="uid://b6w6l5155tjlj" path="res://music/The_Essential_Terrestial.mp3" id="6_sgfco"]
+[ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="7_sbke2"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qx7we"]
-sky_top_color = Color(0.882353, 0.992157, 0.976471, 1)
-sky_horizon_color = Color(0.720588, 0.748039, 0.744118, 1)
-sky_energy_multiplier = 0.6
-ground_bottom_color = Color(0, 0, 0, 1)
-ground_horizon_color = Color(0.720588, 0.748039, 0.744118, 1)
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_novdv"]
 
 [sub_resource type="Sky" id="Sky_j3bat"]
-sky_material = SubResource("ProceduralSkyMaterial_qx7we")
+sky_material = SubResource("PanoramaSkyMaterial_novdv")
 
 [sub_resource type="Environment" id="Environment_7w6oh"]
 background_mode = 2
 sky = SubResource("Sky_j3bat")
 tonemap_mode = 2
 ssao_enabled = true
+
+[sub_resource type="SystemFont" id="SystemFont_xuy5t"]
+font_weight = 175
+font_stretch = 75
+
+[sub_resource type="Animation" id="Animation_7bl1g"]
+resource_name = "camspin"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../swivel:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(0, 7.85398, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hduv2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../swivel:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d4rvx"]
+_data = {
+"RESET": SubResource("Animation_hduv2"),
+"camspin": SubResource("Animation_7bl1g")
+}
+
+[sub_resource type="Animation" id="Animation_w6g6k"]
+resource_name = "openingspray"
+length = 7.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("cinematic/music:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("cinematic/intro/TextureProgressBar:value")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2.83333, 3.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 100.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("cinematic/intro/TextureProgressBar:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(5.03333, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("cinematic/intro:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(6, 7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.427451, 0.427451, 0.427451, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("cinematic/plekib:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(3.76667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_ft1sn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("cinematic/music:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("cinematic/intro/TextureProgressBar:value")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("cinematic/intro/TextureProgressBar:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("cinematic/intro:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("cinematic/plekib:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bii61"]
+_data = {
+"RESET": SubResource("Animation_ft1sn"),
+"openingspray": SubResource("Animation_w6g6k")
+}
 
 [node name="start" type="Node3D"]
 script = ExtResource("1_mfv1s")
@@ -27,20 +201,31 @@ world = ExtResource("2_oie0a")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_7w6oh")
 
+[node name="swivel" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="swivel"]
+transform = Transform3D(1, -6.86447e-09, 3.53338e-09, 7.69031e-09, 0.845234, -0.534397, 6.81823e-10, 0.534397, 0.845234, 0.0316511, -0.337289, 1.03876)
+fov = 120.0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="swivel/Camera3D"]
+light_color = Color(0.589707, 0.284776, 0.368316, 1)
+light_energy = 0.753
+spot_attenuation = 0.48
+spot_angle = 60.77
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.5, -2.18557e-08, 0, -4.37114e-08, 1, -0.5, 0.866025, 3.78552e-08, 0, 0, 0)
 light_color = Color(0.568627, 0.478431, 0, 1)
 light_energy = 0.1
 shadow_enabled = true
 
-[node name="Camera3D" type="Camera3D" parent="."]
-
 [node name="Button" type="Button" parent="."]
 texture_filter = 1
-offset_left = 192.0
-offset_top = 224.0
-offset_right = 320.0
-offset_bottom = 255.0
+offset_left = 32.0
+offset_top = 96.0
+offset_right = 160.0
+offset_bottom = 117.0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_fonts/font = ExtResource("3_b7ewf")
 text = "ENTER"
@@ -48,13 +233,64 @@ text = "ENTER"
 [node name="Label" type="Label" parent="."]
 modulate = Color(0, 1, 0, 1)
 texture_filter = 1
-offset_top = 160.0
-offset_right = 512.0
-offset_bottom = 256.0
-theme_override_fonts/font = ExtResource("3_b7ewf")
-theme_override_font_sizes/font_size = 32
+offset_left = -96.0
+offset_right = 416.0
+offset_bottom = 96.0
+theme_override_fonts/font = SubResource("SystemFont_xuy5t")
+theme_override_font_sizes/font_size = 64
 text = "RUBY227"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="cinematic" type="Node3D" parent="."]
+
+[node name="camspin" type="AnimationPlayer" parent="cinematic"]
+libraries = {
+"": SubResource("AnimationLibrary_d4rvx")
+}
+autoplay = "camspin"
+
+[node name="opening" type="AnimationPlayer" parent="cinematic"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_bii61")
+}
+autoplay = "openingspray"
+
+[node name="intro" type="Control" parent="cinematic"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 512.0
+offset_bottom = 480.0
+mouse_filter = 2
+
+[node name="background" type="ColorRect" parent="cinematic/intro"]
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 480.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="cinematic/intro"]
+z_index = 2
+layout_mode = 0
+offset_left = 128.0
+offset_top = 64.0
+offset_right = 1088.0
+offset_bottom = 1344.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+fill_mode = 2
+texture_progress = ExtResource("4_rgn7d")
+
+[node name="music" type="AudioStreamPlayer" parent="cinematic"]
+stream = ExtResource("5_e186y")
+
+[node name="plekib" type="AudioStreamPlayer" parent="cinematic"]
+stream = ExtResource("6_sgfco")
+parameters/looping = true
+
+[node name="Root Scene" parent="." instance=ExtResource("7_sbke2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0322683, 0, 0)
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

@@ -16,10 +16,11 @@ public partial class player : CharacterBody3D
     [Export] Node3D PlayerCamBase;
 
     Timer shotcooldown;
+    Timer shotcooldownLeft;
     GpuParticles3D leftshoulder;
     GpuParticles3D rightshoulder;
     RayCast3D MissileTargeter;
-    Sprite2D TSquare;
+    Node2D tsquareController;
     Camera3D playercam;
     Timer EnemyTimer;
     Area3D DetArea;
@@ -34,21 +35,27 @@ public partial class player : CharacterBody3D
     bool targetLocked = false;
     CharacterBody3D CurrentTarget = null;
     Marker3D MissileLaunchSpot;
-    MeshInstance3D MissileMesh;
+    Node3D MissileLauncherSwivel;
 
 
     public override void _Ready()
     {
         shotcooldown = GetNode<Timer>("shotcooldown");
+        shotcooldownLeft = GetNode<Timer>("shotcooldownleft");
+
         leftshoulder = GetNode<GpuParticles3D>("mech/leftshoulder");
         rightshoulder = GetNode<GpuParticles3D>("mech/rightshoulder");
         MissileTargeter = GetNode<RayCast3D>("targeter");
-        TSquare = GetNode<Sprite2D>("guid/tsquare");
+        tsquareController = GetNode<Node2D>("guid/tsquarecontroller");
+
+        leftbar = GetNode<ProgressBar>("guid/tsquarecontroller/shooterleft/shooterbar");
+        rightbar = GetNode<ProgressBar>("guid/tsquarecontroller/shooterright/shooterbar");
+
         playercam = GetNode<Camera3D>("camBase/Camera3D");
         EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
         DetArea = GetNode<Area3D>("detectionarea");
-        MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncher/missilelauncherspot");
-        MissileMesh = GetNode<MeshInstance3D>("mech/missilelauncher");
+        MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncherswivel/missilelauncher/missilelauncherspot");
+        MissileLauncherSwivel = GetNode<Node3D>("mech/missilelauncherswivel");
         SetupHud();
     }
 
@@ -141,16 +148,14 @@ public partial class player : CharacterBody3D
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y += 3f;
 			PlayerCamBase.RotationDegrees = v;
-            v.Z = -90;
-            MissileMesh.RotationDegrees = v;
+            MissileLauncherSwivel.RotationDegrees = v;
 		}
 
 		 if (Input.IsActionPressed("camright")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y -= 3f;
 			PlayerCamBase.RotationDegrees = v;
-            v.Z = -90;
-            MissileMesh.RotationDegrees = v;
+            MissileLauncherSwivel.RotationDegrees = v;
 		}
     }
 
@@ -161,8 +166,9 @@ public partial class player : CharacterBody3D
             shotcooldown.Start();
             ShootBullet(GlobalTransform);
         }
-        if (Input.IsActionJustPressed("shootleft")) {
-            Vector2 pos2 = TSquare.GlobalPosition;
+        if (Input.IsActionJustPressed("shootleft") && shotcooldownLeft.IsStopped()) {
+            shotcooldownLeft.Start();
+            Vector2 pos2 = tsquareController.GlobalPosition;
 
             if (targetLocked){
                pos2.Y += 10; // sprite a bit higher then origin point so lower it.
@@ -182,6 +188,7 @@ public partial class player : CharacterBody3D
         bulletInstance.Call("SetOwner", "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
+        ResetCooldown(rightbar, 1);
     }
 
     public void ShootBullet(Vector3 targetPosition)
@@ -194,6 +201,7 @@ public partial class player : CharacterBody3D
         bulletInstance.Call("SetOwner", "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
+        ResetCooldown(leftbar, 2);
     }
 
     public void _on_enemytimer_timeout(){
@@ -217,7 +225,7 @@ public partial class player : CharacterBody3D
         /// do anti of unproject - project position into world to aim
 
         if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
-            TSquare.Position = TSquare.Position.MoveToward(screenpos, 5f);
+            tsquareController.Position = tsquareController.Position.MoveToward(screenpos, 5f);
             targetLocked = true;
         } else {
             ResetTargetingSquare();
@@ -227,7 +235,7 @@ public partial class player : CharacterBody3D
 
     public void ResetTargetingSquare(){
         // reset targeting square to center of screen
-        TSquare.Position = TSquare.Position.MoveToward(new Vector2(256, 256), 5f);
+        tsquareController.Position = tsquareController.Position.MoveToward(new Vector2(256, 256), 5f);
     }
 
     public void ScanForEnemies(){

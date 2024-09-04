@@ -1,4 +1,4 @@
-[gd_scene load_steps=269 format=4 uid="uid://be2ea7siblocu"]
+[gd_scene load_steps=268 format=4 uid="uid://be2ea7siblocu"]
 
 [ext_resource type="Script" path="res://addons/qodot/src/nodes/qodot_map.gd" id="1_bxnhj"]
 [ext_resource type="Script" path="res://scripts/world.cs" id="1_fkfjl"]
@@ -25,7 +25,6 @@
 [ext_resource type="Texture2D" uid="uid://dec81oapbfn71" path="res://textures/128x128/Brick/Brick_11-128x128.png" id="24_htbgt"]
 [ext_resource type="Texture2D" uid="uid://bnb0yv1os461a" path="res://textures/Walls/Materials/siding_metal_red_01.jpg" id="25_vsxp0"]
 [ext_resource type="Texture2D" uid="uid://bluiofsyvwvhq" path="res://textures/128x128/Dirt/Dirt_07-128x128.png" id="26_avui7"]
-[ext_resource type="AudioStream" uid="uid://ds4kr5ua8uvx" path="res://music/chillin_at_the_cave_short.mp3" id="27_2u4b3"]
 [ext_resource type="Texture2D" uid="uid://gcu3w1ngg1v6" path="res://textures/128x128/Metal/Metal_20-128x128.png" id="27_a25pr"]
 [ext_resource type="Texture2D" uid="uid://cpyhybxpd5m52" path="res://assets/sticker.png" id="27_gcb10"]
 [ext_resource type="Material" uid="uid://wpjt3x0ap7nt" path="res://textures/newwithe/Facade009_1K-JPG_Color.tres" id="28_wu7b3"]
@@ -1915,9 +1914,6 @@ size = Vector3(2, 0.194336, 2)
 texture_albedo = ExtResource("27_gcb10")
 
 [node name="worldstuffs" type="Node3D" parent="."]
-
-[node name="plekib" type="AudioStreamPlayer" parent="worldstuffs"]
-stream = ExtResource("27_2u4b3")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="worldstuffs"]
 transform = Transform3D(1, 0, 0, 0, 0.122545, 0.992463, 0, -0.992463, 0.122545, -25.1682, -135.198, 0)
