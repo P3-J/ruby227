@@ -26,7 +26,7 @@ public partial class player : CharacterBody3D
     Area3D DetArea;
     private const float Gravity = -2.8f;
     private const float JumpForce = 55.0f; //55
-    private const float MovementSpeed = 30F; //15
+    private const float MovementSpeed = 20F; //15
 
     int HP = 3;
     int cHP = 3;

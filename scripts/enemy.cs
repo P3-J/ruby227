@@ -4,7 +4,7 @@ using System;
 
 public partial class enemy : CharacterBody3D
 {
-	public const float Speed = 10f;
+	public const float Speed = 15f;
 
 	[Export] private NavigationAgent3D navagent;
 	[Export] CharacterBody3D player; // bad but gets the job done
@@ -38,6 +38,9 @@ public partial class enemy : CharacterBody3D
 	///  los can target other enemies, this should not be a factor
 	///  look at, is looking at the final destination. not good
 	///  randomize speed, instead of latency to introduce some randomness? 
+	///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets
+	///  but can create quite a lot of randomness ? 
+	///  container ship/
 	/// </summary>
     public override void _Ready()
     {

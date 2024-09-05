@@ -1992,7 +1992,7 @@ player = NodePath("../../player")
 ShootDistance = 40.0
 
 [node name="enemy12" parent="enemies" node_paths=PackedStringArray("player") instance=ExtResource("9_rphmn")]
-transform = Transform3D(-0.999861, 0, 0.0167022, 0, 1, 0, -0.0167022, 0, -0.999861, 1035.43, 36.1169, 216.381)
+transform = Transform3D(-0.999861, 0, 0.0167022, 0, 1, 0, -0.0167022, 0, -0.999861, 1041.42, 36.1169, 301.776)
 floor_max_angle = 1.6633
 floor_snap_length = 0.23
 player = NodePath("../../player")
@@ -2006,7 +2006,7 @@ player = NodePath("../../player")
 ShootDistance = 40.0
 
 [node name="enemy14" parent="enemies" node_paths=PackedStringArray("player") instance=ExtResource("9_rphmn")]
-transform = Transform3D(-0.999163, 0, 0.0408993, 0, 1, 0, -0.0408993, 0, -0.999163, 1025.76, 36.1169, 216.131)
+transform = Transform3D(-0.999163, 0, 0.0408993, 0, 1, 0, -0.0408993, 0, -0.999163, 997.19, 36.1169, 171.855)
 floor_max_angle = 1.6633
 floor_snap_length = 0.23
 player = NodePath("../../player")
