@@ -1,12 +1,13 @@
-[gd_scene load_steps=18 format=3 uid="uid://bouds4hoq7qsh"]
+[gd_scene load_steps=22 format=3 uid="uid://bouds4hoq7qsh"]
 
 [ext_resource type="Script" path="res://scripts/startscript.cs" id="1_mfv1s"]
 [ext_resource type="PackedScene" uid="uid://be2ea7siblocu" path="res://scenes/world.tscn" id="2_oie0a"]
-[ext_resource type="FontFile" uid="uid://c0refmyi4sn8q" path="res://assets/fonts/CrtOverscan-Regular.ttf" id="3_b7ewf"]
+[ext_resource type="FontFile" uid="uid://chj1jpb32tiy1" path="res://assets/fonts/joystix monospace.otf" id="3_tohbx"]
 [ext_resource type="Texture2D" uid="uid://dj50l3my82wkw" path="res://assets/p3.png" id="4_rgn7d"]
 [ext_resource type="AudioStream" uid="uid://dk8e60w3fl8f5" path="res://music/saspray.mp3" id="5_e186y"]
 [ext_resource type="AudioStream" uid="uid://b6w6l5155tjlj" path="res://music/The_Essential_Terrestial.mp3" id="6_sgfco"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="7_sbke2"]
+[ext_resource type="PackedScene" uid="uid://db3mfp21buc4h" path="res://assets/gunz/gunleft.tscn" id="8_470rk"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_novdv"]
 
@@ -19,9 +20,11 @@ sky = SubResource("Sky_j3bat")
 tonemap_mode = 2
 ssao_enabled = true
 
-[sub_resource type="SystemFont" id="SystemFont_xuy5t"]
-font_weight = 175
-font_stretch = 75
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ejcus"]
+bg_color = Color(0.85098, 0.490196, 0.34902, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blir1"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Animation" id="Animation_hduv2"]
 length = 0.001
@@ -194,6 +197,13 @@ _data = {
 "openingspray": SubResource("Animation_w6g6k")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_joaq7"]
+albedo_color = Color(0.133196, 0.133196, 0.133196, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tcbq8"]
+material = SubResource("StandardMaterial3D_joaq7")
+size = Vector3(0.05, 0.2, 0.07)
+
 [node name="start" type="Node3D"]
 script = ExtResource("1_mfv1s")
 world = ExtResource("2_oie0a")
@@ -222,21 +232,26 @@ shadow_enabled = true
 
 [node name="Button" type="Button" parent="."]
 texture_filter = 1
-offset_left = 32.0
-offset_top = 96.0
-offset_right = 160.0
-offset_bottom = 117.0
-theme_override_colors/font_color = Color(0, 1, 0, 1)
-theme_override_fonts/font = ExtResource("3_b7ewf")
-text = "ENTER"
+offset_left = -17.0
+offset_top = 71.0
+offset_right = 175.0
+offset_bottom = 103.0
+theme_override_colors/font_color = Color(0.937255, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_tohbx")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = SubResource("StyleBoxFlat_ejcus")
+theme_override_styles/normal = SubResource("StyleBoxFlat_blir1")
+text = "//DEPLOY"
 
 [node name="Label" type="Label" parent="."]
 modulate = Color(0, 1, 0, 1)
 texture_filter = 1
-offset_left = -96.0
-offset_right = 416.0
-offset_bottom = 96.0
-theme_override_fonts/font = SubResource("SystemFont_xuy5t")
+offset_left = -26.0
+offset_top = 8.0
+offset_right = 451.0
+offset_bottom = 85.0
+scale = Vector2(0.742197, 0.948145)
+theme_override_fonts/font = ExtResource("3_tohbx")
 theme_override_font_sizes/font_size = 64
 text = "RUBY227"
 horizontal_alignment = 1
@@ -258,6 +273,7 @@ libraries = {
 autoplay = "openingspray"
 
 [node name="intro" type="Control" parent="cinematic"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 512.0
@@ -292,5 +308,20 @@ parameters/looping = true
 
 [node name="Root Scene" parent="." instance=ExtResource("7_sbke2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0322683, 0, 0)
+
+[node name="missilelauncherswivel" type="Node3D" parent="Root Scene"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13633, 0.732759, -0.364261)
+
+[node name="missilelauncher" parent="Root Scene/missilelauncherswivel" instance=ExtResource("8_470rk")]
+transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.25, -0.107758, 0, 0)
+skeleton = NodePath("../..")
+
+[node name="missilelauncherspot" type="Marker3D" parent="Root Scene/missilelauncherswivel/missilelauncher"]
+transform = Transform3D(1.59944e-07, -4, 3.49691e-07, -4, -1.59944e-07, -2.02026e-14, 3.65307e-14, -3.49691e-07, -4, -2.01328, -0.0729828, -0.00679374)
+
+[node name="missilelauncherbase" type="MeshInstance3D" parent="Root Scene/missilelauncherswivel"]
+transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)
+mesh = SubResource("BoxMesh_tcbq8")
+skeleton = NodePath("../..")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

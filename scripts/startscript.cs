@@ -7,4 +7,8 @@ public partial class startscript : Node3D
 	public void _on_button_pressed(){
 		GetTree().ChangeSceneToPacked(world);
 	}
+
+	public void switchToGame(){
+		GetTree().ChangeSceneToPacked(world);
+	}
 }
