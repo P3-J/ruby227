@@ -30,6 +30,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.819349)
 [node name="body" parent="bodyController" instance=ExtResource("1_yi6j0")]
 transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.019232, 0, -0.999284)
 
+[node name="light" type="SpotLight3D" parent="bodyController/body"]
+transform = Transform3D(-8.74228e-09, -0.111494, 0.166039, -1.11022e-16, 0.166039, 0.111494, -0.2, 4.87356e-09, -7.25782e-09, -0.121054, 0.0391875, 0.12578)
+light_energy = 3.808
+shadow_enabled = true
+spot_range = 78.032
+spot_angle = 51.08
+
 [node name="shotCooldown" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true

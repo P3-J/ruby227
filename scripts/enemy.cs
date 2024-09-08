@@ -29,16 +29,16 @@ public partial class enemy : CharacterBody3D
 	RayCast3D groundcheck;
 
 
-	int HP = 2;
-	int cHP = 2;
+	int HP = 4;
+	int cHP = 4;
     bool target;
 
 	/// <summary>
 	///  TO FIX
-	///  los can target other enemies, this should not be a factor
-	///  look at, is looking at the final destination. not good
+	///  los can target other enemies, this should not be a factor - ? i think fake news
+	///  look at, is looking at the final destination. not good - done
 	///  randomize speed, instead of latency to introduce some randomness? 
-	///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets
+	///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok rn with lag
 	///  but can create quite a lot of randomness ? 
 	///  container ship/
 	/// </summary>
@@ -97,7 +97,7 @@ public partial class enemy : CharacterBody3D
 		velocity = Velocity;
 		if (IsOnFloor() && groundcheck.IsColliding()) {
 			next = navagent.GetNextPathPosition();
-			RotateBody(navagent.TargetPosition);
+			RotateBody(next);
 		}
 			
 		if (!groundcheck.IsColliding())
@@ -129,9 +129,9 @@ public partial class enemy : CharacterBody3D
 		hasAggro = true;
 	}
 
-	public void GetHit(){
+	public void GetHit(int dmg){
 		GD.Print("hit");
-        cHP -= 1;
+        cHP -= dmg;
 		if (cHP <= 0)
 			QueueFree();
     }
@@ -222,7 +222,7 @@ public partial class enemy : CharacterBody3D
 	private void _on_retarget_timeout(){
 		SetTargetPos(player.GlobalPosition);
 		GD.Randomize();
-		int randi = GD.RandRange(1, 4);
+		int randi = GD.RandRange(1, 3);
 		retargetTimer.WaitTime = randi;
 		retargetTimer.Start();
 	}

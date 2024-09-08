@@ -14,6 +14,7 @@ public partial class bullet : CharacterBody3D
 	[Export] PackedScene explosion;
 
 	public string owner;
+	public int damage = 1;
 
     public override void _Ready()
     {
@@ -29,7 +30,7 @@ public partial class bullet : CharacterBody3D
 			string colliderName = (string)collider.Get("name");
 			if (colliderName != "entity_0_worldspawn" && colliderName != owner){
 				// little hardcoding never killed anyone L
-				collider.Call("GetHit");
+				collider.Call("GetHit", damage);
 			}
 			GenerateExplosion(collisionRay.GetCollisionPoint());
 			QueueFree();
@@ -43,6 +44,10 @@ public partial class bullet : CharacterBody3D
 
 	public void SetOwner(string passedowner){
 		owner = passedowner;
+	}
+
+	public void SetDamage(int dmg){
+		damage = dmg;
 	}
 
 	public void SetDirection(Vector3 newDire)

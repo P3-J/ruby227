@@ -138,8 +138,8 @@ public partial class player : CharacterBody3D
         hpBar.MaxValue = HP;
     }
 
-    public void GetHit(){
-        cHP -= 1;
+    public void GetHit(int dmg){
+        cHP -= dmg;
         RefreshHud();
     }
 
@@ -186,6 +186,7 @@ public partial class player : CharacterBody3D
         bulletInstance.Position = rightArm.GlobalPosition;
         bulletInstance.Call("SetDirection", -pos.Basis.Z);
         bulletInstance.Call("SetOwner", "player");
+        bulletInstance.Call("SetDamage", 2);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         ResetCooldown(rightbar, 1);
