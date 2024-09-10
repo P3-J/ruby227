@@ -20,6 +20,8 @@ public partial class player : CharacterBody3D
     GpuParticles3D leftshoulder;
     GpuParticles3D rightshoulder;
     RayCast3D MissileTargeter;
+    GpuParticles3D RightSteam;
+    GpuParticles3D LeftSteam;
     Node2D tsquareController;
     Camera3D playercam;
     Timer EnemyTimer;
@@ -28,8 +30,8 @@ public partial class player : CharacterBody3D
     private const float JumpForce = 55.0f; //55
     private const float MovementSpeed = 20F; //15
 
-    int HP = 3;
-    int cHP = 3;
+    int HP = 4;
+    int cHP = 4;
     bool playDropSound = false;
     bool canSeeEnemy = false;
     bool targetLocked = false;
@@ -56,6 +58,10 @@ public partial class player : CharacterBody3D
         DetArea = GetNode<Area3D>("detectionarea");
         MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncherswivel/missilelauncher/missilelauncherspot");
         MissileLauncherSwivel = GetNode<Node3D>("mech/missilelauncherswivel");
+
+        RightSteam = GetNode<GpuParticles3D>("mech/rightgas");
+        LeftSteam = GetNode<GpuParticles3D>("mech/leftgas");
+
         SetupHud();
     }
 
@@ -63,19 +69,7 @@ public partial class player : CharacterBody3D
     {
         Vector3 fakeVelo = Velocity;
 
-        float rotationInput = 0f;
-        if (Input.IsActionPressed("left"))
-            rotationInput += 0.02f;
-            PlaySteamAudioIfCan();
-        if (Input.IsActionPressed("right"))
-            rotationInput -= 0.02f;
-            PlaySteamAudioIfCan();
-
-        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
-            steam.Stop();
-        }
-        
-        RotateY(rotationInput);
+        HandleTurning();
         HandleCameraTurning(); // includes the left launcher rotation currently, should be based on targeter, doesnt have to be tho
 
         Vector3 direction = new();
@@ -138,22 +132,49 @@ public partial class player : CharacterBody3D
         hpBar.MaxValue = HP;
     }
 
+    public void HandleTurning(){
+        float rotationInput = 0f;
+        if (Input.IsActionPressed("left")){
+            rotationInput += 0.02f;
+            RightSteam.Emitting = true;
+            GD.Print("wtf");
+            PlaySteamAudioIfCan();
+        }
+        if (Input.IsActionPressed("right")){
+            rotationInput -= 0.02f;
+            GD.Print("wtff");
+            LeftSteam.Emitting = true;
+            PlaySteamAudioIfCan();
+        }
+        if (Input.IsActionJustReleased("right")) {LeftSteam.Emitting = false;}
+        if (Input.IsActionJustReleased("left")) {RightSteam.Emitting = false;} 
+
+        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
+            steam.Stop();
+        }
+        RotateY(rotationInput);
+    }
+
     public void GetHit(int dmg){
         cHP -= dmg;
         RefreshHud();
+        // check for megadeth
+        if (cHP <= 0){
+            Die();
+        }
     }
 
     public void HandleCameraTurning(){
          if (Input.IsActionPressed("camleft")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
-			v.Y += 3f;
+			v.Y += 4f;
 			PlayerCamBase.RotationDegrees = v;
             MissileLauncherSwivel.RotationDegrees = v;
 		}
 
 		 if (Input.IsActionPressed("camright")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
-			v.Y -= 3f;
+			v.Y -= 4f;
 			PlayerCamBase.RotationDegrees = v;
             MissileLauncherSwivel.RotationDegrees = v;
 		}
@@ -262,6 +283,11 @@ public partial class player : CharacterBody3D
         {
             steam.Play();
         }
+    }
+
+    private void Die(){
+        // currently just reset scene
+        GetTree().ReloadCurrentScene();
     }
 
     public void ShoulderParticleController(bool state){

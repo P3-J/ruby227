@@ -40,7 +40,9 @@ public partial class enemy : CharacterBody3D
 	///  randomize speed, instead of latency to introduce some randomness? 
 	///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok rn with lag
 	///  but can create quite a lot of randomness ? 
+	///  death anim
 	///  container ship/
+	///  invisible barriers just for bots
 	/// </summary>
     public override void _Ready()
     {

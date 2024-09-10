@@ -2630,7 +2630,8 @@ player = NodePath("../../player")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1.63236, 0, 0, 0, 1, 1231.75, 60.7218, 151.553)
-light_energy = 0.0
+light_energy = 0.5
 shadow_enabled = true
+sky_mode = 1
 
 [connection signal="body_entered" from="bossfightstuff/bossfighttrigger" to="." method="_on_bossfighttrigger_body_entered"]
