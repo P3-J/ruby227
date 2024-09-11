@@ -170,13 +170,21 @@ public partial class enemy : CharacterBody3D
 					velocity.X = 0;
 					velocity.Z = 0;
 				}
-				if (timer.IsStopped())
-					timer.Start();
+				if (timer.IsStopped()){
+					StartShotTimer();
+				}
 			}
 		} else {
 			canMove = true;
 			//SetTargetPos(player.GlobalPosition); this causes constant recalculations
 		}
+	}
+
+	public void StartShotTimer(){
+		GD.Randomize();
+		int randi = GD.RandRange(1, 3);
+		timer.WaitTime = randi;
+		timer.Start();
 	}
 
 	public void Jump()
@@ -197,7 +205,7 @@ public partial class enemy : CharacterBody3D
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
 		if (!canMove){
-			timer.Start();
+			StartShotTimer();
 		}
     }
 

@@ -9,13 +9,15 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
 
 [node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
+collision_layer = 9
+collision_mask = 9
 floor_snap_length = 0.0
 script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")
 
 [node name="body" type="CollisionShape3D" parent="."]
-transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.145983, 0.449474, 1.32738)
+transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.145983, 0.449474, 0.615296)
 shape = SubResource("CapsuleShape3D_qe4x2")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -25,16 +27,10 @@ avoidance_enabled = true
 radius = 4.0
 
 [node name="bodyController" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.819349)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.567605, 0.819349)
 
 [node name="body" parent="bodyController" instance=ExtResource("1_yi6j0")]
 transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.019232, 0, -0.999284)
-
-[node name="light" type="SpotLight3D" parent="bodyController/body"]
-transform = Transform3D(-8.74228e-09, -0.0649322, 0.189166, -2.22045e-16, 0.189166, 0.0649322, -0.2, 2.83828e-09, -8.26872e-09, -0.0922061, 0.0490897, 0.22199)
-shadow_enabled = true
-spot_range = 78.032
-spot_angle = 51.08
 
 [node name="shotCooldown" type="Timer" parent="."]
 wait_time = 2.0
