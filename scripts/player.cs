@@ -26,6 +26,9 @@ public partial class player : CharacterBody3D
     Camera3D playercam;
     Timer EnemyTimer;
     Area3D DetArea;
+    AnimationPlayer deathanim;
+
+    GpuParticles3D deathExplosion;
     private const float Gravity = -2.8f;
     private const float JumpForce = 55.0f; //55
     private const float MovementSpeed = 20F; //15
@@ -35,6 +38,7 @@ public partial class player : CharacterBody3D
     bool playDropSound = false;
     bool canSeeEnemy = false;
     bool targetLocked = false;
+    bool canMove = true;
     CharacterBody3D CurrentTarget = null;
     Marker3D MissileLaunchSpot;
     Node3D MissileLauncherSwivel;
@@ -62,11 +66,22 @@ public partial class player : CharacterBody3D
         RightSteam = GetNode<GpuParticles3D>("mech/rightgas");
         LeftSteam = GetNode<GpuParticles3D>("mech/leftgas");
 
+        deathExplosion = GetNode<GpuParticles3D>("particles/explosion");
+        deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
+
         SetupHud();
     }
 
     public override void _PhysicsProcess(double delta)
     {
+
+        if (!canMove){
+        // most likely death.
+            booster.Stop();
+            steam.Stop();
+            return;
+        }
+
         Vector3 fakeVelo = Velocity;
 
         HandleTurning();
@@ -286,7 +301,15 @@ public partial class player : CharacterBody3D
     }
 
     private void Die(){
-        // currently just reset scene
+        // start death explosion, trigger below to scene reset rn
+        //GetTree().ReloadCurrentScene();
+        if (!canMove){return;} // stops a loop from happening. just a band aid to a bigger problem
+        deathExplosion.Emitting = true;
+        canMove = false;
+        deathanim.Play("death");
+    }
+
+    private void _on_button_pressed(){
         GetTree().ReloadCurrentScene();
     }
 

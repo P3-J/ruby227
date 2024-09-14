@@ -104,6 +104,7 @@ public partial class enemy : CharacterBody3D
 			
 		if (!groundcheck.IsColliding())
         {
+			GD.Print("applying");
             velocity.Y += Gravity * (float)delta;
         }
 
@@ -176,6 +177,7 @@ public partial class enemy : CharacterBody3D
 			}
 		} else {
 			canMove = true;
+			SetTargetPos(player.GlobalPosition);
 			//SetTargetPos(player.GlobalPosition); this causes constant recalculations
 		}
 	}

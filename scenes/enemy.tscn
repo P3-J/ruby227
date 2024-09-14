@@ -25,6 +25,9 @@ path_desired_distance = 3.0
 target_desired_distance = 5.0
 avoidance_enabled = true
 radius = 4.0
+neighbor_distance = 70.0
+max_speed = 13.0
+debug_enabled = true
 
 [node name="bodyController" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.567605, 0.819349)
@@ -56,8 +59,8 @@ debug_shape_custom_color = Color(0.379437, 0.473598, 1, 1)
 debug_shape_thickness = 1
 
 [node name="groundcheck" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14707, -4.48832, 1.33549)
-target_position = Vector3(0, -0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14707, -3.99479, 1.33549)
+target_position = Vector3(0, -2, 0)
 debug_shape_custom_color = Color(0.984314, 1, 0, 1)
 
 [connection signal="timeout" from="shotCooldown" to="." method="_on_shot_cooldown_timeout"]

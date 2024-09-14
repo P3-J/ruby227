@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=49 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dju83523yxk8b" path="res://assets/crosshair.png" id="5_nsyep"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
 [ext_resource type="Texture2D" uid="uid://5r64uu74y2pm" path="res://assets/cooldown.png" id="6_5rnmn"]
+[ext_resource type="FontFile" uid="uid://d1c7ml3v3ix45" path="res://assets/fonts/Paskowy.ttf" id="8_1kvtq"]
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://d4mign5r2hgcl" path="res://sounds/dropsound.mp3" id="9_ik3sr"]
 [ext_resource type="Shader" path="res://scenes/shaders/pixelator.gdshader" id="10_7obu6"]
@@ -76,6 +77,115 @@ height = 7.5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fww2e"]
 bg_color = Color(0.6, 0.898039, 0.313726, 1)
 
+[sub_resource type="Animation" id="Animation_dfjmf"]
+resource_name = "death"
+length = 4.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 1.63333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("text:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.63333, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Button:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3.36667, 4.36667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_yq0xj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("text:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Button:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_frucg"]
+_data = {
+"RESET": SubResource("Animation_yq0xj"),
+"death": SubResource("Animation_dfjmf")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kajla"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jod6i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqkoc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cigk0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lkx3q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5xe7a"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_q5o7p"]
+color = Color(1, 1, 1, 1)
+vertical = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3p45i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nd0sp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_teriw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ol4xe"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_37j6b"]
 render_priority = 0
 shader = ExtResource("10_7obu6")
@@ -86,6 +196,38 @@ size = Vector2(3, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
 size = Vector3(80.172, 25.081, 80.348)
+
+[sub_resource type="Curve" id="Curve_wjuwv"]
+_data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_f30wx"]
+curve = SubResource("Curve_wjuwv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q20j7"]
+emission_shape = 1
+emission_sphere_radius = 3.0
+angle_min = -67.3
+angle_max = 228.8
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+angular_velocity_min = -114.39
+angular_velocity_max = 100.93
+gravity = Vector3(0, 2, 0)
+linear_accel_min = -10.0
+linear_accel_max = -5.0
+scale_curve = SubResource("CurveTexture_f30wx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s04xs"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_m2ms5"]
+material = SubResource("StandardMaterial3D_s04xs")
+radius = 2.5
+height = 5.0
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "jumpboostsound", "dropsound", "hpBar", "PlayerCamBase")]
 script = ExtResource("1_exk0v")
@@ -249,6 +391,54 @@ fill_mode = 3
 show_percentage = false
 metadata/_edit_group_ = true
 
+[node name="deathscreen" type="Node2D" parent="guid"]
+
+[node name="ColorRect" type="ColorRect" parent="guid/deathscreen"]
+modulate = Color(1, 1, 1, 0)
+offset_right = 512.0
+offset_bottom = 480.0
+color = Color(0, 0, 0, 1)
+
+[node name="anim" type="AnimationPlayer" parent="guid/deathscreen"]
+libraries = {
+"": SubResource("AnimationLibrary_frucg")
+}
+
+[node name="text" type="Label" parent="guid/deathscreen"]
+texture_filter = 1
+offset_left = 146.0
+offset_top = 171.0
+offset_right = 464.0
+offset_bottom = 246.0
+theme_override_fonts/font = ExtResource("8_1kvtq")
+theme_override_font_sizes/font_size = 42
+text = "you dissapointed everyone"
+vertical_alignment = 1
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Button" type="Button" parent="guid/deathscreen"]
+modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+offset_left = 139.0
+offset_top = 231.0
+offset_right = 229.0
+offset_bottom = 289.0
+theme_override_fonts/font = ExtResource("8_1kvtq")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kajla")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_jod6i")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_pqkoc")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_cigk0")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_lkx3q")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_5xe7a")
+theme_override_styles/hover = SubResource("StyleBoxLine_q5o7p")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_3p45i")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nd0sp")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_teriw")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ol4xe")
+text = "redeploy"
+
 [node name="booster" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hgwbl")
 volume_db = -11.969
@@ -308,4 +498,16 @@ shape = SubResource("BoxShape3D_1xqye")
 wait_time = 0.5
 autostart = true
 
+[node name="particles" type="Node3D" parent="."]
+
+[node name="explosion" type="GPUParticles3D" parent="particles"]
+emitting = false
+amount = 16
+explosiveness = 1.0
+randomness = 0.25
+trail_lifetime = 2.04
+process_material = SubResource("ParticleProcessMaterial_q20j7")
+draw_pass_1 = SubResource("SphereMesh_m2ms5")
+
+[connection signal="pressed" from="guid/deathscreen/Button" to="." method="_on_button_pressed"]
 [connection signal="timeout" from="detectionarea/enemytimer" to="." method="_on_enemytimer_timeout"]
