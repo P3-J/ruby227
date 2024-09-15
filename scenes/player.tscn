@@ -77,6 +77,45 @@ height = 7.5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fww2e"]
 bg_color = Color(0.6, 0.898039, 0.313726, 1)
 
+[sub_resource type="Animation" id="Animation_yq0xj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("text:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Button:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_dfjmf"]
 resource_name = "death"
 length = 4.5
@@ -115,45 +154,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_yq0xj"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("text:visible_ratio")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Button:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_frucg"]
@@ -470,13 +470,14 @@ one_shot = true
 [node name="camBase" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="camBase"]
-transform = Transform3D(1, -6.59702e-08, 1.66771e-07, 3.71268e-08, 0.985894, 0.167371, -1.7546e-07, -0.167371, 0.985894, 1.52588e-05, 9.01203, 11.5719)
+transform = Transform3D(1, -6.597e-08, 1.66771e-07, 3.58274e-08, 0.984628, 0.174662, -1.7573e-07, -0.174662, 0.984628, 1.52588e-05, 9.01203, 11.5719)
 current = true
 fov = 83.7
 size = 22.186
 
 [node name="pixelator" type="MeshInstance3D" parent="camBase/Camera3D"]
 transform = Transform3D(1, 1.11759e-08, -1.11759e-08, -2.10479e-07, 0.0822341, -0.996613, -4.47035e-08, 0.996613, 0.0822341, -0.0235291, 0.0511169, -0.285915)
+visible = false
 material_override = SubResource("ShaderMaterial_37j6b")
 mesh = SubResource("PlaneMesh_2y7q1")
 

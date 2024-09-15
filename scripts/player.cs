@@ -118,14 +118,14 @@ public partial class player : CharacterBody3D
             fakeVelo.Y = 0;
         }
 
+        fakeVelo.X = direction.X * MovementSpeed;
+        fakeVelo.Z = direction.Z * MovementSpeed;
+
         if (Input.IsActionJustPressed("jump") && IsOnFloor())
         {
             fakeVelo.Y = JumpForce;
             jumpboostsound.Play();
         }
-
-        fakeVelo.X = direction.X * MovementSpeed;
-        fakeVelo.Z = direction.Z * MovementSpeed;
 
         if (direction == Vector3.Zero){
             booster.Stop();
