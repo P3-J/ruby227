@@ -1597,6 +1597,9 @@ data = PackedVector3Array(-400, 2, 0.5, 400, 2, 0.5, -400, -2, 0.5, 400, 2, 0.5,
 [sub_resource type="BoxShape3D" id="BoxShape3D_rgjdn"]
 size = Vector3(17.9572, 1.90601, 22.4133)
 
+[sub_resource type="Animation" id="Animation_3daff"]
+length = 0.001
+
 [sub_resource type="Animation" id="Animation_sg3ar"]
 resource_name = "jump"
 length = 1.5
@@ -1624,9 +1627,6 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0.342085, 1.5708, 0.0436332), Vector3(0.104663, 1.58219, 0.0399679), Vector3(0, 1.5708, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_3daff"]
-length = 0.001
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dtb0b"]
 _data = {
@@ -2649,7 +2649,7 @@ skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_dsrhm")
 
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 284.462, 36.7765, 240.036)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 963.635, 36.7765, 324.756)
 
 [node name="enemies" type="Node3D" parent="."]
 metadata/_edit_lock_ = true

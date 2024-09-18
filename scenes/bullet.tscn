@@ -17,21 +17,21 @@ height = 3.0
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0222062), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_xst7e"]
+[sub_resource type="CurveTexture" id="CurveTexture_7tqs2"]
 curve = SubResource("Curve_wgpx4")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2j4ib"]
 emission_shape = 1
 emission_sphere_radius = 1.0
 gravity = Vector3(0, 0, -5)
-scale_curve = SubResource("CurveTexture_xst7e")
+scale_curve = SubResource("CurveTexture_7tqs2")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tdlbb"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tadp3"]
 emission_enabled = true
 emission = Color(0.611765, 0.611765, 0.611765, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_6vhel"]
-material = SubResource("StandardMaterial3D_tdlbb")
+material = SubResource("StandardMaterial3D_tadp3")
 radius = 0.3
 height = 0.5
 

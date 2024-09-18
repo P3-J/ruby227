@@ -15,6 +15,8 @@ public partial class enemy : CharacterBody3D
 	Timer timer;
 	Timer retargetTimer;
 	RayCast3D los;
+	Timer deathTimer;
+	GpuParticles3D deathExplosion;
 	bool targetinlos;
 	bool hasAggro;
 
@@ -29,9 +31,10 @@ public partial class enemy : CharacterBody3D
 	RayCast3D groundcheck;
 
 
-	int HP = 4;
-	int cHP = 4;
+	int HP = 1;
+	int cHP = 1;
     bool target;
+	bool Disabled = false;
 
 	/// <summary>
 	///  TO FIX
@@ -61,6 +64,10 @@ public partial class enemy : CharacterBody3D
         navagent.Connect("velocity_computed", new Callable(this, nameof(OnNavigationAgentVelocityComputed)));
         navagent.Connect("link_reached", new Callable(this, nameof(OnNavigationAgentLinkReached))); 
 
+		deathTimer = GetNode<Timer>("death/deathtime");
+		deathExplosion = GetNode<GpuParticles3D>("death/explosion"); 
+		
+
 		SceneTreeTimer tr = GetTree().CreateTimer(1.0);
 		tr.Timeout += OnTimeOut;
 
@@ -77,7 +84,7 @@ public partial class enemy : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-		if (!target){
+		if (!target || Disabled){
 			return;
 		}
 		los.LookAt(player.GlobalPosition);
@@ -136,8 +143,19 @@ public partial class enemy : CharacterBody3D
 		GD.Print("hit");
         cHP -= dmg;
 		if (cHP <= 0)
-			QueueFree();
+			Die();
     }
+
+	private void Die(){	
+		Disabled = true;
+		deathTimer.Start();
+		deathExplosion.Emitting = true;
+		
+	}
+
+	private void _on_deathtime_timeout(){
+		QueueFree(); // do be sad
+	}
 
 	public void SetTargetPos(Vector3 pos)
 	{
@@ -164,7 +182,7 @@ public partial class enemy : CharacterBody3D
 		var collider = los.GetCollider();
 		
 		if (collider is CharacterBody3D && distance < ShootDistance){
-			if ((string)collider.Get("name") == "player"){
+			if ((string)collider.Get("name") == "player"){ // I mean holyC player gotta work right if Collider = player vs converting to string...
 				canMove = false;
 				RotateBody(player.GlobalPosition);
 				if (IsOnFloor()){
@@ -202,7 +220,10 @@ public partial class enemy : CharacterBody3D
     {
         CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
         bulletInstance.Position = GlobalPosition;
-        bulletInstance.Call("SetDirection", (player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
+
+		Vector3 playerPos = player.GlobalPosition;
+        bulletInstance.Call("SetDirection", (playerPos - GlobalTransform.Origin).Normalized() * Speed);
+
 		bulletInstance.Call("SetOwner", "enemy");
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
@@ -228,7 +249,10 @@ public partial class enemy : CharacterBody3D
     } 
 
 	private void _on_shot_cooldown_timeout(){
-		ShootBullet();
+		if (!Disabled){
+			ShootBullet();
+
+		}
 	}
 	
 	private void _on_retarget_timeout(){

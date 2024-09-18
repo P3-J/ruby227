@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://8mw6l4575xco"]
+[gd_scene load_steps=12 format=3 uid="uid://8mw6l4575xco"]
 
 [ext_resource type="Script" path="res://scripts/enemy.cs" id="1_rawnw"]
 [ext_resource type="PackedScene" uid="uid://c4jvnifmx4a1q" path="res://assets/mech2/low_poly_mech_really_0708185600_refine.fbx" id="1_yi6j0"]
@@ -7,6 +7,38 @@
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
+
+[sub_resource type="Curve" id="Curve_akbyu"]
+_data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_f30wx"]
+curve = SubResource("Curve_akbyu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dq0tl"]
+emission_shape = 1
+emission_sphere_radius = 3.0
+angle_min = -67.3
+angle_max = 228.8
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+angular_velocity_min = -114.39
+angular_velocity_max = 100.93
+gravity = Vector3(0, 2, 0)
+linear_accel_min = -10.0
+linear_accel_max = -5.0
+scale_curve = SubResource("CurveTexture_f30wx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s04xs"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_jgrrp"]
+material = SubResource("StandardMaterial3D_s04xs")
+radius = 2.5
+height = 5.0
 
 [node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
 collision_layer = 9
@@ -63,5 +95,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14707, -3.99479, 1.33549)
 target_position = Vector3(0, -2, 0)
 debug_shape_custom_color = Color(0.984314, 1, 0, 1)
 
+[node name="death" type="Node3D" parent="."]
+
+[node name="deathtime" type="Timer" parent="death"]
+one_shot = true
+
+[node name="explosion" type="GPUParticles3D" parent="death"]
+emitting = false
+amount = 16
+explosiveness = 1.0
+randomness = 0.25
+trail_lifetime = 2.04
+process_material = SubResource("ParticleProcessMaterial_dq0tl")
+draw_pass_1 = SubResource("SphereMesh_jgrrp")
+
 [connection signal="timeout" from="shotCooldown" to="." method="_on_shot_cooldown_timeout"]
 [connection signal="timeout" from="retarget" to="." method="_on_retarget_timeout"]
+[connection signal="timeout" from="death/deathtime" to="." method="_on_deathtime_timeout"]

@@ -22,6 +22,7 @@ public partial class world : Node3D
 		Callable bosshit= new Callable(this, nameof(UpdateBossUI));
 		bossman.Connect("BossHit", bosshit);
 
+		AudioServer.SetBusVolumeDb(0, 0f); // audio levels normalized, use diff bus for music
     }
 
 	public void UpdateBossUI(int hp){

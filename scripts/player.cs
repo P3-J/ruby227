@@ -304,6 +304,7 @@ public partial class player : CharacterBody3D
         // start death explosion, trigger below to scene reset rn
         //GetTree().ReloadCurrentScene();
         if (!canMove){return;} // stops a loop from happening. just a band aid to a bigger problem
+        AudioServer.SetBusVolumeDb(0, -40f);
         deathExplosion.Emitting = true;
         canMove = false;
         deathanim.Play("death");
