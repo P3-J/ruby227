@@ -28,8 +28,6 @@ public partial class enemy : CharacterBody3D
 	public const float Gravity = -9.8f;
 	public const float jumpstr = 10f;
 	Vector3 next = Vector3.Zero;
-	RayCast3D groundcheck;
-
 
 	int HP = 1;
 	int cHP = 1;
@@ -39,13 +37,11 @@ public partial class enemy : CharacterBody3D
 	/// <summary>
 	///  TO FIX
 	///  los can target other enemies, this should not be a factor - ? i think fake news
-	///  look at, is looking at the final destination. not good - done
+	///  look at, is looking at the final destination. not good +
 	///  randomize speed, instead of latency to introduce some randomness? 
-	///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok rn with lag
-	///  but can create quite a lot of randomness ? 
-	///  death anim
-	///  container ship/
-	///  invisible barriers just for bots
+	///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok
+	///  death anim +
+	///  invisible barriers just for bots +
 	/// </summary>
     public override void _Ready()
     {
@@ -58,7 +54,6 @@ public partial class enemy : CharacterBody3D
 		retargetTimer = GetNode<Timer>("retarget");
 		booster = GetNode<AudioStreamPlayer3D>("booster");
 		rocket  =GetNode<AudioStreamPlayer3D>("rocket");
-		groundcheck = GetNode<RayCast3D>("groundcheck");
 
         navagent.Connect("target_reached", new Callable(this, nameof(OnNavigationAgentTargetReached)));
         navagent.Connect("velocity_computed", new Callable(this, nameof(OnNavigationAgentVelocityComputed)));
@@ -104,20 +99,16 @@ public partial class enemy : CharacterBody3D
 		ColliderMovementController(distance);
 
 		velocity = Velocity;
-		if (IsOnFloor() && groundcheck.IsColliding()) {
+		if (IsOnFloor()) {
 			GD.Print("on floor");
 			next = navagent.GetNextPathPosition();
 			RotateBody(next);
+		} else {
+			velocity.Y += Gravity * (float)delta;
 		}
-			
-		if (!groundcheck.IsColliding())
-        {
-			GD.Print("applying");
-            velocity.Y += Gravity * (float)delta;
-        }
-
+		
 		Vector3	dir = GlobalPosition.DirectionTo(next);
-        if (next != Vector3.Zero && canMove && groundcheck.IsColliding()){
+        if (next != Vector3.Zero && canMove){
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
 		} 
