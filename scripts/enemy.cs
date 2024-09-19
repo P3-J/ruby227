@@ -94,17 +94,18 @@ public partial class enemy : CharacterBody3D
 			Vector3 origin = los.GlobalPosition;
 			Vector3 colPoint = los.GetCollisionPoint();
 			distance = origin.DistanceTo(colPoint);
-			GD.Print(distance);
 		}
-		ColliderMovementController(distance);
 
 		if (!hasAggro){
 			AggroCheck(distance);
 			return;
 		}
 
+		ColliderMovementController(distance);
+
 		velocity = Velocity;
 		if (IsOnFloor() && groundcheck.IsColliding()) {
+			GD.Print("on floor");
 			next = navagent.GetNextPathPosition();
 			RotateBody(next);
 		}
@@ -182,7 +183,7 @@ public partial class enemy : CharacterBody3D
 		var collider = los.GetCollider();
 		
 		if (collider is CharacterBody3D && distance < ShootDistance){
-			if ((string)collider.Get("name") == "player"){ // I mean holyC player gotta work right if Collider = player vs converting to string...
+			if (collider == player){ // I mean holyC player gotta work right if Collider = player vs converting to string...
 				canMove = false;
 				RotateBody(player.GlobalPosition);
 				if (IsOnFloor()){
@@ -196,6 +197,7 @@ public partial class enemy : CharacterBody3D
 		} else {
 			canMove = true;
 			SetTargetPos(player.GlobalPosition);
+			GD.Print("step");
 			//SetTargetPos(player.GlobalPosition); this causes constant recalculations
 		}
 	}
