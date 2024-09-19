@@ -90,11 +90,6 @@ collide_with_areas = true
 debug_shape_custom_color = Color(0.379437, 0.473598, 1, 1)
 debug_shape_thickness = 1
 
-[node name="groundcheck" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14707, -3.99479, 1.33549)
-target_position = Vector3(0, -2, 0)
-debug_shape_custom_color = Color(0.984314, 1, 0, 1)
-
 [node name="death" type="Node3D" parent="."]
 
 [node name="deathtime" type="Timer" parent="death"]
