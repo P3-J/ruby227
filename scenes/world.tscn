@@ -2649,7 +2649,7 @@ skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_dsrhm")
 
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 951.045, 36.7765, 302.379)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1116.6, 36.7765, 214.399)
 
 [node name="enemies" type="Node3D" parent="."]
 metadata/_edit_lock_ = true

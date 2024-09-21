@@ -100,7 +100,6 @@ public partial class enemy : CharacterBody3D
 
 		velocity = Velocity;
 		if (IsOnFloor()) {
-			GD.Print("on floor");
 			next = navagent.GetNextPathPosition();
 			RotateBody(next);
 		} else {
@@ -172,9 +171,9 @@ public partial class enemy : CharacterBody3D
 	public void ColliderMovementController(float distance){
 		//Raycast look at player, stop if in los, or move if not
 		var collider = los.GetCollider();
-		
+	
 		if (collider is CharacterBody3D && distance < ShootDistance){
-			if (collider == player){ // I mean holyC player gotta work right if Collider = player vs converting to string...
+			if (collider == player){
 				canMove = false;
 				RotateBody(player.GlobalPosition);
 				if (IsOnFloor()){
@@ -188,7 +187,6 @@ public partial class enemy : CharacterBody3D
 		} else {
 			canMove = true;
 			SetTargetPos(player.GlobalPosition);
-			GD.Print("step");
 			//SetTargetPos(player.GlobalPosition); this causes constant recalculations
 		}
 	}
@@ -233,9 +231,8 @@ public partial class enemy : CharacterBody3D
     private void OnNavigationAgentTargetReached()
     {
         SetTargetPos(player.GlobalPosition);
-        // wait some time to randomize the movement 
     }
-
+	#pragma warning disable IDE0060
     private void OnNavigationAgentLinkReached(Dictionary data)
     {
         Jump();
@@ -244,7 +241,6 @@ public partial class enemy : CharacterBody3D
 	private void _on_shot_cooldown_timeout(){
 		if (!Disabled){
 			ShootBullet();
-
 		}
 	}
 	

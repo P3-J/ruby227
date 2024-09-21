@@ -152,12 +152,10 @@ public partial class player : CharacterBody3D
         if (Input.IsActionPressed("left")){
             rotationInput += 0.02f;
             RightSteam.Emitting = true;
-            GD.Print("wtf");
             PlaySteamAudioIfCan();
         }
         if (Input.IsActionPressed("right")){
             rotationInput -= 0.02f;
-            GD.Print("wtff");
             LeftSteam.Emitting = true;
             PlaySteamAudioIfCan();
         }

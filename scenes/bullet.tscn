@@ -25,6 +25,7 @@ emission_shape = 1
 emission_sphere_radius = 1.0
 gravity = Vector3(0, 0, -5)
 scale_curve = SubResource("CurveTexture_7tqs2")
+sub_emitter_keep_velocity = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tadp3"]
 emission_enabled = true
@@ -43,7 +44,6 @@ collisionRay = NodePath("bulletBody/ray")
 explosion = ExtResource("2_ugt12")
 
 [node name="bulletBody" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.0136957, 4.76837e-07, 0.00748205)
 mesh = SubResource("CapsuleMesh_shm2i")
 skeleton = NodePath("")
 

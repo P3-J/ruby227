@@ -1,8 +1,6 @@
-using Godot;
-using Godot.Collections;
 using System;
-using System.Linq;
-
+using System.Net;
+using Godot;
 public partial class bullet : CharacterBody3D
 {
 	[Export] public float BulletSpeed;
@@ -18,9 +16,15 @@ public partial class bullet : CharacterBody3D
 
     public override void _Ready()
     {
-		float angleRadians = Mathf.Atan2(_direction.X, _direction.Z);
+	    /* float angleRadians = Mathf.Atan2(_direction.X, _direction.Z);
 		float angleDegrees = Mathf.RadToDeg(angleRadians);
-		bulletBody.RotationDegrees = new Vector3(90, angleDegrees, 0);
+
+		float x = Mathf.RadToDeg(Mathf.Atan2(_direction.Y, _direction.Z)); */
+		/* float xDegWithRot = 90 - Mathf.RadToDeg(_direction.X);
+		bulletBody.RotationDegrees = new Vector3(xDegWithRot, angleDegrees, 0); */ 
+
+		bulletBody.LookAt(_direction);
+		GD.Print(bulletBody.Rotation);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -30,6 +34,7 @@ public partial class bullet : CharacterBody3D
 			string colliderName = (string)collider.Get("name");
 			if (colliderName != "entity_0_worldspawn" && colliderName != owner){
 				// little hardcoding never killed anyone L
+				GD.Print(colliderName, owner);
 				collider.Call("GetHit", damage);
 			}
 			GenerateExplosion(collisionRay.GetCollisionPoint());

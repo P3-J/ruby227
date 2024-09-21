@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=50 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
@@ -39,6 +39,9 @@ emission = Color(0.299547, 0.299547, 0.299547, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_nlf8a"]
 material = SubResource("StandardMaterial3D_h6i3f")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ixa1l"]
+size = Vector3(0.25, 0.25, 0.25)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_krquv"]
 albedo_color = Color(0.133196, 0.133196, 0.133196, 1)
@@ -274,7 +277,10 @@ transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.2
 skeleton = NodePath("../..")
 
 [node name="missilelauncherspot" type="Marker3D" parent="mech/missilelauncherswivel/missilelauncher"]
-transform = Transform3D(1.59944e-07, -4, 3.49691e-07, -4, -1.59944e-07, -2.02026e-14, 3.65307e-14, -3.49691e-07, -4, -2.01328, -0.0729828, -0.00679374)
+transform = Transform3D(1.59944e-07, -4, 3.49691e-07, -4, -1.59944e-07, -2.02026e-14, 3.65307e-14, -3.49691e-07, -4, -7.07599, -0.0729828, -0.00679445)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mech/missilelauncherswivel/missilelauncher/missilelauncherspot"]
+mesh = SubResource("BoxMesh_ixa1l")
 
 [node name="missilelauncherbase" type="MeshInstance3D" parent="mech/missilelauncherswivel"]
 transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)
