@@ -23,7 +23,7 @@ curve = SubResource("Curve_wgpx4")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2j4ib"]
 emission_shape = 1
 emission_sphere_radius = 1.0
-gravity = Vector3(0, 0, -5)
+gravity = Vector3(10, 0, 0)
 scale_curve = SubResource("CurveTexture_7tqs2")
 sub_emitter_keep_velocity = true
 
@@ -39,22 +39,26 @@ height = 0.5
 [node name="bullet" type="CharacterBody3D" node_paths=PackedStringArray("bulletBody", "collisionRay")]
 script = ExtResource("1_4n7bp")
 BulletSpeed = 50.0
-bulletBody = NodePath("bulletBody")
-collisionRay = NodePath("bulletBody/ray")
+bulletBody = NodePath("bcontroller/bulletBody")
+collisionRay = NodePath("bcontroller/bulletBody/ray")
 explosion = ExtResource("2_ugt12")
 
-[node name="bulletBody" type="MeshInstance3D" parent="."]
+[node name="bcontroller" type="Node3D" parent="."]
+transform = Transform3D(-0.0343064, 0, -0.999411, 0, 1, 0, 0.999411, 0, -0.0343064, 0, 0, 0)
+
+[node name="bulletBody" type="MeshInstance3D" parent="bcontroller"]
+transform = Transform3D(-0.000522099, 0.0343024, 0.999411, 0.999884, 0.0152187, 0, -0.0152097, 0.999296, -0.0343064, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_shm2i")
 skeleton = NodePath("")
 
-[node name="ray" type="RayCast3D" parent="bulletBody"]
+[node name="ray" type="RayCast3D" parent="bcontroller/bulletBody"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.0136957, -0.00748205, 4.77164e-07)
 target_position = Vector3(0, 0, 2)
 debug_shape_custom_color = Color(1, 1, 0, 1)
 debug_shape_thickness = 4
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="bulletBody"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.0136957, -1.09474, 5.2469e-07)
+[node name="GPUParticles3D" type="GPUParticles3D" parent="bcontroller/bulletBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0136957, -1.09474, 5.2469e-07)
 lifetime = 0.5
 trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_2j4ib")

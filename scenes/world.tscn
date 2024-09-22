@@ -2577,11 +2577,6 @@ text = "P2"
 [node name="bossmusic" type="AudioStreamPlayer" parent="bossfightstuff"]
 stream = ExtResource("30_nwm7y")
 
-[node name="Decal" type="Decal" parent="bossfightstuff"]
-transform = Transform3D(-4.37114e-07, -9.99925, -0.122171, 2.43547, 0.118492, -9.69816, 9.69889, -0.0297548, 2.43529, 992.039, 18.512, 266.917)
-size = Vector3(2, 0.194336, 2)
-texture_albedo = ExtResource("27_gcb10")
-
 [node name="worldstuffs" type="Node3D" parent="."]
 
 [node name="SpotLight3D" type="SpotLight3D" parent="worldstuffs"]
@@ -2648,6 +2643,16 @@ mesh = SubResource("PlaneMesh_wf40l")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_dsrhm")
 
+[node name="Decal" type="Decal" parent="worldstuffs"]
+transform = Transform3D(-4.37114e-07, -9.99925, -0.122171, 2.43547, 0.118492, -9.69816, 9.69889, -0.0297548, 2.43529, 992.039, 18.512, 266.917)
+size = Vector3(2, 0.194336, 2)
+texture_albedo = ExtResource("27_gcb10")
+
+[node name="Decal2" type="Decal" parent="worldstuffs"]
+transform = Transform3D(-0.979804, -0.158651, -0.121712, 0.0542652, 0.374871, -0.925488, 0.192456, -0.913401, -0.358691, 1179.58, 41.1435, 162.117)
+size = Vector3(2, 13.6858, 14.2949)
+texture_albedo = ExtResource("43_nyen7")
+
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1116.6, 36.7765, 214.399)
 
@@ -2712,6 +2717,7 @@ AggroDistance = 150.0
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.920949, -0.389683, 2.98023e-08, 0.415097, 0.676873, 0.595109, 0.0762338, -0.732143, 0.785122, 1231.75, 60.7218, 151.553)
 light_color = Color(0.999999, 0.999643, 0.846603, 1)
+light_energy = 0.65
 shadow_enabled = true
 directional_shadow_max_distance = 1000.0
 sky_mode = 1

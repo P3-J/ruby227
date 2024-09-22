@@ -10,6 +10,7 @@ public partial class bullet : CharacterBody3D
 	[Export] MeshInstance3D bulletBody;
 	[Export] RayCast3D collisionRay;
 	[Export] PackedScene explosion;
+	Node3D bcontroller;
 
 	public string owner;
 	public int damage = 1;
@@ -18,13 +19,10 @@ public partial class bullet : CharacterBody3D
     {
 	    /* float angleRadians = Mathf.Atan2(_direction.X, _direction.Z);
 		float angleDegrees = Mathf.RadToDeg(angleRadians);
+		bulletBody.RotationDegrees = new Vector3(90, angleDegrees, 0); */ 
 
-		float x = Mathf.RadToDeg(Mathf.Atan2(_direction.Y, _direction.Z)); */
-		/* float xDegWithRot = 90 - Mathf.RadToDeg(_direction.X);
-		bulletBody.RotationDegrees = new Vector3(xDegWithRot, angleDegrees, 0); */ 
-
-		bulletBody.LookAt(_direction);
-		GD.Print(bulletBody.Rotation);
+		bcontroller = GetNode<Node3D>("bcontroller");
+		bcontroller.LookAt(GlobalTransform.Origin - _direction); // start - end = angle
     }
 
     public override void _PhysicsProcess(double delta)
@@ -33,8 +31,6 @@ public partial class bullet : CharacterBody3D
 			GodotObject collider = collisionRay.GetCollider();
 			string colliderName = (string)collider.Get("name");
 			if (colliderName != "entity_0_worldspawn" && colliderName != owner){
-				// little hardcoding never killed anyone L
-				GD.Print(colliderName, owner);
 				collider.Call("GetHit", damage);
 			}
 			GenerateExplosion(collisionRay.GetCollisionPoint());
