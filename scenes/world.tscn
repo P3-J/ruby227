@@ -1,4 +1,4 @@
-[gd_scene load_steps=376 format=4 uid="uid://be2ea7siblocu"]
+[gd_scene load_steps=369 format=4 uid="uid://be2ea7siblocu"]
 
 [ext_resource type="Script" path="res://addons/qodot/src/nodes/qodot_map.gd" id="1_bxnhj"]
 [ext_resource type="Script" path="res://scripts/world.cs" id="1_fkfjl"]
@@ -30,10 +30,8 @@
 [ext_resource type="Texture2D" uid="uid://0fu78u2eawha" path="res://textures/Concrete/Materials/concrete_15.jpg" id="29_s0jv8"]
 [ext_resource type="PackedScene" uid="uid://b0vtq76m7r3eg" path="res://scenes/bossman.tscn" id="30_dfnou"]
 [ext_resource type="Texture2D" uid="uid://cwdiutu5jpm80" path="res://textures/Ground/Materials/gravel_02.png" id="30_etvcq"]
-[ext_resource type="AudioStream" uid="uid://cad2jer7hnut1" path="res://music/May_the_fourth_be_with_you.mp3" id="30_nwm7y"]
 [ext_resource type="PackedScene" uid="uid://bdgnwy0jieigu" path="res://scenes/laser.tscn" id="31_2buc7"]
 [ext_resource type="Texture2D" uid="uid://cshppavykf1wy" path="res://textures/128x128/Brick/Brick_08-128x128.png" id="31_8o33d"]
-[ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="31_lhtsh"]
 [ext_resource type="Texture2D" uid="uid://d3kgpbtxh6612" path="res://textures/Metal/Materials/misc_metal_01.jpg" id="32_rc7ey"]
 [ext_resource type="Material" uid="uid://bj4nb85duo2ha" path="res://textures/newwithe/Facade010_1K-JPG_Color.tres" id="33_bx0po"]
 [ext_resource type="Texture2D" uid="uid://t3rbryrfnly3" path="res://textures/Walls/Materials/siding_wood_05.jpg" id="34_64o35"]
@@ -1391,176 +1389,6 @@ points = PackedVector3Array(944, 64, 222, 944, 48, 222, 960, 48, 222, 960, 64, 2
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_76glg"]
 points = PackedVector3Array(1388, 80, 220, 1388, 28, 220, 1436, 28, 220, 1436, 80, 220, 1388, 80, 224, 1388, 28, 224, 1436, 28, 224, 1436, 80, 224)
 
-[sub_resource type="Animation" id="Animation_2adko"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("laser:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-87.6308, -182.317, -31.0775)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("laser2:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-89.0675, -182.317, 128.003)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("laser3:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-160.474, -182.317, 48.7388)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("laser4:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-15.887, -182.317, 49.4653)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("bossman:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-85.996, -132.556, -349.566)]
-}
-
-[sub_resource type="Animation" id="Animation_y0seo"]
-resource_name = "entry"
-length = 5.0
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimationPlayer")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(5),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": ["laser_fight", -1, 1.0, false],
-"method": &"play"
-}]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("bossman:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-85.996, -132.556, -349.566), Vector3(-88.6156, -177.443, 48.7547)]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("..")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(5),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"AwakeBoss"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_ppxs1"]
-resource_name = "laser_fight"
-length = 10.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("laser:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 10),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-87.6308, -182.317, -31.0775), Vector3(-87.6308, -182.317, 127.388)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("laser2:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 10),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-89.0675, -182.317, 128.003), Vector3(-89.0675, -182.317, -29.8156)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("laser3:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 10),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-160.474, -182.317, 48.7388), Vector3(-16.349, -182.317, 48.7388)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("laser4:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 10),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-15.887, -182.317, 49.4653), Vector3(-159.781, -182.317, 49.4653)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_cp5m5"]
-_data = {
-"RESET": SubResource("Animation_2adko"),
-"entry": SubResource("Animation_y0seo"),
-"laser_fight": SubResource("Animation_ppxs1")
-}
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ivtcu"]
-size = Vector3(10, 3, 10)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1frn"]
 bg_color = Color(0.0901961, 0, 0.172549, 0.129412)
 
@@ -1634,11 +1462,10 @@ _data = {
 "jump": SubResource("Animation_sg3ar")
 }
 
-[node name="world" type="Node3D" node_paths=PackedStringArray("bossman", "bossmusic", "player")]
+[node name="world" type="Node3D" node_paths=PackedStringArray("bossman", "player")]
 script = ExtResource("1_fkfjl")
 bossman = NodePath("bossfightstuff/bossman")
 Ending = ExtResource("2_cao76")
-bossmusic = NodePath("bossfightstuff/bossmusic")
 player = NodePath("player")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -2518,64 +2345,39 @@ start_position = Vector3(10.4795, -17.8884, -27.7054)
 
 [node name="bossfightstuff" type="Node3D" parent="."]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="bossfightstuff"]
-libraries = {
-"": SubResource("AnimationLibrary_cp5m5")
-}
-
 [node name="laser" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(0.00801097, 0, -0.999968, 0, 1, 0, 0.999968, 0, 0.00801097, -87.6308, -182.317, -31.0775)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -34.6804, 41.0329, 142.171)
 
 [node name="laser2" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(0.00801097, 0, -0.999968, 0, 1, 0, 0.999968, 0, 0.00801097, -89.0675, -182.317, 128.003)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -33.6529, 41.0329, 340.201)
 
 [node name="laser3" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -160.474, -182.317, 48.7388)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -116.492, 41.0329, 245.509)
 
 [node name="laser4" parent="bossfightstuff" instance=ExtResource("31_2buc7")]
-transform = Transform3D(0.999988, 0, -0.00499162, 0, 1, 0, 0.00499162, 0, 0.999988, -15.887, -182.317, 49.4653)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.7173, 41.0329, 237.343)
 
 [node name="bossman" parent="bossfightstuff" node_paths=PackedStringArray("player") instance=ExtResource("30_dfnou")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -85.996, -132.556, -349.566)
+transform = Transform3D(0.999436, 0, -0.0335739, 0, 1, 0, 0.0335739, 0, 0.999436, -36.8775, 49.2456, 240.666)
 player = NodePath("../../player")
-Bullet = ExtResource("31_lhtsh")
-
-[node name="bossfighttrigger" type="Area3D" parent="bossfightstuff"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.6423, -136.863, 57.3869)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="bossfightstuff/bossfighttrigger"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.32501, 0, 0.723389)
-shape = SubResource("BoxShape3D_ivtcu")
 
 [node name="bosshud" type="Control" parent="bossfightstuff"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 511.0
+offset_bottom = 134.0
 
 [node name="bosshp" type="ProgressBar" parent="bossfightstuff/bosshud"]
 layout_mode = 0
-offset_left = 100.0
-offset_top = 27.0
-offset_right = 544.0
-offset_bottom = 54.0
+offset_left = 39.0
+offset_top = 24.0
+offset_right = 483.0
+offset_bottom = 51.0
 theme_override_styles/background = SubResource("StyleBoxFlat_f1frn")
 theme_override_styles/fill = SubResource("StyleBoxFlat_6nw6b")
 max_value = 10.0
 value = 10.0
-
-[node name="bossname" type="Label" parent="bossfightstuff/bosshud"]
-visible = false
-texture_filter = 1
-layout_mode = 0
-offset_left = 306.0
-offset_top = 3.0
-offset_right = 400.0
-offset_bottom = 29.0
-text = "P2"
-
-[node name="bossmusic" type="AudioStreamPlayer" parent="bossfightstuff"]
-stream = ExtResource("30_nwm7y")
 
 [node name="worldstuffs" type="Node3D" parent="."]
 
@@ -2654,7 +2456,7 @@ size = Vector3(2, 13.6858, 14.2949)
 texture_albedo = ExtResource("43_nyen7")
 
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1116.6, 36.7765, 214.399)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 18.1792, 39.2163, 231.57)
 
 [node name="enemies" type="Node3D" parent="."]
 metadata/_edit_lock_ = true
@@ -2765,5 +2567,4 @@ libraries = {
 "": SubResource("AnimationLibrary_dtb0b")
 }
 
-[connection signal="body_entered" from="bossfightstuff/bossfighttrigger" to="." method="_on_bossfighttrigger_body_entered"]
 [connection signal="body_entered" from="onetimethings/bossarea" to="." method="_on_bossarea_body_entered"]

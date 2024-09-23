@@ -280,7 +280,7 @@ public partial class player : CharacterBody3D
             float Distance = 10000.0f; //cutoff
             foreach (Node3D enemy in enemies)
             {
-                if (enemy is CharacterBody3D && (string)enemy.Get("name") != "player"){
+                if (enemy is CharacterBody3D && enemy != this){
                     float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
                     if (distanceTo < Distance){
                         Distance = distanceTo;

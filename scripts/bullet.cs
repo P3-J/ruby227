@@ -17,10 +17,6 @@ public partial class bullet : CharacterBody3D
 
     public override void _Ready()
     {
-	    /* float angleRadians = Mathf.Atan2(_direction.X, _direction.Z);
-		float angleDegrees = Mathf.RadToDeg(angleRadians);
-		bulletBody.RotationDegrees = new Vector3(90, angleDegrees, 0); */ 
-
 		bcontroller = GetNode<Node3D>("bcontroller");
 		bcontroller.LookAt(GlobalTransform.Origin - _direction); // start - end = angle
     }
