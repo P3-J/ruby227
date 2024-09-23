@@ -31,14 +31,6 @@ public partial class world : Node3D
 		}
 	}
 
-	public void AwakeBoss(){
-		// call this when boss at required location
-		// starts boss controller
-		bossman.Call("StartSequence");
-		enemyHpBar.Visible = true;
-	}
-
-
 	public void _on_bossarea_body_entered(Node3D body){
 		if (body == player){
 			booster.Play("jump");

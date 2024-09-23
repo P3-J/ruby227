@@ -3,8 +3,6 @@ using System;
 
 public partial class bossman : CharacterBody3D
 {
-	// this is not meant to be a direct controller
-	// alternative simple state machine, commands from parent
 	[Export] CharacterBody3D player;
 	[Export] public PackedScene Bullet;
 
@@ -15,7 +13,6 @@ public partial class bossman : CharacterBody3D
 
 	Timer shottimer;
 	Marker3D shotspot;
-	AnimationPlayer bossanim;
 	public override void _Ready()
 	{
 		shotspot = GetNode<Marker3D>("shotspot");
@@ -33,7 +30,7 @@ public partial class bossman : CharacterBody3D
 
 
 
-	public void GetHit(){
+	public void GetHit(int dmg){
 		GD.Print("got hit");
         HP -= 1;
         EmitSignal("BossHit", HP);

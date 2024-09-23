@@ -25,10 +25,10 @@ public partial class bullet : CharacterBody3D
 	{
 		if (collisionRay.IsColliding()){
 			GodotObject collider = collisionRay.GetCollider();
-			string colliderName = (string)collider.Get("name");
-			if (colliderName != "entity_0_worldspawn" && colliderName != owner){
+			if (collider is CharacterBody3D){
 				collider.Call("GetHit", damage);
-			}
+			}   // faster, alternative can use masks, do not need to set owner
+			
 			GenerateExplosion(collisionRay.GetCollisionPoint());
 			QueueFree();
 			

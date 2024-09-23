@@ -2456,7 +2456,7 @@ size = Vector3(2, 13.6858, 14.2949)
 texture_albedo = ExtResource("43_nyen7")
 
 [node name="player" parent="." instance=ExtResource("6_av7ui")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 18.1792, 39.2163, 231.57)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1119.88, 39.2163, 210.93)
 
 [node name="enemies" type="Node3D" parent="."]
 metadata/_edit_lock_ = true
