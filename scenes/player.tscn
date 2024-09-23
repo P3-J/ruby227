@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=58 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
@@ -84,6 +84,27 @@ turbulence_noise_speed_random = 0.81
 turbulence_influence_min = 0.235
 turbulence_influence_max = 0.235
 turbulence_initial_displacement_min = -9.5
+
+[sub_resource type="Curve" id="Curve_7hryc"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.990506, 0.38602), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_q4myi"]
+curve = SubResource("Curve_7hryc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c3q1h"]
+emission_shape = 1
+emission_sphere_radius = 0.1
+gravity = Vector3(-5, 1, 0)
+scale_curve = SubResource("CurveTexture_q4myi")
+sub_emitter_keep_velocity = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_luufi"]
+albedo_color = Color(4.51226e-08, 0.0480507, 0.0675314, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pcpm1"]
+material = SubResource("StandardMaterial3D_luufi")
+size = Vector3(0.05, 0.05, 0.05)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_37j6b"]
 render_priority = 0
@@ -326,6 +347,26 @@ preprocess = 0.1
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_b176k")
 draw_pass_1 = SubResource("SphereMesh_nlf8a")
+
+[node name="dust" type="GPUParticles3D" parent="mech"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14125, -0.647471, -0.388825)
+emitting = false
+amount = 16
+lifetime = 0.4
+randomness = 0.92
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_c3q1h")
+draw_pass_1 = SubResource("BoxMesh_pcpm1")
+
+[node name="dust2" type="GPUParticles3D" parent="mech"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14125, -0.647471, 0.367774)
+emitting = false
+amount = 16
+lifetime = 0.4
+randomness = 0.92
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_c3q1h")
+draw_pass_1 = SubResource("BoxMesh_pcpm1")
 
 [node name="camBase" type="Node3D" parent="."]
 

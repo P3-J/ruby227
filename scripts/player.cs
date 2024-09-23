@@ -22,11 +22,14 @@ public partial class player : CharacterBody3D
     RayCast3D MissileTargeter;
     GpuParticles3D RightSteam;
     GpuParticles3D LeftSteam;
+    GpuParticles3D Dust1;
+    GpuParticles3D Dust2;
     Node2D tsquareController;
     Camera3D playercam;
     Timer EnemyTimer;
     Area3D DetArea;
     AnimationPlayer deathanim;
+
 
     GpuParticles3D deathExplosion;
     private const float Gravity = -2.8f;
@@ -65,6 +68,9 @@ public partial class player : CharacterBody3D
 
         RightSteam = GetNode<GpuParticles3D>("mech/rightgas");
         LeftSteam = GetNode<GpuParticles3D>("mech/leftgas");
+
+        Dust1 = GetNode<GpuParticles3D>("mech/dust");
+        Dust2 = GetNode<GpuParticles3D>("mech/dust2");
 
         deathExplosion = GetNode<GpuParticles3D>("particles/explosion");
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
@@ -129,10 +135,10 @@ public partial class player : CharacterBody3D
 
         if (direction == Vector3.Zero){
             booster.Stop();
-            ShoulderParticleController(false);
+            ExtraParticleController(false);
         } else if (!booster.Playing) {
             booster.Play();
-            ShoulderParticleController(true);
+            ExtraParticleController(true);
         }
 
         Velocity = fakeVelo;
@@ -312,9 +318,11 @@ public partial class player : CharacterBody3D
         GetTree().ReloadCurrentScene();
     }
 
-    public void ShoulderParticleController(bool state){
+    public void ExtraParticleController(bool state){
         leftshoulder.Emitting  = state;
         rightshoulder.Emitting = state;
+        Dust1.Emitting         = state;
+        Dust2.Emitting         = state;
     }
 
 }
