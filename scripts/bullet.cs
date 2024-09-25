@@ -14,6 +14,7 @@ public partial class bullet : CharacterBody3D
 
 	public string owner;
 	public int damage = 1;
+	public float extraSpeed = 0f;
 
     public override void _Ready()
     {
@@ -34,7 +35,7 @@ public partial class bullet : CharacterBody3D
 			
 		}
 
-		_velocity = _direction * BulletSpeed;
+		_velocity = _direction * (BulletSpeed + extraSpeed);
 		Velocity = _velocity;
 		MoveAndSlide();
 	}
