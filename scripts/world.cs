@@ -16,12 +16,16 @@ public partial class world : Node3D
 		enemyHpBar = GetNode<ProgressBar>("bossfightstuff/bosshud/bosshp");
 		booster = GetNode<AnimationPlayer>("onetimethings/bossarea/AnimationPlayer");
 
-		enemyHpBar.Visible = false;
+		StartUp();
+    }
+
+	private void StartUp(){
 		Callable bosshit= new Callable(this, nameof(UpdateBossUI));
 		bossman.Connect("BossHit", bosshit);
 
-		AudioServer.SetBusVolumeDb(0, 0f); // audio levels normalized, use diff bus for music
-    }
+		enemyHpBar.Visible = false;
+		AudioServer.SetBusVolumeDb(0, 0f);
+	}
 
 	public void UpdateBossUI(int hp){
 		// prob could do a simple move towards for anim.

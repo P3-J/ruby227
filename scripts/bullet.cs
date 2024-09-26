@@ -48,6 +48,10 @@ public partial class bullet : CharacterBody3D
 		damage = dmg;
 	}
 
+	public void RemoveRayCastMask(int layer, bool state){
+		collisionRay.SetCollisionMaskValue(layer, state);
+	}
+
 	public void SetDirection(Vector3 newDire)
 	{
 		_direction = newDire.Normalized();

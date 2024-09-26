@@ -36,11 +36,22 @@ public partial class bossman : CharacterBody3D
 	public override void _PhysicsProcess(double delta){
 		if (disabled){return;}
 
-		LookAt(player.GlobalPosition);
+		LookAtPos(player.GlobalPosition);
 	}
 
 	private void StartCombat(){
 		shottimer.Start();
+	}
+
+	private void LookAtPos(Vector3 pos){
+
+		Vector3 dire = GlobalPosition - pos;
+
+		float angleRadians = Mathf.Atan2(dire.X, dire.Z);
+		float angleDegrees = Mathf.RadToDeg(angleRadians);
+		RotationDegrees = new Vector3(0, angleDegrees, 0);
+		GD.Print(RotationDegrees, pos);
+
 	}
 
 	private void ShootBullet(int dmg, Marker3D spot, Vector3 offset){
@@ -49,9 +60,11 @@ public partial class bossman : CharacterBody3D
 		Vector3 playerPos = player.GlobalPosition;
 		playerPos += offset;
 		
+		bulletInstance.RemoveRayCastMask(2, false);
 		bulletInstance.SetDirection((playerPos - spot.GlobalPosition).Normalized());
 		bulletInstance.SetOwner("enemy");
 		bulletInstance.SetDamage(dmg);
+		bulletInstance.extraSpeed = 10;
 
 		GetParent().AddChild(bulletInstance);
 	}
@@ -66,20 +79,16 @@ public partial class bossman : CharacterBody3D
 
 			switch (cannon){
 				case 0:
-					offset.Y = 1;
-					offset.Z = 1;
+					offset.X = 0;
 					break;
 				case 1:
-					offset.Y -= 1;
-					offset.Z -= 1;
+					offset.X = -5;
 					break;
 				case 2:
-					offset.Y -= 6;
-					offset.Z -= 6;
+					offset.X = -10;
 					break;
 				case 3:
-					offset.Y = 6;
-					offset.Z = 6;
+					offset.X = 10;
 					break;
 			}
 

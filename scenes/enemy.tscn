@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://8mw6l4575xco"]
+[gd_scene load_steps=14 format=3 uid="uid://8mw6l4575xco"]
 
 [ext_resource type="Script" path="res://scripts/enemy.cs" id="1_rawnw"]
 [ext_resource type="PackedScene" uid="uid://c4jvnifmx4a1q" path="res://assets/mech2/low_poly_mech_really_0708185600_refine.fbx" id="1_yi6j0"]
@@ -7,6 +7,14 @@
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_s2p7o"]
+size = Vector3(0.15, 0.1, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1qdjr"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
 
 [sub_resource type="Curve" id="Curve_akbyu"]
 _data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
@@ -66,6 +74,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.567605, 0.819349)
 
 [node name="body" parent="bodyController" instance=ExtResource("1_yi6j0")]
 transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.019232, 0, -0.999284)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="bodyController/body"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.187091, 0.483048, 2.55217e-08)
+mesh = SubResource("PrismMesh_s2p7o")
+surface_material_override/0 = SubResource("StandardMaterial3D_1qdjr")
 
 [node name="shotCooldown" type="Timer" parent="."]
 wait_time = 2.0

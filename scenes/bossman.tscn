@@ -16,6 +16,8 @@ material = SubResource("StandardMaterial3D_krquv")
 size = Vector3(0.05, 0.2, 0.07)
 
 [node name="bossman" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_1higd")
 Bullet = ExtResource("2_l1ify")
 
@@ -36,7 +38,7 @@ transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.2
 skeleton = NodePath("../..")
 
 [node name="missilelauncherspot" type="Marker3D" parent="body/root/missilelauncherswivel/missilelauncher"]
-transform = Transform3D(1.59944e-07, -4, 2.83122e-07, -4, -1.59944e-07, -2.02026e-14, 3.64153e-14, -2.83122e-07, -4, -2.1691, -0.0729828, -0.0100926)
+transform = Transform3D(1.59944e-07, -4, 2.98023e-07, -4, -1.59944e-07, -2.02026e-14, 3.64153e-14, -2.98023e-07, -4, -1.91174, -0.0729828, 0.00262517)
 
 [node name="missilelauncherbase" type="MeshInstance3D" parent="body/root/missilelauncherswivel"]
 transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)
@@ -51,7 +53,7 @@ transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.2
 skeleton = NodePath("../..")
 
 [node name="missilelauncherspot" type="Marker3D" parent="body/root/missilelauncherswivel2/missilelauncher"]
-transform = Transform3D(1.59944e-07, -4, 2.83122e-07, -4, -1.59944e-07, -2.02026e-14, 3.64153e-14, -2.83122e-07, -4, -2.1691, -0.0729828, -0.0100926)
+transform = Transform3D(1.59944e-07, -4, 2.98023e-07, -4, -1.59944e-07, -2.02026e-14, 3.64153e-14, -2.98023e-07, -4, -1.91174, -0.0729828, 0.00262517)
 
 [node name="missilelauncherbase" type="MeshInstance3D" parent="body/root/missilelauncherswivel2"]
 transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)
@@ -66,7 +68,7 @@ transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.2
 skeleton = NodePath("../..")
 
 [node name="missilelauncherspot" type="Marker3D" parent="body/root/missilelauncherswivel3/missilelauncher"]
-transform = Transform3D(1.59944e-07, -4, 3.49691e-07, -4, -1.59944e-07, -2.02026e-14, 3.65307e-14, -3.49691e-07, -4, -2.10234, -0.0729828, -0.00679374)
+transform = Transform3D(1.04308e-07, -4, 3.8743e-07, -4, -1.49012e-07, -1.62981e-08, -1.1595e-07, -3.57628e-07, -4, -2.06757, -0.0741224, -0.00549388)
 
 [node name="missilelauncherbase" type="MeshInstance3D" parent="body/root/missilelauncherswivel3"]
 transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)
@@ -81,7 +83,7 @@ transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.2
 skeleton = NodePath("../..")
 
 [node name="missilelauncherspot" type="Marker3D" parent="body/root/missilelauncherswivel4/missilelauncher"]
-transform = Transform3D(1.59944e-07, -4, 3.49691e-07, -4, -1.59944e-07, -2.02026e-14, 3.65307e-14, -3.49691e-07, -4, -2.10234, -0.0729828, -0.00679374)
+transform = Transform3D(1.93715e-07, -4, 3.72529e-07, -4, -1.49012e-07, 7.12462e-08, -4.08851e-07, -3.27826e-07, -4, -2.06756, -0.07195, -0.00549097)
 
 [node name="missilelauncherbase" type="MeshInstance3D" parent="body/root/missilelauncherswivel4"]
 transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)

@@ -268,6 +268,7 @@ radius = 2.75
 height = 7.5
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "jumpboostsound", "dropsound", "hpBar", "PlayerCamBase")]
+collision_layer = 3
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 rightArm = NodePath("rightArm")
@@ -383,6 +384,7 @@ mesh = SubResource("PlaneMesh_2y7q1")
 
 [node name="detectionarea" type="Area3D" parent="."]
 collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="detectionarea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.482948, 1.42955, 0.0438538)
@@ -576,6 +578,7 @@ one_shot = true
 [node name="targeter" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13149, -0.681591)
 target_position = Vector3(0, 0, -50)
+collision_mask = 3
 collide_with_areas = true
 debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)
 debug_shape_thickness = 5

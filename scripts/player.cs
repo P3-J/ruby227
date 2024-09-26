@@ -222,9 +222,9 @@ public partial class player : CharacterBody3D
 
     public void ShootBullet(Transform3D pos)
     {
-        CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
+        bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.Position = rightArm.GlobalPosition;
-        bulletInstance.Call("SetDirection", -pos.Basis.Z);
+        bulletInstance.SetDirection(-pos.Basis.Z);
         bulletInstance.Call("SetOwner", "player");
         bulletInstance.Call("SetDamage", 2);
         GetParent().AddChild(bulletInstance);
@@ -242,7 +242,7 @@ public partial class player : CharacterBody3D
         bulletInstance.Call("SetOwner", "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
-        ResetCooldown(leftbar, 2);
+        ResetCooldown(leftbar, 3);
     }
 
     public void _on_enemytimer_timeout(){
