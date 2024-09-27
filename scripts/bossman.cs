@@ -4,6 +4,7 @@ public partial class bossman : CharacterBody3D
 {
 	[Export] CharacterBody3D player;
 	[Export] public PackedScene Bullet;
+	[Export] public PackedScene Enemy;
 
 	[Signal]
 	public delegate void BossHitEventHandler();
@@ -121,11 +122,28 @@ public partial class bossman : CharacterBody3D
 	}
 
 	private void Stage1(){
-
+		// repeat between like 20 sek
+		SceneTreeTimer tr = GetTree().CreateTimer(20.0);
+		tr.Timeout += Stage1;
+		// lasers 
 	}
 
 	private void Stage2(){
+		// spawn enemies 
+		Vector3 spawnPoint1 = Vector3.Zero; 
+		Vector3 spawnPoint2 = Vector3.Zero;
+
+		Vector3[] spawns = new Vector3[]{spawnPoint1, spawnPoint2};
+
 		
+		for (int i = 0; i < 2; i++)
+		{
+			enemy enemyInstance = Enemy.Instantiate() as enemy;
+			enemyInstance.GlobalPosition = spawns[i];
+			
+		}
+
+
 	}
 
 	private void Stage3(){
