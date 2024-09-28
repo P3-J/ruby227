@@ -9,12 +9,19 @@ public partial class bossman : CharacterBody3D
 	[Signal]
 	public delegate void BossHitEventHandler();
 
+	[Signal]
+	public delegate void OpenGatesEventHandler();
+
+	[Signal]
+	public delegate void LazorPlayEventHandler();
+
 
 	bool canMove = true;
 	bool canShoot = true;
 	bool disabled = false;
 	const int MAXHP = 10;
 	int HP = 10;
+	int cStage = 0;
 
 	Timer shottimer;
 	Marker3D missileSpot1;
@@ -31,7 +38,6 @@ public partial class bossman : CharacterBody3D
 		missileSpot3 = GetNode<Marker3D>("body/root/missilelauncherswivel3/missilelauncher/missilelauncherspot");
 		missileSpot4 = GetNode<Marker3D>("body/root/missilelauncherswivel4/missilelauncher/missilelauncherspot");
 		missileSpots = new Marker3D[] {missileSpot1, missileSpot2, missileSpot3, missileSpot4};
-		StartCombat();
 	}
 
 	public override void _PhysicsProcess(double delta){
@@ -40,7 +46,7 @@ public partial class bossman : CharacterBody3D
 		LookAtPos(player.GlobalPosition);
 	}
 
-	private void StartCombat(){
+	public void StartCombat(){
 		shottimer.Start();
 	}
 
@@ -51,7 +57,6 @@ public partial class bossman : CharacterBody3D
 		float angleRadians = Mathf.Atan2(dire.X, dire.Z);
 		float angleDegrees = Mathf.RadToDeg(angleRadians);
 		RotationDegrees = new Vector3(0, angleDegrees, 0);
-		GD.Print(RotationDegrees, pos);
 
 	}
 
@@ -108,42 +113,33 @@ public partial class bossman : CharacterBody3D
 
 	private void CheckForStageChange(){
 		// check for boss battle stage
-		switch (HP){
-			case 3:
-				Stage3();
-				break;
-			case 6:
-				Stage2();
-				break;
-			case 8:
-				Stage1();
-				break;
+		
+		if (HP <= 8 && cStage == 0){
+			cStage += 1;
+			Stage1();
+			return;
+		}
+		if (HP <= 5 && cStage == 1){
+			cStage += 1;
+			Stage2();
+			return;
+		}
+		if (HP <= 3 && cStage == 2){
+			cStage += 1;
+			Stage3();
+			return;
 		}
 	}
 
 	private void Stage1(){
-		// repeat between like 20 sek
-		SceneTreeTimer tr = GetTree().CreateTimer(20.0);
+		EmitSignal(nameof(LazorPlay));
+		SceneTreeTimer tr = GetTree().CreateTimer(25.0);
 		tr.Timeout += Stage1;
-		// lasers 
 	}
 
 	private void Stage2(){
-		// spawn enemies 
-		Vector3 spawnPoint1 = Vector3.Zero; 
-		Vector3 spawnPoint2 = Vector3.Zero;
-
-		Vector3[] spawns = new Vector3[]{spawnPoint1, spawnPoint2};
-
-		
-		for (int i = 0; i < 2; i++)
-		{
-			enemy enemyInstance = Enemy.Instantiate() as enemy;
-			enemyInstance.GlobalPosition = spawns[i];
-			
-		}
-
-
+		// spawns enemies
+		EmitSignal(nameof(OpenGates));
 	}
 
 	private void Stage3(){

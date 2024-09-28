@@ -98,7 +98,7 @@ autostart = true
 
 [node name="los" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.67586, 1.01892)
-target_position = Vector3(0, 0, -120)
+target_position = Vector3(0, 0, -160)
 collide_with_areas = true
 debug_shape_custom_color = Color(0.379437, 0.473598, 1, 1)
 debug_shape_thickness = 1

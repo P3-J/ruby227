@@ -156,12 +156,12 @@ public partial class player : CharacterBody3D
     public void HandleTurning(){
         float rotationInput = 0f;
         if (Input.IsActionPressed("left")){
-            rotationInput += 0.02f;
+            rotationInput += 0.03f;
             RightSteam.Emitting = true;
             PlaySteamAudioIfCan();
         }
         if (Input.IsActionPressed("right")){
-            rotationInput -= 0.02f;
+            rotationInput -= 0.03f;
             LeftSteam.Emitting = true;
             PlaySteamAudioIfCan();
         }
@@ -211,7 +211,7 @@ public partial class player : CharacterBody3D
             Vector2 pos2 = tsquareController.GlobalPosition;
 
             if (targetLocked){
-               pos2.Y += 10; // sprite a bit higher then origin point so lower it.
+                pos2.Y += 10; // sprite a bit higher then origin point so lower it.
             } else {
                 pos2.Y -= 30; // boost even more on a not locked target.
             }
@@ -225,8 +225,8 @@ public partial class player : CharacterBody3D
         bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.Position = rightArm.GlobalPosition;
         bulletInstance.SetDirection(-pos.Basis.Z);
-        bulletInstance.Call("SetOwner", "player");
-        bulletInstance.Call("SetDamage", 2);
+        bulletInstance.SetOwner("player");
+        bulletInstance.SetDamage(2);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         ResetCooldown(rightbar, 1);
@@ -235,11 +235,11 @@ public partial class player : CharacterBody3D
     public void ShootBullet(Vector3 targetPosition)
     {
         // meant for left arm
-        CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
+        bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.Position = MissileLaunchSpot.GlobalPosition;
         Vector3 direction = (targetPosition - MissileLaunchSpot.GlobalPosition).Normalized();
-        bulletInstance.Call("SetDirection", direction);
-        bulletInstance.Call("SetOwner", "player");
+        bulletInstance.SetDirection(direction);
+        bulletInstance.SetOwner("player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         ResetCooldown(leftbar, 3);

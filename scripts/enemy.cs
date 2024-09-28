@@ -186,7 +186,7 @@ public partial class enemy : CharacterBody3D
 			}
 		} else {
 			canMove = true;
-			SetTargetPos(player.GlobalPosition);
+			//SetTargetPos(player.GlobalPosition);
 			//SetTargetPos(player.GlobalPosition); this causes constant recalculations
 		}
 	}

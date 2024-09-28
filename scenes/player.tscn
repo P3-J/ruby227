@@ -572,7 +572,7 @@ volume_db = -30.0
 one_shot = true
 
 [node name="shotcooldownleft" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 3.0
 one_shot = true
 
 [node name="targeter" type="RayCast3D" parent="."]
