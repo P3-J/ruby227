@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ck6ury47s8no4"]
 
 [ext_resource type="PackedScene" uid="uid://w2pkpgdnddqc" path="res://scenes/pieces/arrow.tscn" id="1_oq0qo"]
-[ext_resource type="Script" path="res://scripts/gamemanager.cs" id="1_pqw80"]
+[ext_resource type="Script" uid="uid://y2ipciperxbu" path="res://scripts/gamemanager.cs" id="1_pqw80"]
 [ext_resource type="AudioStream" uid="uid://bbctw0ql1wdwt" path="res://music/nft.wav" id="2_37dfd"]
 [ext_resource type="PackedScene" uid="uid://deisxds4xqlxd" path="res://scenes/pieces/input_field.tscn" id="6_dh6a5"]
 
@@ -14,299 +14,299 @@ script = ExtResource("1_pqw80")
 position = Vector2(124, 0)
 
 [node name="arrow" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
-direction = "left"
+script = null
 
 [node name="arrow2" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -256)
-direction = "left"
+script = null
 
 [node name="arrow3" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -384)
-direction = "left"
+script = null
 
 [node name="arrow4" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -832)
-direction = "left"
+script = null
 
 [node name="arrow5" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -960)
-direction = "left"
+script = null
 
 [node name="arrow6" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1440)
-direction = "left"
+script = null
 
 [node name="arrow7" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1568)
-direction = "left"
+script = null
 
 [node name="arrow8" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2144)
-direction = "left"
+script = null
 
 [node name="arrow9" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1758)
-direction = "left"
+script = null
 
 [node name="arrow10" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2366)
-direction = "left"
+script = null
 
 [node name="arrow11" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2494)
-direction = "left"
+script = null
 
 [node name="arrow12" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2690)
-direction = "left"
+script = null
 
 [node name="arrow13" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3170)
-direction = "left"
+script = null
 
 [node name="arrow14" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3298)
-direction = "left"
+script = null
 
 [node name="arrow15" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3874)
-direction = "left"
+script = null
 
 [node name="arrow16" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3488)
-direction = "left"
+script = null
 
 [node name="arrow17" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4092)
-direction = "left"
+script = null
 
 [node name="arrow18" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4668)
-direction = "left"
+script = null
 
 [node name="arrow19" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5276)
-direction = "left"
+script = null
 
 [node name="arrow20" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -6074)
-direction = "left"
+script = null
 
 [node name="arrow21" parent="Node2D/left" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -6398)
-direction = "left"
+script = null
 
 [node name="right" type="Node2D" parent="Node2D"]
 position = Vector2(372, 0)
 
 [node name="arrow" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
-direction = "right"
+script = null
 
 [node name="arrow2" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -320)
-direction = "right"
+script = null
 
 [node name="arrow3" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -448)
-direction = "right"
+script = null
 
 [node name="arrow4" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -768)
-direction = "right"
+script = null
 
 [node name="arrow5" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -8100)
-direction = "right"
+script = null
 
 [node name="arrow6" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -704)
-direction = "right"
+script = null
 
 [node name="arrow7" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -832)
-direction = "right"
+script = null
 
 [node name="arrow8" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1152)
-direction = "right"
+script = null
 
 [node name="arrow9" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1500)
-direction = "right"
+script = null
 
 [node name="arrow11" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1884)
-direction = "right"
+script = null
 
 [node name="arrow12" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2174)
-direction = "right"
+script = null
 
 [node name="arrow13" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2304)
-direction = "right"
+script = null
 
 [node name="arrow14" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2912)
-direction = "right"
+script = null
 
 [node name="arrow15" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3166)
-direction = "right"
+script = null
 
 [node name="arrow16" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3296)
-direction = "right"
+script = null
 
 [node name="arrow17" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3904)
-direction = "right"
+script = null
 
 [node name="arrow18" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3712)
-direction = "right"
+script = null
 
 [node name="arrow19" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4320)
-direction = "right"
+script = null
 
 [node name="arrow20" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4574)
-direction = "right"
+script = null
 
 [node name="arrow21" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4704)
-direction = "right"
+script = null
 
 [node name="arrow10" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4930)
-direction = "right"
+script = null
 
 [node name="arrow22" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5278)
-direction = "right"
+script = null
 
 [node name="arrow23" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5662)
-direction = "right"
+script = null
 
 [node name="arrow24" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5952)
-direction = "right"
+script = null
 
 [node name="arrow25" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -6082)
-direction = "right"
+script = null
 
 [node name="arrow26" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -6690)
-direction = "right"
+script = null
 
 [node name="arrow27" parent="Node2D/right" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -6944)
-direction = "right"
+script = null
 
 [node name="up" type="Node2D" parent="Node2D"]
 position = Vector2(248, 0)
 
 [node name="arrow" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
-direction = "up"
+script = null
 
 [node name="arrow2" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1312)
-direction = "up"
+script = null
 
 [node name="arrow3" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -992)
-direction = "up"
+script = null
 
 [node name="arrow4" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1792)
-direction = "up"
+script = null
 
 [node name="arrow5" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1984)
-direction = "up"
+script = null
 
 [node name="arrow6" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -1664)
-direction = "up"
+script = null
 
 [node name="arrow7" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2464)
-direction = "up"
+script = null
 
 [node name="arrow8" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3040)
-direction = "up"
+script = null
 
 [node name="arrow9" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -2720)
-direction = "up"
+script = null
 
 [node name="arrow10" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3520)
-direction = "up"
+script = null
 
 [node name="arrow11" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4160)
-direction = "up"
+script = null
 
 [node name="arrow12" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -4832)
-direction = "up"
+script = null
 
 [node name="arrow13" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5088)
-direction = "up"
+script = null
 
 [node name="arrow14" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5696)
-direction = "up"
+script = null
 
 [node name="arrow15" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -6368)
-direction = "up"
+script = null
 
 [node name="arrow16" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -6624)
-direction = "up"
+script = null
 
 [node name="arrow17" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -7072)
-direction = "up"
+script = null
 
 [node name="arrow18" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -7744)
-direction = "up"
+script = null
 
 [node name="arrow19" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -8000)
-direction = "up"
+script = null
 
 [node name="arrow20" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3326)
-direction = "up"
+script = null
 
 [node name="arrow21" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -3840)
-direction = "up"
+script = null
 
 [node name="arrow22" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -9664)
-direction = "up"
+script = null
 
 [node name="arrow23" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -9920)
-direction = "up"
+script = null
 
 [node name="arrow24" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5246)
-direction = "up"
+script = null
 
 [node name="arrow25" parent="Node2D/up" instance=ExtResource("1_oq0qo")]
 position = Vector2(0, -5824)
-direction = "up"
+script = null
 
 [node name="song" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_37dfd")

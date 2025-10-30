@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://csqy7eyxe65rh"]
+
+[ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="1_o4tiq"]
+
+[node name="low_poly_mech_really_0708185304_refine" instance=ExtResource("1_o4tiq")]

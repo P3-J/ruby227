@@ -1,12 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://bouds4hoq7qsh"]
+[gd_scene load_steps=21 format=3 uid="uid://bouds4hoq7qsh"]
 
-[ext_resource type="Script" path="res://scripts/startscript.cs" id="1_mfv1s"]
+[ext_resource type="Script" uid="uid://ghpgy2pnn12g" path="res://scripts/startscript.cs" id="1_mfv1s"]
 [ext_resource type="PackedScene" uid="uid://be2ea7siblocu" path="res://scenes/world.tscn" id="2_oie0a"]
 [ext_resource type="FontFile" uid="uid://d1c7ml3v3ix45" path="res://assets/fonts/Paskowy.ttf" id="3_6pdsc"]
 [ext_resource type="Texture2D" uid="uid://dj50l3my82wkw" path="res://assets/p3.png" id="4_rgn7d"]
 [ext_resource type="AudioStream" uid="uid://dk8e60w3fl8f5" path="res://music/saspray.mp3" id="5_e186y"]
 [ext_resource type="AudioStream" uid="uid://b6w6l5155tjlj" path="res://music/The_Essential_Terrestial.mp3" id="6_sgfco"]
-[ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="7_sbke2"]
 [ext_resource type="PackedScene" uid="uid://db3mfp21buc4h" path="res://assets/gunz/gunleft.tscn" id="8_470rk"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_novdv"]
@@ -60,8 +59,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d4rvx"]
 _data = {
-"RESET": SubResource("Animation_hduv2"),
-"camspin": SubResource("Animation_7bl1g")
+&"RESET": SubResource("Animation_hduv2"),
+&"camspin": SubResource("Animation_7bl1g")
 }
 
 [sub_resource type="Animation" id="Animation_ft1sn"]
@@ -193,8 +192,8 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bii61"]
 _data = {
-"RESET": SubResource("Animation_ft1sn"),
-"openingspray": SubResource("Animation_w6g6k")
+&"RESET": SubResource("Animation_ft1sn"),
+&"openingspray": SubResource("Animation_w6g6k")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_joaq7"]
@@ -261,14 +260,14 @@ vertical_alignment = 1
 
 [node name="camspin" type="AnimationPlayer" parent="cinematic"]
 libraries = {
-"": SubResource("AnimationLibrary_d4rvx")
+&"": SubResource("AnimationLibrary_d4rvx")
 }
 autoplay = "camspin"
 
 [node name="opening" type="AnimationPlayer" parent="cinematic"]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_bii61")
+&"": SubResource("AnimationLibrary_bii61")
 }
 autoplay = "openingspray"
 
@@ -305,8 +304,18 @@ stream = ExtResource("5_e186y")
 stream = ExtResource("6_sgfco")
 parameters/looping = true
 
-[node name="Root Scene" parent="." instance=ExtResource("7_sbke2")]
+[node name="Root Scene" parent="."]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0322683, 0, 0)
+script = null
 
 [node name="missilelauncherswivel" type="Node3D" parent="Root Scene"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13633, 0.732759, -0.364261)

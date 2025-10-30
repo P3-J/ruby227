@@ -1,110 +1,18 @@
-[gd_scene load_steps=58 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=39 format=3 uid="uid://dw2i435p3nkp5"]
 
-[ext_resource type="Script" path="res://scripts/player.cs" id="1_exk0v"]
-[ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="2_5qtqp"]
+[ext_resource type="Script" uid="uid://bp1elsfh8gxed" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
-[ext_resource type="Texture2D" uid="uid://c5ep5ak74shr" path="res://assets/mech1/low_poly_mech_really_0708185304_refine-15115a1e58bea620361ea533d8b162d6_Image_0.png" id="4_0sefl"]
 [ext_resource type="Texture2D" uid="uid://8wphi2e5jxcj" path="res://assets/bar1.png" id="4_c51ff"]
-[ext_resource type="PackedScene" uid="uid://db3mfp21buc4h" path="res://assets/gunz/gunleft.tscn" id="4_hfw4h"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_hgwbl"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
 [ext_resource type="Texture2D" uid="uid://dju83523yxk8b" path="res://assets/crosshair.png" id="5_nsyep"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
 [ext_resource type="Texture2D" uid="uid://5r64uu74y2pm" path="res://assets/cooldown.png" id="6_5rnmn"]
 [ext_resource type="FontFile" uid="uid://d1c7ml3v3ix45" path="res://assets/fonts/Paskowy.ttf" id="8_1kvtq"]
+[ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="8_jej6c"]
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://d4mign5r2hgcl" path="res://sounds/dropsound.mp3" id="9_ik3sr"]
-[ext_resource type="Shader" path="res://scenes/shaders/pixelator.gdshader" id="10_7obu6"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_quuu0"]
-albedo_color = Color(0.0822683, 0.49307, 0.524805, 1)
-albedo_texture = ExtResource("4_0sefl")
-metallic = 0.33
-metallic_specular = 0.42
-emission = Color(0.588235, 0.372549, 0.831373, 1)
-emission_energy_multiplier = 0.05
-
-[sub_resource type="PrismMesh" id="PrismMesh_oyn32"]
-size = Vector3(0.15, 0.1, 0.25)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_solrt"]
-albedo_color = Color(1, 0, 0, 1)
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
-
-[sub_resource type="Curve" id="Curve_sirhu"]
-_data = [Vector2(0.0316456, 0.222292), 0.0, 0.0, 0, 0, Vector2(0.386076, 0.255038), 0.0, 0.0, 0, 0, Vector2(0.547468, 0.557935), 0.0, 0.0, 0, 0, Vector2(0.882911, 0.164987), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 5
-
-[sub_resource type="CurveTexture" id="CurveTexture_pr6ym"]
-curve = SubResource("Curve_sirhu")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1ieln"]
-direction = Vector3(0, 0, -5)
-gravity = Vector3(0, 0, 1)
-scale_curve = SubResource("CurveTexture_pr6ym")
-turbulence_noise_strength = 1.67
-turbulence_noise_scale = 1.584
-turbulence_noise_speed_random = 0.81
-turbulence_influence_min = 0.235
-turbulence_influence_max = 0.235
-turbulence_initial_displacement_min = -9.5
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6i3f"]
-emission_enabled = true
-emission = Color(0.299547, 0.299547, 0.299547, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_nlf8a"]
-material = SubResource("StandardMaterial3D_h6i3f")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aka63"]
-albedo_color = Color(0.133196, 0.133196, 0.133196, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_hd3d1"]
-material = SubResource("StandardMaterial3D_aka63")
-size = Vector3(0.05, 0.2, 0.07)
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_57g16"]
-gravity = Vector3(14, 0, 0)
-scale_curve = SubResource("CurveTexture_pr6ym")
-turbulence_noise_strength = 1.67
-turbulence_noise_scale = 1.584
-turbulence_noise_speed_random = 0.81
-turbulence_influence_min = 0.235
-turbulence_influence_max = 0.235
-turbulence_initial_displacement_min = -9.5
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b176k"]
-direction = Vector3(-1, 0, 0)
-gravity = Vector3(-15, 0, 0)
-scale_curve = SubResource("CurveTexture_pr6ym")
-turbulence_noise_strength = 1.67
-turbulence_noise_scale = 1.584
-turbulence_noise_speed_random = 0.81
-turbulence_influence_min = 0.235
-turbulence_influence_max = 0.235
-turbulence_initial_displacement_min = -9.5
-
-[sub_resource type="Curve" id="Curve_7hryc"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.990506, 0.38602), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_q4myi"]
-curve = SubResource("Curve_7hryc")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c3q1h"]
-emission_shape = 1
-emission_sphere_radius = 0.1
-gravity = Vector3(-5, 1, 0)
-scale_curve = SubResource("CurveTexture_q4myi")
-sub_emitter_keep_velocity = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_luufi"]
-albedo_color = Color(4.51226e-08, 0.0480507, 0.0675314, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_pcpm1"]
-material = SubResource("StandardMaterial3D_luufi")
-size = Vector3(0.05, 0.05, 0.05)
+[ext_resource type="Shader" uid="uid://dphbbx33v5db5" path="res://scenes/shaders/pixelator.gdshader" id="10_7obu6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_37j6b"]
 render_priority = 0
@@ -235,33 +143,33 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_frucg"]
 _data = {
-"RESET": SubResource("Animation_yq0xj"),
-"death": SubResource("Animation_dfjmf")
+&"RESET": SubResource("Animation_yq0xj"),
+&"death": SubResource("Animation_dfjmf")
 }
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kajla"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ol4xe"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jod6i"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_teriw"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqkoc"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nd0sp"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cigk0"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lkx3q"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5xe7a"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3p45i"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_q5o7p"]
 color = Color(1, 1, 1, 1)
 vertical = true
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3p45i"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5xe7a"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nd0sp"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lkx3q"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_teriw"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cigk0"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ol4xe"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqkoc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jod6i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kajla"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c5rbk"]
 radius = 2.75
@@ -272,102 +180,16 @@ collision_layer = 3
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 rightArm = NodePath("rightArm")
-booster = NodePath("booster")
-rocket = NodePath("rocket")
-steam = NodePath("steam")
-jumpboostsound = NodePath("jump")
-dropsound = NodePath("dropsound")
+booster = NodePath("soundsCooldowns/booster")
+rocket = NodePath("soundsCooldowns/rocket")
+steam = NodePath("soundsCooldowns/steam")
+jumpboostsound = NodePath("soundsCooldowns/jump")
+dropsound = NodePath("soundsCooldowns/dropsound")
 hpBar = NodePath("guid/hpbar")
 PlayerCamBase = NodePath("camBase")
 
-[node name="mech" parent="." instance=ExtResource("2_5qtqp")]
-transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, 0, 0.715357, 0)
-
-[node name="Mesh_0" parent="mech/RootNode" index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_quuu0")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="mech/RootNode" index="1"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.198389, 0.368496, 8.67185e-09)
-mesh = SubResource("PrismMesh_oyn32")
-surface_material_override/0 = SubResource("StandardMaterial3D_solrt")
-
-[node name="SpotLight3D" type="SpotLight3D" parent="mech"]
-transform = Transform3D(0.0128751, 0, -0.199585, 0, 0.2, 0, 0.199585, 0, 0.0128751, 2.65143e-08, 0, -0.606577)
-light_energy = 3.011
-spot_range = 85.827
-spot_angle = 49.06
-
-[node name="leftshoulder" type="GPUParticles3D" parent="mech"]
-transform = Transform3D(-8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, -0.100994, 0.411, -0.566)
-lifetime = 0.2
-interp_to_end = 0.01
-trail_lifetime = 0.75
-process_material = SubResource("ParticleProcessMaterial_1ieln")
-draw_pass_1 = SubResource("SphereMesh_nlf8a")
-
-[node name="rightshoulder" type="GPUParticles3D" parent="mech"]
-transform = Transform3D(-8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, -0.109263, 0.410572, 0.530391)
-lifetime = 0.2
-interp_to_end = 0.01
-trail_lifetime = 0.75
-process_material = SubResource("ParticleProcessMaterial_1ieln")
-draw_pass_1 = SubResource("SphereMesh_nlf8a")
-
-[node name="missilelauncherswivel" type="Node3D" parent="mech"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13633, 0.732759, -0.364261)
-
-[node name="missilelauncher" parent="mech/missilelauncherswivel" instance=ExtResource("4_hfw4h")]
-transform = Transform3D(-0.25, 0, -2.18557e-08, 0, 0.25, 0, 2.18557e-08, 0, -0.25, -0.107758, 0, 0)
-skeleton = NodePath("../..")
-
-[node name="missilelauncherspot" type="Marker3D" parent="mech/missilelauncherswivel/missilelauncher"]
-transform = Transform3D(1.59944e-07, -4, 3.49691e-07, -4, -1.59944e-07, -2.02026e-14, 3.65307e-14, -3.49691e-07, -4, -2.10234, -0.0729828, -0.00679374)
-
-[node name="missilelauncherbase" type="MeshInstance3D" parent="mech/missilelauncherswivel"]
-transform = Transform3D(0.965472, -0.260504, -3.55271e-15, 0.260504, 0.965473, 0, 0, -8.88178e-16, 1, -0.0120738, -0.154947, -0.00620329)
-mesh = SubResource("BoxMesh_hd3d1")
-skeleton = NodePath("../..")
-
-[node name="rightgas" type="GPUParticles3D" parent="mech"]
-transform = Transform3D(-8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, -0.104303, 0.442696, 0.616463)
-emitting = false
-amount = 16
-lifetime = 0.4
-preprocess = 0.1
-local_coords = true
-process_material = SubResource("ParticleProcessMaterial_57g16")
-draw_pass_1 = SubResource("SphereMesh_nlf8a")
-
-[node name="leftgas" type="GPUParticles3D" parent="mech"]
-transform = Transform3D(-8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, -0.104303, 0.442696, -0.650577)
-emitting = false
-amount = 16
-lifetime = 0.4
-interp_to_end = 0.01
-preprocess = 0.1
-local_coords = true
-process_material = SubResource("ParticleProcessMaterial_b176k")
-draw_pass_1 = SubResource("SphereMesh_nlf8a")
-
-[node name="dust" type="GPUParticles3D" parent="mech"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14125, -0.647471, -0.388825)
-emitting = false
-amount = 16
-lifetime = 0.4
-randomness = 0.92
-local_coords = true
-process_material = SubResource("ParticleProcessMaterial_c3q1h")
-draw_pass_1 = SubResource("BoxMesh_pcpm1")
-
-[node name="dust2" type="GPUParticles3D" parent="mech"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14125, -0.647471, 0.367774)
-emitting = false
-amount = 16
-lifetime = 0.4
-randomness = 0.92
-local_coords = true
-process_material = SubResource("ParticleProcessMaterial_c3q1h")
-draw_pass_1 = SubResource("BoxMesh_pcpm1")
+[node name="low_poly_mech_really_0708185304_refine" parent="." instance=ExtResource("8_jej6c")]
+transform = Transform3D(-2.1855695e-07, 0, 5, 0, 5, 0, -5, 0, -2.1855695e-07, 0, 1.322439, 0)
 
 [node name="camBase" type="Node3D" parent="."]
 
@@ -501,7 +323,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="anim" type="AnimationPlayer" parent="guid/deathscreen"]
 libraries = {
-"": SubResource("AnimationLibrary_frucg")
+&"": SubResource("AnimationLibrary_frucg")
 }
 
 [node name="text" type="Label" parent="guid/deathscreen"]
@@ -526,54 +348,26 @@ offset_right = 229.0
 offset_bottom = 289.0
 theme_override_fonts/font = ExtResource("8_1kvtq")
 theme_override_font_sizes/font_size = 42
-theme_override_styles/focus = SubResource("StyleBoxEmpty_kajla")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_jod6i")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_pqkoc")
-theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_cigk0")
-theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_lkx3q")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_5xe7a")
-theme_override_styles/hover = SubResource("StyleBoxLine_q5o7p")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_3p45i")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_nd0sp")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_teriw")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ol4xe")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_teriw")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nd0sp")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_3p45i")
+theme_override_styles/hover = SubResource("StyleBoxLine_q5o7p")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_5xe7a")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_lkx3q")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_cigk0")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_pqkoc")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_jod6i")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kajla")
 text = "redeploy"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="body" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0995221, 1.11757, 0)
 shape = SubResource("CapsuleShape3D_c5rbk")
 metadata/_edit_lock_ = true
 
 [node name="rightArm" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
-
-[node name="booster" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_hgwbl")
-volume_db = -11.969
-
-[node name="rocket" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_0ojmk")
-volume_db = -12.0
-
-[node name="steam" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_00jq5")
-volume_db = -12.893
-
-[node name="jump" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_u2vev")
-volume_db = -40.0
-pitch_scale = 2.52
-
-[node name="dropsound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("9_ik3sr")
-volume_db = -30.0
-
-[node name="shotcooldown" type="Timer" parent="."]
-one_shot = true
-
-[node name="shotcooldownleft" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
 
 [node name="targeter" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13149, -0.681591)
@@ -583,7 +377,35 @@ collide_with_areas = true
 debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)
 debug_shape_thickness = 5
 
+[node name="soundsCooldowns" type="Node" parent="."]
+
+[node name="booster" type="AudioStreamPlayer" parent="soundsCooldowns"]
+stream = ExtResource("4_hgwbl")
+volume_db = -11.969
+
+[node name="rocket" type="AudioStreamPlayer" parent="soundsCooldowns"]
+stream = ExtResource("5_0ojmk")
+volume_db = -12.0
+
+[node name="steam" type="AudioStreamPlayer" parent="soundsCooldowns"]
+stream = ExtResource("6_00jq5")
+volume_db = -12.893
+
+[node name="jump" type="AudioStreamPlayer" parent="soundsCooldowns"]
+stream = ExtResource("8_u2vev")
+volume_db = -40.0
+pitch_scale = 2.52
+
+[node name="dropsound" type="AudioStreamPlayer" parent="soundsCooldowns"]
+stream = ExtResource("9_ik3sr")
+volume_db = -30.0
+
+[node name="shotcooldown" type="Timer" parent="soundsCooldowns"]
+one_shot = true
+
+[node name="shotcooldownleft" type="Timer" parent="soundsCooldowns"]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="timeout" from="detectionarea/enemytimer" to="." method="_on_enemytimer_timeout"]
 [connection signal="pressed" from="guid/deathscreen/Button" to="." method="_on_button_pressed"]
-
-[editable path="mech"]

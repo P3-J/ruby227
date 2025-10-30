@@ -49,11 +49,11 @@ public partial class player : CharacterBody3D
 
     public override void _Ready()
     {
-        shotcooldown = GetNode<Timer>("shotcooldown");
-        shotcooldownLeft = GetNode<Timer>("shotcooldownleft");
+        shotcooldown = GetNode<Timer>("soundsCooldowns/shotcooldown");
+        shotcooldownLeft = GetNode<Timer>("soundsCooldowns/shotcooldownleft");
 
-        leftshoulder = GetNode<GpuParticles3D>("mech/leftshoulder");
-        rightshoulder = GetNode<GpuParticles3D>("mech/rightshoulder");
+        //leftshoulder = GetNode<GpuParticles3D>("mech/leftshoulder");
+        //rightshoulder = GetNode<GpuParticles3D>("mech/rightshoulder");
         MissileTargeter = GetNode<RayCast3D>("targeter");
         tsquareController = GetNode<Node2D>("guid/tsquarecontroller");
 
@@ -64,13 +64,13 @@ public partial class player : CharacterBody3D
         EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
         DetArea = GetNode<Area3D>("detectionarea");
         MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncherswivel/missilelauncher/missilelauncherspot");
-        MissileLauncherSwivel = GetNode<Node3D>("mech/missilelauncherswivel");
+        //MissileLauncherSwivel = GetNode<Node3D>("mech/missilelauncherswivel");
 
-        RightSteam = GetNode<GpuParticles3D>("mech/rightgas");
-        LeftSteam = GetNode<GpuParticles3D>("mech/leftgas");
+        //RightSteam = GetNode<GpuParticles3D>("mech/rightgas");
+        //LeftSteam = GetNode<GpuParticles3D>("mech/leftgas");
 
-        Dust1 = GetNode<GpuParticles3D>("mech/dust");
-        Dust2 = GetNode<GpuParticles3D>("mech/dust2");
+        //Dust1 = GetNode<GpuParticles3D>("mech/dust");
+        //Dust2 = GetNode<GpuParticles3D>("mech/dust2");
 
         deathExplosion = GetNode<GpuParticles3D>("particles/explosion");
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
@@ -157,16 +157,16 @@ public partial class player : CharacterBody3D
         float rotationInput = 0f;
         if (Input.IsActionPressed("left")){
             rotationInput += 0.03f;
-            RightSteam.Emitting = true;
+            //RightSteam.Emitting = true;
             PlaySteamAudioIfCan();
         }
         if (Input.IsActionPressed("right")){
             rotationInput -= 0.03f;
-            LeftSteam.Emitting = true;
+            // LeftSteam.Emitting = true;
             PlaySteamAudioIfCan();
         }
-        if (Input.IsActionJustReleased("right")) {LeftSteam.Emitting = false;}
-        if (Input.IsActionJustReleased("left")) {RightSteam.Emitting = false;} 
+        //if (Input.IsActionJustReleased("right")) {LeftSteam.Emitting = false;}
+        //if (Input.IsActionJustReleased("left")) {RightSteam.Emitting = false;} 
 
         if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
             steam.Stop();
@@ -188,14 +188,14 @@ public partial class player : CharacterBody3D
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y += 4f;
 			PlayerCamBase.RotationDegrees = v;
-            MissileLauncherSwivel.RotationDegrees = v;
+            //MissileLauncherSwivel.RotationDegrees = v;
 		}
 
 		 if (Input.IsActionPressed("camright")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y -= 4f;
 			PlayerCamBase.RotationDegrees = v;
-            MissileLauncherSwivel.RotationDegrees = v;
+            //MissileLauncherSwivel.RotationDegrees = v;
 		}
     }
 
@@ -318,11 +318,13 @@ public partial class player : CharacterBody3D
         GetTree().ReloadCurrentScene();
     }
 
-    public void ExtraParticleController(bool state){
-        leftshoulder.Emitting  = state;
-        rightshoulder.Emitting = state;
-        Dust1.Emitting         = state;
-        Dust2.Emitting         = state;
+    public void ExtraParticleController(bool state)
+    {
+        //        leftshoulder.Emitting  = state;
+        //        rightshoulder.Emitting = state;
+        //        Dust1.Emitting         = state;
+        //        Dust2.Emitting         = state;
+        return;
     }
 
 }

@@ -1,7 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://8mw6l4575xco"]
+[gd_scene load_steps=13 format=3 uid="uid://8mw6l4575xco"]
 
-[ext_resource type="Script" path="res://scripts/enemy.cs" id="1_rawnw"]
-[ext_resource type="PackedScene" uid="uid://c4jvnifmx4a1q" path="res://assets/mech2/low_poly_mech_really_0708185600_refine.fbx" id="1_yi6j0"]
+[ext_resource type="Script" uid="uid://cjylek8l1pcbe" path="res://scripts/enemy.cs" id="1_rawnw"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_5bxl6"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_85yn1"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
@@ -72,8 +71,18 @@ debug_enabled = true
 [node name="bodyController" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.567605, 0.819349)
 
-[node name="body" parent="bodyController" instance=ExtResource("1_yi6j0")]
+[node name="body" parent="bodyController"]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.019232, 0, -0.999284)
+script = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="bodyController/body"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.187091, 0.483048, 2.55217e-08)
