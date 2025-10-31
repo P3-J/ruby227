@@ -1,19 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://8mw6l4575xco"]
+[gd_scene load_steps=12 format=3 uid="uid://8mw6l4575xco"]
 
 [ext_resource type="Script" uid="uid://cjylek8l1pcbe" path="res://scripts/enemy.cs" id="1_rawnw"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_5bxl6"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_85yn1"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
-
-[sub_resource type="PrismMesh" id="PrismMesh_s2p7o"]
-size = Vector3(0.15, 0.1, 0.25)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1qdjr"]
-albedo_color = Color(1, 0, 0, 1)
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
+[ext_resource type="PackedScene" uid="uid://c4jvnifmx4a1q" path="res://assets/mech2/low_poly_mech_really_0708185600_refine.fbx" id="5_c4w8v"]
 
 [sub_resource type="Curve" id="Curve_akbyu"]
 _data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
@@ -47,6 +38,8 @@ material = SubResource("StandardMaterial3D_s04xs")
 radius = 2.5
 height = 5.0
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qe4x2"]
+
 [node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("navagent")]
 collision_layer = 9
 collision_mask = 9
@@ -55,9 +48,10 @@ script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")
 
-[node name="body" type="CollisionShape3D" parent="."]
-transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.145983, 0.449474, 0.615296)
-shape = SubResource("CapsuleShape3D_qe4x2")
+[node name="bodyController" type="Node3D" parent="."]
+
+[node name="low_poly_mech_really_0708185600_refine" parent="bodyController" instance=ExtResource("5_c4w8v")]
+transform = Transform3D(-2.1855695e-07, 0, 5, 0, 5, 0, -5, 0, -2.1855695e-07, -0.6916306, 0, 0.8737464)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 3.0
@@ -67,27 +61,6 @@ radius = 4.0
 neighbor_distance = 70.0
 max_speed = 13.0
 debug_enabled = true
-
-[node name="bodyController" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.567605, 0.819349)
-
-[node name="body" parent="bodyController"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, -0.019232, 0, -0.999284)
-script = null
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="bodyController/body"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.187091, 0.483048, 2.55217e-08)
-mesh = SubResource("PrismMesh_s2p7o")
-surface_material_override/0 = SubResource("StandardMaterial3D_1qdjr")
 
 [node name="shotCooldown" type="Timer" parent="."]
 wait_time = 2.0
@@ -125,6 +98,10 @@ randomness = 0.25
 trail_lifetime = 2.04
 process_material = SubResource("ParticleProcessMaterial_dq0tl")
 draw_pass_1 = SubResource("SphereMesh_jgrrp")
+
+[node name="body" type="CollisionShape3D" parent="."]
+transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_qe4x2")
 
 [connection signal="timeout" from="shotCooldown" to="." method="_on_shot_cooldown_timeout"]
 [connection signal="timeout" from="retarget" to="." method="_on_retarget_timeout"]

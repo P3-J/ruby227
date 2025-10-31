@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://bcswvaap8fymt"]
+[gd_scene load_steps=19 format=4 uid="uid://bcswvaap8fymt"]
 
 [ext_resource type="Script" uid="uid://cn46hnbpnmitv" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_b0qwf"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="2_rq5pq"]
@@ -7,6 +7,27 @@
 [ext_resource type="Texture2D" uid="uid://j5pv1d41xfm3" path="res://textures/Ground/Materials/sand_02.png" id="4_jldss"]
 [ext_resource type="Material" uid="uid://ces44g8vvqufp" path="res://textures/F1/CNCC/CNCC1_1.tres" id="4_rq5pq"]
 [ext_resource type="PackedScene" uid="uid://dw2i435p3nkp5" path="res://scenes/player.tscn" id="5_tktjs"]
+[ext_resource type="PackedScene" uid="uid://8mw6l4575xco" path="res://scenes/enemy.tscn" id="8_s7a7f"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s7a7f"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_tktjs"]
+sky_material = SubResource("ProceduralSkyMaterial_s7a7f")
+
+[sub_resource type="Environment" id="Environment_5kmsq"]
+background_mode = 2
+sky = SubResource("Sky_tktjs")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_s7a7f"]
+vertices = PackedVector3Array(6.5, 6, -10.5, 343.5, 6, -10.5, 343.5, 6, -319.5, -0.25, 6, -10.5, -751.5, 6, -319.5, -751.5, 6, -10.5, -751.5, 6, -0.25, -0.25, 6, -0.25, 6.75, 6, -0.75, 6.25, 6, -0.25, 343.5, 6, -0.25, 0.5, 18, -9.5, 0.5, 18, -1.25, 5.75, 18, -1.25, 5.75, 18, -9.5, 0.75, 6, -9.25, 0.75, 6, -1.5, 5.5, 6, -1.5, 5.5, 6, -9.25, -751.5, 6, 24.25, -770.25, 6, 24.5, -770.25, 6, 39.5, -751.5, 6, 39.75, 343.5, 6, 543.5, -751.5, 6, 543.5)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 3), PackedInt32Array(3, 4, 2), PackedInt32Array(5, 3, 6), PackedInt32Array(6, 3, 7), PackedInt32Array(10, 9, 8), PackedInt32Array(0, 1, 8), PackedInt32Array(8, 1, 10), PackedInt32Array(14, 13, 11), PackedInt32Array(11, 13, 12), PackedInt32Array(18, 17, 15), PackedInt32Array(15, 17, 16), PackedInt32Array(20, 19, 21), PackedInt32Array(21, 19, 22), PackedInt32Array(22, 19, 7), PackedInt32Array(9, 10, 23), PackedInt32Array(9, 23, 7), PackedInt32Array(7, 23, 22), PackedInt32Array(22, 23, 24), PackedInt32Array(19, 6, 7)]
+sample_partition_type = 1
+cell_height = 3.0
+agent_height = 3.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7m60w"]
 albedo_texture = ExtResource("4_jldss")
@@ -77,25 +98,10 @@ points = PackedVector3Array(0, 14, -10, 0, 1, -10, 6, 1, -10, 6, 14, -10, 0, 14,
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_q08rk"]
 points = PackedVector3Array(-770.75, 1.0625, 24, -770.75, 0, 24, 343.6875, 0, 24, 343.6875, 1.0625, 24, -770.75, 1.0625, 40, -770.75, 0, 40, 343.6875, 0, 40, 343.6875, 1.0625, 40)
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jldss"]
-emission_shape = 3
-emission_box_extents = Vector3(50, 10, 40)
-gravity = Vector3(0, -4.8, 5)
-linear_accel_min = 43.949997
-linear_accel_max = 53.969997
-turbulence_enabled = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s7a7f"]
-transparency = 1
-albedo_color = Color(0.6300347, 0.5191519, 0.051744916, 0.40784314)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_tktjs"]
-material = SubResource("StandardMaterial3D_s7a7f")
-top_radius = 0.209
-bottom_radius = 0.29
-height = 0.292
-
 [node name="worldBase" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5kmsq")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -108,31 +114,32 @@ local_map_file = "uid://drxrydbtylajf"
 map_settings = ExtResource("2_rq5pq")
 metadata/_custom_type_script = "uid://cn46hnbpnmitv"
 
-[node name="entity_0_worldspawn" type="StaticBody3D" parent="FuncGodotMap"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="FuncGodotMap"]
+navigation_mesh = SubResource("NavigationMesh_s7a7f")
+
+[node name="entity_0_worldspawn" type="StaticBody3D" parent="FuncGodotMap/NavigationRegion3D"]
 collision_mask = 0
 
-[node name="entity_0_mesh_instance" type="MeshInstance3D" parent="FuncGodotMap/entity_0_worldspawn"]
+[node name="entity_0_mesh_instance" type="MeshInstance3D" parent="FuncGodotMap/NavigationRegion3D/entity_0_worldspawn"]
 mesh = SubResource("ArrayMesh_yyo3n")
 
-[node name="entity_0_occluder_instance" type="OccluderInstance3D" parent="FuncGodotMap/entity_0_worldspawn"]
+[node name="entity_0_occluder_instance" type="OccluderInstance3D" parent="FuncGodotMap/NavigationRegion3D/entity_0_worldspawn"]
 occluder = SubResource("ArrayOccluder3D_22ctb")
 
-[node name="entity_0_brush_0_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/entity_0_worldspawn"]
+[node name="entity_0_brush_0_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/NavigationRegion3D/entity_0_worldspawn"]
 shape = SubResource("ConvexPolygonShape3D_m3xcu")
 
-[node name="entity_0_brush_1_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/entity_0_worldspawn"]
+[node name="entity_0_brush_1_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/NavigationRegion3D/entity_0_worldspawn"]
 shape = SubResource("ConvexPolygonShape3D_xvnn8")
 
-[node name="entity_0_brush_2_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/entity_0_worldspawn"]
+[node name="entity_0_brush_2_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/NavigationRegion3D/entity_0_worldspawn"]
 shape = SubResource("ConvexPolygonShape3D_q08rk")
+
+[node name="enemy" parent="FuncGodotMap/NavigationRegion3D" node_paths=PackedStringArray("player") instance=ExtResource("8_s7a7f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.324429, 9.462448)
+player = NodePath("../../../worldDefaults/player")
 
 [node name="worldDefaults" type="Node3D" parent="."]
 
 [node name="player" parent="worldDefaults" instance=ExtResource("5_tktjs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.937689, 9.760833, 0)
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="worldDefaults"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.1369705, 10.021526)
-amount = 124
-process_material = SubResource("ParticleProcessMaterial_jldss")
-draw_pass_1 = SubResource("CylinderMesh_tktjs")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.618584, 9.760833, 0)

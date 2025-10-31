@@ -29,6 +29,7 @@ public partial class player : CharacterBody3D
     Timer EnemyTimer;
     Area3D DetArea;
     AnimationPlayer deathanim;
+    Vector2 aimspotStartSpot;
 
 
     GpuParticles3D deathExplosion;
@@ -63,7 +64,7 @@ public partial class player : CharacterBody3D
         playercam = GetNode<Camera3D>("camBase/Camera3D");
         EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
         DetArea = GetNode<Area3D>("detectionarea");
-        MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncherswivel/missilelauncher/missilelauncherspot");
+        MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncherspot");
         //MissileLauncherSwivel = GetNode<Node3D>("mech/missilelauncherswivel");
 
         //RightSteam = GetNode<GpuParticles3D>("mech/rightgas");
@@ -74,6 +75,8 @@ public partial class player : CharacterBody3D
 
         deathExplosion = GetNode<GpuParticles3D>("particles/explosion");
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
+
+        aimspotStartSpot = tsquareController.Position;
 
         SetupHud();
     }
@@ -231,7 +234,6 @@ public partial class player : CharacterBody3D
         rocket.Play();
         ResetCooldown(rightbar, 1);
     }
-
     public void ShootBullet(Vector3 targetPosition)
     {
         // meant for left arm
@@ -244,6 +246,7 @@ public partial class player : CharacterBody3D
         rocket.Play();
         ResetCooldown(leftbar, 3);
     }
+
 
     public void _on_enemytimer_timeout(){
         ScanForEnemies();
@@ -276,7 +279,7 @@ public partial class player : CharacterBody3D
 
     public void ResetTargetingSquare(){
         // reset targeting square to center of screen
-        tsquareController.Position = tsquareController.Position.MoveToward(new Vector2(256, 256), 5f);
+        tsquareController.Position = tsquareController.Position.MoveToward(aimspotStartSpot, 5f);
     }
 
     public void ScanForEnemies(){

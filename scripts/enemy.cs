@@ -29,6 +29,7 @@ public partial class enemy : CharacterBody3D
 	public const float jumpstr = 10f;
 	Vector3 next = Vector3.Zero;
 
+
 	int HP = 1;
 	int cHP = 1;
     bool target;
@@ -53,14 +54,14 @@ public partial class enemy : CharacterBody3D
 
 		retargetTimer = GetNode<Timer>("retarget");
 		booster = GetNode<AudioStreamPlayer3D>("booster");
-		rocket  =GetNode<AudioStreamPlayer3D>("rocket");
+		rocket  = GetNode<AudioStreamPlayer3D>("rocket");
 
         navagent.Connect("target_reached", new Callable(this, nameof(OnNavigationAgentTargetReached)));
         navagent.Connect("velocity_computed", new Callable(this, nameof(OnNavigationAgentVelocityComputed)));
         navagent.Connect("link_reached", new Callable(this, nameof(OnNavigationAgentLinkReached))); 
 
 		deathTimer = GetNode<Timer>("death/deathtime");
-		deathExplosion = GetNode<GpuParticles3D>("death/explosion"); 
+		deathExplosion = GetNode<GpuParticles3D>("death/explosion");
 		
 
 		SceneTreeTimer tr = GetTree().CreateTimer(1.0);
@@ -72,7 +73,15 @@ public partial class enemy : CharacterBody3D
 	private void OnTimeOut()
 	{
 		target = true;
-		SetTargetPos(player.GlobalPosition);
+
+		if (player != null)
+        {
+			SetTargetPos(player.GlobalPosition);
+        } else
+        {
+			GD.PushWarning("no player"); 
+            
+        }
 	}
 
 	
@@ -82,7 +91,7 @@ public partial class enemy : CharacterBody3D
 		if (!target || Disabled){
 			return;
 		}
-		los.LookAt(player.GlobalPosition);
+		los.LookAt(player.GlobalPosition, Vector3.Up);
 
 		float distance = 999;
 		if (los.GetCollider() == player){
