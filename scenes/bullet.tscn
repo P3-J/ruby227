@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cola0rmveia2c"]
 
-[ext_resource type="Script" path="res://scripts/bullet.cs" id="1_4n7bp"]
+[ext_resource type="Script" uid="uid://cjldolkiud52o" path="res://scripts/bullet.cs" id="1_4n7bp"]
 [ext_resource type="PackedScene" uid="uid://c5mxi6blb072k" path="res://scenes/explosion.tscn" id="2_ugt12"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vwyva"]
@@ -37,8 +37,8 @@ radius = 0.3
 height = 0.5
 
 [node name="bullet" type="CharacterBody3D" node_paths=PackedStringArray("bulletBody", "collisionRay")]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_4n7bp")
 BulletSpeed = 50.0
 bulletBody = NodePath("bcontroller/bulletBody")

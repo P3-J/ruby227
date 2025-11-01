@@ -12,27 +12,24 @@ public partial class player : CharacterBody3D
     [Export] AudioStreamPlayer steam;
     [Export] AudioStreamPlayer jumpboostsound;
     [Export] AudioStreamPlayer dropsound;
-    [Export] ProgressBar hpBar;
+    [Export] Guid guid;
     [Export] Node3D PlayerCamBase;
 
     Timer shotcooldown;
     Timer shotcooldownLeft;
-    GpuParticles3D leftshoulder;
-    GpuParticles3D rightshoulder;
     RayCast3D MissileTargeter;
     GpuParticles3D RightSteam;
     GpuParticles3D LeftSteam;
-    GpuParticles3D Dust1;
-    GpuParticles3D Dust2;
     Node2D tsquareController;
     Camera3D playercam;
     Timer EnemyTimer;
     Area3D DetArea;
     AnimationPlayer deathanim;
-    Vector2 aimspotStartSpot;
-
-
     GpuParticles3D deathExplosion;
+    CharacterBody3D CurrentTarget = null;
+    Marker3D MissileLaunchSpot;
+    Node3D MissileLauncherSwivel;
+
     private const float Gravity = -2.8f;
     private const float JumpForce = 55.0f; //55
     private const float MovementSpeed = 20F; //15
@@ -43,42 +40,24 @@ public partial class player : CharacterBody3D
     bool canSeeEnemy = false;
     bool targetLocked = false;
     bool canMove = true;
-    CharacterBody3D CurrentTarget = null;
-    Marker3D MissileLaunchSpot;
-    Node3D MissileLauncherSwivel;
-
 
     public override void _Ready()
     {
         shotcooldown = GetNode<Timer>("soundsCooldowns/shotcooldown");
         shotcooldownLeft = GetNode<Timer>("soundsCooldowns/shotcooldownleft");
 
-        //leftshoulder = GetNode<GpuParticles3D>("mech/leftshoulder");
-        //rightshoulder = GetNode<GpuParticles3D>("mech/rightshoulder");
         MissileTargeter = GetNode<RayCast3D>("targeter");
-        tsquareController = GetNode<Node2D>("guid/tsquarecontroller");
-
-        leftbar = GetNode<ProgressBar>("guid/tsquarecontroller/shooterleft/shooterbar");
-        rightbar = GetNode<ProgressBar>("guid/tsquarecontroller/shooterright/shooterbar");
-
         playercam = GetNode<Camera3D>("camBase/Camera3D");
         EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
         DetArea = GetNode<Area3D>("detectionarea");
         MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncherspot");
-        //MissileLauncherSwivel = GetNode<Node3D>("mech/missilelauncherswivel");
-
-        //RightSteam = GetNode<GpuParticles3D>("mech/rightgas");
-        //LeftSteam = GetNode<GpuParticles3D>("mech/leftgas");
-
-        //Dust1 = GetNode<GpuParticles3D>("mech/dust");
-        //Dust2 = GetNode<GpuParticles3D>("mech/dust2");
 
         deathExplosion = GetNode<GpuParticles3D>("particles/explosion");
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
 
-        aimspotStartSpot = tsquareController.Position;
+       
 
-        SetupHud();
+        guid.SetupHud(HP);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -106,9 +85,9 @@ public partial class player : CharacterBody3D
 
         if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
             TargeterPosition();
-            ReposSquare(CurrentTarget.GlobalTransform.Origin);
+            targetLocked = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, canSeeEnemy);
         } else {
-            ResetTargetingSquare();
+            guid.ResetTargetingSquare();
             targetLocked = false;
         }
 
@@ -138,38 +117,26 @@ public partial class player : CharacterBody3D
 
         if (direction == Vector3.Zero){
             booster.Stop();
-            ExtraParticleController(false);
         } else if (!booster.Playing) {
             booster.Play();
-            ExtraParticleController(true);
         }
 
         Velocity = fakeVelo;
         MoveAndSlide();
     }
 
-    public void RefreshHud(){
-        Tween tween = GetTree().CreateTween();
-        tween.TweenProperty(hpBar, "value", cHP, 0.5);
-    }
-    public void SetupHud(){
-        hpBar.MaxValue = HP;
-    }
+
 
     public void HandleTurning(){
         float rotationInput = 0f;
         if (Input.IsActionPressed("left")){
             rotationInput += 0.03f;
-            //RightSteam.Emitting = true;
             PlaySteamAudioIfCan();
         }
         if (Input.IsActionPressed("right")){
             rotationInput -= 0.03f;
-            // LeftSteam.Emitting = true;
             PlaySteamAudioIfCan();
         }
-        //if (Input.IsActionJustReleased("right")) {LeftSteam.Emitting = false;}
-        //if (Input.IsActionJustReleased("left")) {RightSteam.Emitting = false;} 
 
         if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
             steam.Stop();
@@ -179,7 +146,7 @@ public partial class player : CharacterBody3D
 
     public void GetHit(int dmg){
         cHP -= dmg;
-        RefreshHud();
+        guid.RefreshHud(cHP);
         // check for megadeth
         if (cHP <= 0){
             Die();
@@ -191,14 +158,12 @@ public partial class player : CharacterBody3D
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y += 4f;
 			PlayerCamBase.RotationDegrees = v;
-            //MissileLauncherSwivel.RotationDegrees = v;
 		}
 
 		 if (Input.IsActionPressed("camright")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y -= 4f;
 			PlayerCamBase.RotationDegrees = v;
-            //MissileLauncherSwivel.RotationDegrees = v;
 		}
     }
 
@@ -211,8 +176,7 @@ public partial class player : CharacterBody3D
         }
         if (Input.IsActionJustPressed("shootleft") && shotcooldownLeft.IsStopped()) {
             shotcooldownLeft.Start();
-            Vector2 pos2 = tsquareController.GlobalPosition;
-
+            Vector2 pos2 = guid.tsquareController.GlobalPosition;
             if (targetLocked){
                 pos2.Y += 10; // sprite a bit higher then origin point so lower it.
             } else {
@@ -228,11 +192,10 @@ public partial class player : CharacterBody3D
         bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.Position = rightArm.GlobalPosition;
         bulletInstance.SetDirection(-pos.Basis.Z);
-        bulletInstance.SetOwner("player");
-        bulletInstance.SetDamage(2);
+        bulletInstance.SetProps(2, "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
-        ResetCooldown(rightbar, 1);
+        guid.ResetCooldown(true, 1);
     }
     public void ShootBullet(Vector3 targetPosition)
     {
@@ -241,10 +204,10 @@ public partial class player : CharacterBody3D
         bulletInstance.Position = MissileLaunchSpot.GlobalPosition;
         Vector3 direction = (targetPosition - MissileLaunchSpot.GlobalPosition).Normalized();
         bulletInstance.SetDirection(direction);
-        bulletInstance.SetOwner("player");
+        bulletInstance.SetProps(1, "player");
         GetParent().AddChild(bulletInstance);
         rocket.Play();
-        ResetCooldown(leftbar, 3);
+        guid.ResetCooldown(false, 3);
     }
 
 
@@ -262,25 +225,6 @@ public partial class player : CharacterBody3D
         }
     }
 
-    public void ReposSquare(Vector3 globaltransform){
-        Vector2 screenpos = playercam.UnprojectPosition(globaltransform);
-        screenpos.Y -= 15; // OFFSET so sprite is centered.
-        /// text next to it indicating distance / else Zero 
-        /// do anti of unproject - project position into world to aim
-
-        if (!playercam.IsPositionBehind(globaltransform) && playercam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
-            tsquareController.Position = tsquareController.Position.MoveToward(screenpos, 5f);
-            targetLocked = true;
-        } else {
-            ResetTargetingSquare();
-            targetLocked = false;
-        }
-    }
-
-    public void ResetTargetingSquare(){
-        // reset targeting square to center of screen
-        tsquareController.Position = tsquareController.Position.MoveToward(aimspotStartSpot, 5f);
-    }
 
     public void ScanForEnemies(){
         if (DetArea.HasOverlappingBodies()){
@@ -321,13 +265,5 @@ public partial class player : CharacterBody3D
         GetTree().ReloadCurrentScene();
     }
 
-    public void ExtraParticleController(bool state)
-    {
-        //        leftshoulder.Emitting  = state;
-        //        rightshoulder.Emitting = state;
-        //        Dust1.Emitting         = state;
-        //        Dust2.Emitting         = state;
-        return;
-    }
 
 }

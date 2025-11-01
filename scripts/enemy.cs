@@ -87,11 +87,14 @@ public partial class enemy : CharacterBody3D
 	
 
     public override void _PhysicsProcess(double delta)
-    {
-		if (!target || Disabled){
+	{
+
+		if (Disabled)
+		{
 			return;
 		}
-		los.LookAt(player.GlobalPosition, Vector3.Up);
+		
+		if (target) los.LookAt(player.GlobalPosition, Vector3.Up);
 
 		float distance = 999;
 		if (los.GetCollider() == player){
@@ -102,7 +105,6 @@ public partial class enemy : CharacterBody3D
 
 		if (!hasAggro){
 			AggroCheck(distance);
-			return;
 		}
 
 		ColliderMovementController(distance);
@@ -111,10 +113,10 @@ public partial class enemy : CharacterBody3D
 		if (IsOnFloor()) {
 			next = navagent.GetNextPathPosition();
 			RotateBody(next);
-		} else {
-			velocity.Y += Gravity * (float)delta;
-		}
-		
+		} else
+        {
+            velocity.Y += Gravity * (float)delta;
+        }
 		Vector3	dir = GlobalPosition.DirectionTo(next);
         if (next != Vector3.Zero && canMove){
 			velocity.X = dir.X * Speed;
@@ -218,13 +220,13 @@ public partial class enemy : CharacterBody3D
 
 	public void ShootBullet()
     {
-        CharacterBody3D bulletInstance = Bullet.Instantiate() as CharacterBody3D;
+        bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.Position = GlobalPosition;
-
 		Vector3 playerPos = player.GlobalPosition;
-        bulletInstance.Call("SetDirection", (playerPos - GlobalTransform.Origin).Normalized() * Speed);
 
-		bulletInstance.Call("SetOwner", "enemy");
+		bulletInstance.SetDirection((playerPos - GlobalTransform.Origin).Normalized() * Speed);
+		bulletInstance.SetProps(1, "enemy");
+
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
 		if (!canMove){
