@@ -29,7 +29,7 @@ public partial class enemy : CharacterBody3D
 	public const float jumpstr = 10f;
 	Vector3 next = Vector3.Zero;
 
-	enum EnemyStates { AFK, HUNTING, SHOOTING }
+	enum EnemyStates { AFK = 0, HUNTING = 1, SHOOTING = 2 }
 	private EnemyStates cState = EnemyStates.AFK;
 
 	int HP = 1;
@@ -37,16 +37,17 @@ public partial class enemy : CharacterBody3D
     bool target;
 	bool Disabled = false;
 	float lastSawPlayerSeconds;
+    private bool canShoot = true;
 
-	/// <summary>
-	///  TO FIX
-	///  los can target other enemies, this should not be a factor - ? i think fake news
-	///  look at, is looking at the final destination. not good +
-	///  randomize speed, instead of latency to introduce some randomness? 
-	///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok
-	///  death anim +
-	///  invisible barriers just for bots +
-	/// </summary>
+    /// <summary>
+    ///  TO FIX
+    ///  los can target other enemies, this should not be a factor - ? i think fake news
+    ///  look at, is looking at the final destination. not good +
+    ///  randomize speed, instead of latency to introduce some randomness? 
+    ///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok
+    ///  death anim +
+    ///  invisible barriers just for bots +
+    /// </summary>
     public override void _Ready()
     {
 
@@ -76,14 +77,12 @@ public partial class enemy : CharacterBody3D
 	private void OnTimeOut()
 	{
 		target = true;
-
 		if (player != null)
         {
 			SetTargetPos(player.GlobalPosition);
         } else
         {
 			GD.PushWarning("no player"); 
-            
         }
 	}
 
@@ -92,60 +91,78 @@ public partial class enemy : CharacterBody3D
     public override void _PhysicsProcess(double delta)
 	{
 		if (Disabled) return;
+
 		if (target) los.LookAt(player.GlobalPosition, Vector3.Up);
-
 		float PlayerDistance = 999; // default = out of range
-
-		lastSawPlayerSeconds += (float)delta;
-        if (lastSawPlayerSeconds >= 5f)
-		{
-			GD.Print("We afk");
-			cState = EnemyStates.AFK;
-        }	
-
+	
 		Node Collider = null;
 		if (los.IsColliding()) Collider = (Node)los.GetCollider();
 		if (Collider is player)
-        {
-        	PlayerDistance = GetPlayerDistance();
+		{
+			PlayerDistance = GetPlayerDistance();
 			lastSawPlayerSeconds = 0;
-			cState = EnemyStates.HUNTING;
-        }
-		hasAggro = PlayerDistance < AggroDistance;
-		if (hasAggro) ColliderMovementController(PlayerDistance, (player)Collider); 
-			
+		}
 
+		hasAggro = PlayerDistance < AggroDistance;
+		if (hasAggro && cState != EnemyStates.SHOOTING) cState = EnemyStates.HUNTING;
 		velocity = Velocity;
 
-		if (IsOnFloor())
-		{
-			next = navagent.GetNextPathPosition();
-			RotateBody(next);
-			if (!canMove)
-            {
-                velocity.X = 0;
-				velocity.Z = 0;
-            }
-		}
-		else
+		bool ShouldStop = false;
+
+		switch (cState)
+        {
+            case EnemyStates.SHOOTING:
+				ShouldStop = true;
+				RotateBodyTowardsPlayer(true, Vector3.Zero);
+				if (hasAggro) TryToShoot();	
+				break;
+			case EnemyStates.AFK:
+				break;
+			case EnemyStates.HUNTING:
+				CheckAggroResetTime((float)delta);
+				next = navagent.GetNextPathPosition();
+				RotateBodyTowardsPlayer(false, next);
+				Vector3 dir = GlobalPosition.DirectionTo(next);
+				CheckIfCanShoot(PlayerDistance);
+				if (next != Vector3.Zero)
+				{
+					velocity.X = dir.X * Speed;
+					velocity.Z = dir.Z * Speed;
+				} 
+				
+				GD.Randomize();
+				int randi = GD.RandRange(1, 20);
+				//if (randi == 10) Jump();
+				break;
+        }
+
+		if (!IsOnFloor())
 		{
 			velocity.Y += Gravity * (float)delta;
 		}
 
-		Vector3 dir = GlobalPosition.DirectionTo(next);
+		if (ShouldStop)
+        {
+			velocity.X = 0;
+			velocity.Z = 0;
+        }
 		
-        if (next != Vector3.Zero && canMove){
-			velocity.X = dir.X * Speed;
-			velocity.Z = dir.Z * Speed;
-		} 
-
 		navagent.Velocity = velocity;
 		MoveAndSlide();
 		//GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
     }
 
+    private void CheckAggroResetTime(float delta)
+    {
+        lastSawPlayerSeconds += delta;
+        if (lastSawPlayerSeconds >= 5f)
+		{
+			GD.Print("We afk");
+			cState = EnemyStates.AFK;
+        }	
+    }
 
-	private void EnableHeadIndicator(){
+    private void EnableHeadIndicator(){
 		// if spotted , or in aggro range -> light up red dot on head to indicate target to player
 		// either 3d model , or 3d sprite facing player. 3d can emit
 	}
@@ -182,62 +199,61 @@ public partial class enemy : CharacterBody3D
 	}
 
 
-	public void RotateBody(Vector3 _direction){
+	public void RotateBodyTowardsPlayer(bool lookAtPlayer, Vector3 lookPos){
 
 		Vector3 lookDir;
 
-		if (!canMove)
+		if (lookAtPlayer)
 			lookDir = (player.GlobalPosition - body.GlobalPosition).Normalized();
 		else
-			lookDir = (_direction - body.GlobalPosition).Normalized();
+			lookDir = (lookPos - body.GlobalPosition).Normalized();
 	
 		Vector3 targetForward = lookDir;
 		float targetYaw = Mathf.Atan2(targetForward.X, targetForward.Z);
 
 		Tween tween = GetTree().CreateTween();
-		tween.TweenProperty(body, "rotation:y", targetYaw, 0.25);
+		tween.TweenProperty(body, "rotation:y", targetYaw, 0.5);
 	}
 
-	public void ColliderMovementController(float distance, player collider){
+	public void CheckIfCanShoot(float distance)
+	{
 		//Raycast look at player, stop if in los, or move if not
+		if (distance < ShootDistance)
+		{
+			cState = EnemyStates.SHOOTING;
+		}
+	}
 	
-		if (distance < ShootDistance){
-			canMove = false;
-			RotateBody(player.GlobalPosition);
-			if (timer.IsStopped()) StartShotTimer();
-		} 
-	}
+	public void TryToShoot()
+    {
+		if (!canShoot) return;
+		canShoot = false;
 
-	public void StartShotTimer(){
-		GD.Randomize();
-		int randi = GD.RandRange(1, 3);
-		timer.WaitTime = randi;
-		timer.Start();
-	}
+		SceneTreeTimer tr = GetTree().CreateTimer(2.0);
+		tr.Timeout += ShootBullet;
+    }	
 
 	public void Jump()
 	{
 		if (IsOnFloor())
         {
 			velocity.Y = 0;
-            velocity.Y +=  jumpstr;
+            velocity.Y += jumpstr;
         }
 	}
 
 	public void ShootBullet()
-    {
+	{
+		canShoot = true;
         bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.Position = GlobalPosition;
-		Vector3 playerPos = player.GlobalPosition;
 
-		bulletInstance.SetDirection((playerPos - GlobalTransform.Origin).Normalized() * Speed);
+		bulletInstance.SetDirection((player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
 		bulletInstance.SetProps(1, "enemy");
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
-		if (!canMove){
-			StartShotTimer();
-		}
+		cState = EnemyStates.HUNTING;
     }
 
 	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)
@@ -256,18 +272,11 @@ public partial class enemy : CharacterBody3D
         Jump();
     } 
 
-	private void _on_shot_cooldown_timeout(){
-		if (!Disabled){
-			ShootBullet();
-			canMove = true;
-		}
-	}
-	
 	private void _on_retarget_timeout(){
 		if (cState == EnemyStates.AFK) return;
 		SetTargetPos(player.GlobalPosition);
 		GD.Randomize();
-		int randi = GD.RandRange(1, 3);
+		int randi = GD.RandRange(1, 5);
 		retargetTimer.WaitTime = randi;
 		retargetTimer.Start();
 	}

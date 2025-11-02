@@ -280,6 +280,14 @@ start_position = Vector3(0.674, 15, -71.605)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5918827, 15.282013)
 player = NodePath("../../../worldDefaults/player")
 
+[node name="enemy2" parent="FuncGodotMap/NavigationRegion3D" node_paths=PackedStringArray("player") instance=ExtResource("8_s7a7f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5918827, 57.729797)
+player = NodePath("../../../worldDefaults/player")
+
+[node name="enemy3" parent="FuncGodotMap/NavigationRegion3D" node_paths=PackedStringArray("player") instance=ExtResource("8_s7a7f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.760292, 7.5918827, 33.90867)
+player = NodePath("../../../worldDefaults/player")
+
 [node name="worldDefaults" type="Node3D" parent="."]
 
 [node name="player" parent="worldDefaults" instance=ExtResource("5_tktjs")]
