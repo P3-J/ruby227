@@ -104,7 +104,6 @@ public partial class enemy : CharacterBody3D
 		}
 
 		hasAggro = PlayerDistance < AggroDistance;
-		if (hasAggro && cState != EnemyStates.SHOOTING) cState = EnemyStates.HUNTING;
 		velocity = Velocity;
 
 		bool ShouldStop = false;
@@ -114,16 +113,17 @@ public partial class enemy : CharacterBody3D
             case EnemyStates.SHOOTING:
 				ShouldStop = true;
 				RotateBodyTowardsPlayer(true, Vector3.Zero);
-				if (hasAggro) TryToShoot();	
+				if (hasAggro) TryToShoot(PlayerDistance);	
 				break;
 			case EnemyStates.AFK:
+				if (hasAggro) cState = EnemyStates.HUNTING;
 				break;
 			case EnemyStates.HUNTING:
 				CheckAggroResetTime((float)delta);
 				next = navagent.GetNextPathPosition();
 				RotateBodyTowardsPlayer(false, next);
 				Vector3 dir = GlobalPosition.DirectionTo(next);
-				CheckIfCanShoot(PlayerDistance);
+				if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
 				if (next != Vector3.Zero)
 				{
 					velocity.X = dir.X * Speed;
@@ -215,22 +215,25 @@ public partial class enemy : CharacterBody3D
 		tween.TweenProperty(body, "rotation:y", targetYaw, 0.5);
 	}
 
-	public void CheckIfCanShoot(float distance)
+	public bool CheckIfCanShoot(float distance)
 	{
 		//Raycast look at player, stop if in los, or move if not
 		if (distance < ShootDistance)
 		{
-			cState = EnemyStates.SHOOTING;
+			return true;
 		}
+		return false;
 	}
 	
-	public void TryToShoot()
+	public void TryToShoot(float PlayerDistance)
     {
 		if (!canShoot) return;
 		canShoot = false;
 
+		bool playerInSight = CheckIfCanShoot(PlayerDistance);
+
 		SceneTreeTimer tr = GetTree().CreateTimer(2.0);
-		tr.Timeout += ShootBullet;
+		tr.Timeout += () => ShootBullet(playerInSight);
     }	
 
 	public void Jump()
@@ -242,7 +245,7 @@ public partial class enemy : CharacterBody3D
         }
 	}
 
-	public void ShootBullet()
+	public void ShootBullet(bool playerInSight)
 	{
 		canShoot = true;
         bullet bulletInstance = Bullet.Instantiate() as bullet;
@@ -253,7 +256,8 @@ public partial class enemy : CharacterBody3D
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
-		cState = EnemyStates.HUNTING;
+
+		if (!playerInSight) cState = EnemyStates.HUNTING;
     }
 
 	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)
