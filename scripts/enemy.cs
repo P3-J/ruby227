@@ -29,11 +29,14 @@ public partial class enemy : CharacterBody3D
 	public const float jumpstr = 10f;
 	Vector3 next = Vector3.Zero;
 
+	enum EnemyStates { AFK, HUNTING, SHOOTING }
+	private EnemyStates cState = EnemyStates.AFK;
 
 	int HP = 1;
 	int cHP = 1;
     bool target;
 	bool Disabled = false;
+	float lastSawPlayerSeconds;
 
 	/// <summary>
 	///  TO FIX
@@ -88,36 +91,49 @@ public partial class enemy : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
 	{
-
-		if (Disabled)
-		{
-			return;
-		}
-		
+		if (Disabled) return;
 		if (target) los.LookAt(player.GlobalPosition, Vector3.Up);
 
-		float distance = 999;
-		if (los.GetCollider() == player){
-			Vector3 origin = los.GlobalPosition;
-			Vector3 colPoint = los.GetCollisionPoint();
-			distance = origin.DistanceTo(colPoint);
-		}
+		float PlayerDistance = 999; // default = out of range
 
-		if (!hasAggro){
-			AggroCheck(distance);
-		}
+		lastSawPlayerSeconds += (float)delta;
+        if (lastSawPlayerSeconds >= 5f)
+		{
+			GD.Print("We afk");
+			cState = EnemyStates.AFK;
+        }	
 
-		ColliderMovementController(distance);
+		Node Collider = null;
+		if (los.IsColliding()) Collider = (Node)los.GetCollider();
+		if (Collider is player)
+        {
+        	PlayerDistance = GetPlayerDistance();
+			lastSawPlayerSeconds = 0;
+			cState = EnemyStates.HUNTING;
+        }
+		hasAggro = PlayerDistance < AggroDistance;
+		if (hasAggro) ColliderMovementController(PlayerDistance, (player)Collider); 
+			
 
 		velocity = Velocity;
-		if (IsOnFloor()) {
+
+		if (IsOnFloor())
+		{
 			next = navagent.GetNextPathPosition();
 			RotateBody(next);
-		} else
-        {
-            velocity.Y += Gravity * (float)delta;
-        }
-		Vector3	dir = GlobalPosition.DirectionTo(next);
+			if (!canMove)
+            {
+                velocity.X = 0;
+				velocity.Z = 0;
+            }
+		}
+		else
+		{
+			velocity.Y += Gravity * (float)delta;
+		}
+
+		Vector3 dir = GlobalPosition.DirectionTo(next);
+		
         if (next != Vector3.Zero && canMove){
 			velocity.X = dir.X * Speed;
 			velocity.Z = dir.Z * Speed;
@@ -134,11 +150,10 @@ public partial class enemy : CharacterBody3D
 		// either 3d model , or 3d sprite facing player. 3d can emit
 	}
 
-	public void AggroCheck(float distance){
-		if (distance > AggroDistance){
-			return;
-		} 
-		hasAggro = true;
+	public float GetPlayerDistance(){
+		Vector3 origin = los.GlobalPosition;
+		Vector3 colPoint = los.GetCollisionPoint();
+		return origin.DistanceTo(colPoint);
 	}
 
 	public void GetHit(int dmg){
@@ -167,39 +182,30 @@ public partial class enemy : CharacterBody3D
 	}
 
 
-	public void RotateBody(Vector3 _direction){	
-		if (!canMove) {
-			body.LookAt(player.GlobalPosition, Vector3.Up);
-		} else {
-			body.LookAt(_direction, Vector3.Up);
-		}
-		Vector3 rot = body.Rotation;
-		rot.X = 0;
-		rot.Z = 0;
-		body.Rotation = rot;
+	public void RotateBody(Vector3 _direction){
+
+		Vector3 lookDir;
+
+		if (!canMove)
+			lookDir = (player.GlobalPosition - body.GlobalPosition).Normalized();
+		else
+			lookDir = (_direction - body.GlobalPosition).Normalized();
+	
+		Vector3 targetForward = lookDir;
+		float targetYaw = Mathf.Atan2(targetForward.X, targetForward.Z);
+
+		Tween tween = GetTree().CreateTween();
+		tween.TweenProperty(body, "rotation:y", targetYaw, 0.25);
 	}
 
-	public void ColliderMovementController(float distance){
+	public void ColliderMovementController(float distance, player collider){
 		//Raycast look at player, stop if in los, or move if not
-		var collider = los.GetCollider();
 	
-		if (collider is CharacterBody3D && distance < ShootDistance){
-			if (collider == player){
-				canMove = false;
-				RotateBody(player.GlobalPosition);
-				if (IsOnFloor()){
-					velocity.X = 0;
-					velocity.Z = 0;
-				}
-				if (timer.IsStopped()){
-					StartShotTimer();
-				}
-			}
-		} else {
-			canMove = true;
-			//SetTargetPos(player.GlobalPosition);
-			//SetTargetPos(player.GlobalPosition); this causes constant recalculations
-		}
+		if (distance < ShootDistance){
+			canMove = false;
+			RotateBody(player.GlobalPosition);
+			if (timer.IsStopped()) StartShotTimer();
+		} 
 	}
 
 	public void StartShotTimer(){
@@ -240,7 +246,8 @@ public partial class enemy : CharacterBody3D
     }
 
     private void OnNavigationAgentTargetReached()
-    {
+	{
+		if (cState == EnemyStates.AFK) return;
         SetTargetPos(player.GlobalPosition);
     }
 	#pragma warning disable IDE0060
@@ -252,10 +259,12 @@ public partial class enemy : CharacterBody3D
 	private void _on_shot_cooldown_timeout(){
 		if (!Disabled){
 			ShootBullet();
+			canMove = true;
 		}
 	}
 	
 	private void _on_retarget_timeout(){
+		if (cState == EnemyStates.AFK) return;
 		SetTargetPos(player.GlobalPosition);
 		GD.Randomize();
 		int randi = GD.RandRange(1, 3);

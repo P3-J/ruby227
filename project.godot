@@ -21,6 +21,8 @@ Globals="*res://scripts/Globals.cs"
 
 [display]
 
+window/size/viewport_width=800
+window/size/viewport_height=600
 window/size/extend_to_title=true
 window/stretch/mode="viewport"
 

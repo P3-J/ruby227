@@ -51,7 +51,7 @@ Bullet = ExtResource("2_5bxl6")
 [node name="bodyController" type="Node3D" parent="."]
 
 [node name="low_poly_mech_really_0708185600_refine" parent="bodyController" instance=ExtResource("5_c4w8v")]
-transform = Transform3D(-2.1855695e-07, 0, -5, 0, 5, 0, 5, 0, -2.1855695e-07, -0.6916306, 0, 0.8737464)
+transform = Transform3D(-2.1855695e-07, 0, 5, 0, 5, 0, -5, 0, -2.1855695e-07, -0.6916306, 0, 0.8737464)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 3.0

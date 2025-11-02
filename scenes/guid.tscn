@@ -123,8 +123,8 @@ vertical = true
 [node name="guid" type="Control" node_paths=PackedStringArray("tsquareController", "hpBar", "leftbar", "rightbar")]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 800.0
+offset_bottom = 600.0
 script = ExtResource("1_sraot")
 tsquareController = NodePath("tsquarecontroller")
 hpBar = NodePath("hpbar")
@@ -155,8 +155,7 @@ scale = Vector2(0.645161, 1.89516)
 texture = ExtResource("1_bvwxv")
 
 [node name="tsquarecontroller" type="Node2D" parent="."]
-position = Vector2(576, 324)
-scale = Vector2(2, 2)
+position = Vector2(400, 300)
 
 [node name="tsquare" type="Sprite2D" parent="tsquarecontroller"]
 modulate = Color(1, 1, 1, 0.329412)
