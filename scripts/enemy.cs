@@ -1,17 +1,16 @@
 using Godot;
 using Godot.Collections;
+using Microsoft.VisualBasic;
 using System;
 
 public partial class enemy : CharacterBody3D
 {
-	public const float Speed = 15f;
+
 
 	[Export] private NavigationAgent3D navagent;
-	[Export] CharacterBody3D player; // bad but gets the job done
-	Node3D body;
 	[Export] public PackedScene Bullet;
-	[Export] float ShootDistance = 60f;
-	[Export] float AggroDistance = 90f;
+	[Export] public int ShootDistance = 60;
+	[Export] public int AggroDistance = 90;
 	Timer timer;
 	Timer retargetTimer;
 	RayCast3D los;
@@ -19,25 +18,31 @@ public partial class enemy : CharacterBody3D
 	GpuParticles3D deathExplosion;
 	bool targetinlos;
 	bool hasAggro;
-
+	Node3D body;
+	Vector3 next = Vector3.Zero;
+	player Player;
 	AudioStreamPlayer3D booster;
 	AudioStreamPlayer3D rocket;
 
 	Boolean canMove = true;
 	Vector3 velocity;
+	public const float Speed = 15f;
 	public const float Gravity = -9.8f;
 	public const float jumpstr = 10f;
-	Vector3 next = Vector3.Zero;
+
 
 	enum EnemyStates { AFK = 0, HUNTING = 1, SHOOTING = 2 }
 	private EnemyStates cState = EnemyStates.AFK;
+	enum EnemyTypes { SHOOTER = 1, BOMBER = 2 }
+	private EnemyTypes cType = EnemyTypes.SHOOTER;
 
 	int HP = 1;
 	int cHP = 1;
     bool target;
-	bool Disabled = false;
+	bool Disabled = true;
 	float lastSawPlayerSeconds;
-    private bool canShoot = true;
+	private bool canShoot = true;
+	public Vector3 spawnLocation;
 
     /// <summary>
     ///  TO FIX
@@ -66,7 +71,8 @@ public partial class enemy : CharacterBody3D
 
 		deathTimer = GetNode<Timer>("death/deathtime");
 		deathExplosion = GetNode<GpuParticles3D>("death/explosion");
-		
+
+		GlobalPosition = spawnLocation;
 
 		SceneTreeTimer tr = GetTree().CreateTimer(1.0);
 		tr.Timeout += OnTimeOut;
@@ -77,79 +83,48 @@ public partial class enemy : CharacterBody3D
 	private void OnTimeOut()
 	{
 		target = true;
-		if (player != null)
-        {
-			SetTargetPos(player.GlobalPosition);
+		Node potPlayer = GetTree().CurrentScene.FindChild("player");
+
+		if (potPlayer.IsInGroup("player"))
+		{
+			Disabled = false;
+			Player = (player)potPlayer;
+			SetTargetPos(Player.GlobalPosition);
         } else
         {
 			GD.PushWarning("no player"); 
         }
 	}
 
-	
 
-    public override void _PhysicsProcess(double delta)
+
+	public override void _PhysicsProcess(double delta)
 	{
 		if (Disabled) return;
-
-		if (target) los.LookAt(player.GlobalPosition, Vector3.Up);
-		float PlayerDistance = 999; // default = out of range
-	
-		Node Collider = null;
-		if (los.IsColliding()) Collider = (Node)los.GetCollider();
-		if (Collider is player)
-		{
-			PlayerDistance = GetPlayerDistance();
-			lastSawPlayerSeconds = 0;
-		}
-
-		hasAggro = PlayerDistance < AggroDistance;
-		velocity = Velocity;
-
-		bool ShouldStop = false;
-
-		switch (cState)
-        {
-            case EnemyStates.SHOOTING:
-				ShouldStop = true;
-				RotateBodyTowardsPlayer(true, Vector3.Zero);
-				if (hasAggro) TryToShoot(PlayerDistance);	
-				break;
-			case EnemyStates.AFK:
-				if (hasAggro) cState = EnemyStates.HUNTING;
-				break;
-			case EnemyStates.HUNTING:
-				CheckAggroResetTime((float)delta);
-				next = navagent.GetNextPathPosition();
-				RotateBodyTowardsPlayer(false, next);
-				Vector3 dir = GlobalPosition.DirectionTo(next);
-				if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
-				if (next != Vector3.Zero)
-				{
-					velocity.X = dir.X * Speed;
-					velocity.Z = dir.Z * Speed;
-				} 
-				
-				GD.Randomize();
-				int randi = GD.RandRange(1, 20);
-				//if (randi == 10) Jump();
-				break;
-        }
+		
 
 		if (!IsOnFloor())
 		{
 			velocity.Y += Gravity * (float)delta;
 		}
-
-		if (ShouldStop)
-        {
+		if (!canMove)
+		{
 			velocity.X = 0;
 			velocity.Z = 0;
-        }
-		
+		}
+
 		navagent.Velocity = velocity;
 		MoveAndSlide();
+		velocity = Velocity;
 		//GD.Print(Velocity, groundcheck.IsColliding(), IsOnFloor(), canMove);
+	}
+
+    public override void _Process(double delta)
+    {
+		base._Process(delta);
+		if (Disabled) return;
+		LosCollsionChecks();
+		StateMachine(delta);
     }
 
     private void CheckAggroResetTime(float delta)
@@ -164,7 +139,7 @@ public partial class enemy : CharacterBody3D
 
     private void EnableHeadIndicator(){
 		// if spotted , or in aggro range -> light up red dot on head to indicate target to player
-		// either 3d model , or 3d sprite facing player. 3d can emit
+		// either 3d model , or 3d sprite facing Player. 3d can emit
 	}
 
 	public float GetPlayerDistance(){
@@ -204,7 +179,7 @@ public partial class enemy : CharacterBody3D
 		Vector3 lookDir;
 
 		if (lookAtPlayer)
-			lookDir = (player.GlobalPosition - body.GlobalPosition).Normalized();
+			lookDir = (Player.GlobalPosition - body.GlobalPosition).Normalized();
 		else
 			lookDir = (lookPos - body.GlobalPosition).Normalized();
 	
@@ -233,7 +208,7 @@ public partial class enemy : CharacterBody3D
 		bool playerInSight = CheckIfCanShoot(PlayerDistance);
 
 		SceneTreeTimer tr = GetTree().CreateTimer(2.0);
-		tr.Timeout += () => ShootBullet(playerInSight);
+		tr.Timeout += () => ShootBullet();
     }	
 
 	public void Jump()
@@ -245,19 +220,20 @@ public partial class enemy : CharacterBody3D
         }
 	}
 
-	public void ShootBullet(bool playerInSight)
+	public void ShootBullet()
 	{
+		if (Disabled) return;
 		canShoot = true;
         bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.Position = GlobalPosition;
 
-		bulletInstance.SetDirection((player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
+		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
 		bulletInstance.SetProps(1, "enemy");
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
 
-		if (!playerInSight) cState = EnemyStates.HUNTING;
+		if (!CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.HUNTING;
     }
 
 	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)
@@ -268,7 +244,7 @@ public partial class enemy : CharacterBody3D
     private void OnNavigationAgentTargetReached()
 	{
 		if (cState == EnemyStates.AFK) return;
-        SetTargetPos(player.GlobalPosition);
+        SetTargetPos(Player.GlobalPosition);
     }
 	#pragma warning disable IDE0060
     private void OnNavigationAgentLinkReached(Dictionary data)
@@ -278,7 +254,7 @@ public partial class enemy : CharacterBody3D
 
 	private void _on_retarget_timeout(){
 		if (cState == EnemyStates.AFK) return;
-		SetTargetPos(player.GlobalPosition);
+		SetTargetPos(Player.GlobalPosition);
 		GD.Randomize();
 		int randi = GD.RandRange(1, 5);
 		retargetTimer.WaitTime = randi;

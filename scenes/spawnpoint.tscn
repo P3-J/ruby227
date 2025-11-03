@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyexssxt0u08b"]
+
+[ext_resource type="Script" uid="uid://b5dyk44wmevjd" path="res://scripts/Spawnpoint.cs" id="1_ybbfl"]
+[ext_resource type="PackedScene" uid="uid://8mw6l4575xco" path="res://scenes/enemy.tscn" id="2_7k2ad"]
+
+[node name="spawnpoint" type="Marker3D"]
+script = ExtResource("1_ybbfl")
+enemyInstance = ExtResource("2_7k2ad")
