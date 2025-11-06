@@ -23,10 +23,11 @@ public partial class enemy : CharacterBody3D
 	player Player;
 	AudioStreamPlayer3D booster;
 	AudioStreamPlayer3D rocket;
+	NavigationRegion3D navregion;
 
 	Boolean canMove = true;
 	Vector3 velocity;
-	public const float Speed = 15f;
+	public  float Speed = 15f;
 	public const float Gravity = -9.8f;
 	public const float jumpstr = 10f;
 
@@ -52,6 +53,8 @@ public partial class enemy : CharacterBody3D
     ///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok
     ///  death anim +
     ///  invisible barriers just for bots +
+	/// 
+	/// dodge bullets? jump 
     /// </summary>
     public override void _Ready()
     {
@@ -73,14 +76,20 @@ public partial class enemy : CharacterBody3D
 		deathExplosion = GetNode<GpuParticles3D>("death/explosion");
 
 		GlobalPosition = spawnLocation;
+		navregion = GetParent<NavigationRegion3D>();
+
+		GD.Randomize();
+		//int randi = GD.RandRange(1, 2);
+		//	cType = randi == 1 ? EnemyTypes.SHOOTER : EnemyTypes.BOMBER;
+
+		SetupProps();
 
 		SceneTreeTimer tr = GetTree().CreateTimer(1.0);
 		tr.Timeout += OnTimeOut;
 
        
     }
-
-	private void OnTimeOut()
+    private void OnTimeOut()
 	{
 		target = true;
 		Node potPlayer = GetTree().CurrentScene.FindChild("player");
@@ -130,7 +139,7 @@ public partial class enemy : CharacterBody3D
     private void CheckAggroResetTime(float delta)
     {
         lastSawPlayerSeconds += delta;
-        if (lastSawPlayerSeconds >= 5f)
+        if (lastSawPlayerSeconds >= 20f)
 		{
 			GD.Print("We afk");
 			cState = EnemyStates.AFK;

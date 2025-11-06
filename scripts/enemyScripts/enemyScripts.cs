@@ -20,6 +20,20 @@ public partial class enemy : CharacterBody3D
         }
     }
 
+    private void SetupProps()
+    {
+        switch (cType)
+        {
+            case EnemyTypes.SHOOTER:
+                Speed = 15f;
+                break;
+            case EnemyTypes.BOMBER:
+                Speed = 30f;
+                break;
+        }
+    }
+
+
     private void LosCollsionChecks()
     {
         if (target) los.LookAt(Player.GlobalPosition, Vector3.Up);
@@ -52,7 +66,6 @@ public partial class enemy : CharacterBody3D
                 if (hasAggro) cState = EnemyStates.HUNTING;
                 break;
             case EnemyStates.HUNTING:
-                GD.Print("hunting");
                 canMove = true;
                 CheckAggroResetTime((float)delta);
                 next = navagent.GetNextPathPosition();
@@ -63,6 +76,10 @@ public partial class enemy : CharacterBody3D
                 {
                     velocity.X = dir.X * Speed;
                     velocity.Z = dir.Z * Speed;
+                } else
+                {
+                    // get nearest point, go there if out of region
+                    next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(),GlobalPosition);
                 }
                 break;
         }
