@@ -9,6 +9,8 @@ public partial class Guid : Control
     [Export] ProgressBar hpBar;
     [Export] ProgressBar leftbar;
     [Export] ProgressBar rightbar;
+    [Export] RichTextLabel powerleveltext;
+     
 
     Vector2 aimspotStartSpot;
     public override void _Ready()

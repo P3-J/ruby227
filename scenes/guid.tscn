@@ -1,10 +1,12 @@
-[gd_scene load_steps=22 format=3 uid="uid://btumhbmc6hq5e"]
+[gd_scene load_steps=25 format=3 uid="uid://btumhbmc6hq5e"]
 
 [ext_resource type="Texture2D" uid="uid://8wphi2e5jxcj" path="res://assets/bar1.png" id="1_bvwxv"]
 [ext_resource type="Script" uid="uid://dm8fq0dnw4j77" path="res://scripts/Guid.cs" id="1_sraot"]
 [ext_resource type="Texture2D" uid="uid://dju83523yxk8b" path="res://assets/crosshair.png" id="2_sraot"]
 [ext_resource type="Texture2D" uid="uid://5r64uu74y2pm" path="res://assets/cooldown.png" id="3_mlnga"]
 [ext_resource type="FontFile" uid="uid://d1c7ml3v3ix45" path="res://assets/fonts/Paskowy.ttf" id="4_k12ah"]
+[ext_resource type="FontFile" uid="uid://chj1jpb32tiy1" path="res://assets/fonts/joystix monospace.otf" id="6_k12ah"]
+[ext_resource type="Shader" uid="uid://dphbbx33v5db5" path="res://scenes/shaders/pixelator.gdshader" id="6_mlnga"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_io0ff"]
 
@@ -119,6 +121,23 @@ vertical = true
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jod6i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kajla"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k12ah"]
+shader = ExtResource("6_mlnga")
+shader_parameter/exposure = 1.0
+shader_parameter/contrast = 1.05
+shader_parameter/saturation = 0.9
+shader_parameter/enable_pixelate = true
+shader_parameter/pixel_factor = 3.146000125685
+shader_parameter/enable_posterize = true
+shader_parameter/color_levels = 16.0
+shader_parameter/dither_strength = 0.362000017195
+shader_parameter/chrom_aberration = 0.07
+shader_parameter/vignette_strength = 1.0
+shader_parameter/grain_strength = 0.2
+shader_parameter/tint_color = Vector3(0.95, 1.03, 0.9)
+shader_parameter/tint_strength = 0.15
+shader_parameter/viewport_size_override = Vector2(0, 0)
 
 [node name="guid" type="Control" node_paths=PackedStringArray("tsquareController", "hpBar", "leftbar", "rightbar")]
 layout_mode = 3
@@ -260,3 +279,28 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_pqkoc")
 theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_jod6i")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_kajla")
 text = "redeploy"
+
+[node name="powerlevel" type="Control" parent="."]
+z_index = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="powerleveltext" type="RichTextLabel" parent="powerlevel"]
+z_index = 1
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 392.0
+offset_bottom = 72.0
+theme_override_colors/default_color = Color(1, 0.0627451, 0.043137256, 1)
+theme_override_fonts/normal_font = ExtResource("6_k12ah")
+theme_override_font_sizes/normal_font_size = 32
+text = "power 1000"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -2
+material = SubResource("ShaderMaterial_k12ah")
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 600.0

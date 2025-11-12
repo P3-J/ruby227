@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=17 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" uid="uid://bp1elsfh8gxed" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
@@ -9,15 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="8_jej6c"]
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://d4mign5r2hgcl" path="res://sounds/dropsound.mp3" id="9_ik3sr"]
-[ext_resource type="Shader" uid="uid://dphbbx33v5db5" path="res://scenes/shaders/pixelator.gdshader" id="10_7obu6"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_37j6b"]
-render_priority = 0
-shader = ExtResource("10_7obu6")
-shader_parameter/pixel_size = 4
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_2y7q1"]
-size = Vector2(3, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
 size = Vector3(80.172, 25.081, 80.348)
@@ -79,15 +70,9 @@ transform = Transform3D(-8.742278e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.742278e-09
 [node name="camBase" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="camBase"]
-transform = Transform3D(1, -6.597004e-08, 1.6677109e-07, 3.58274e-08, 0.9846285, 0.17466208, -1.7573e-07, -0.17466208, 0.9846285, 0, 9.012, 11.572)
+transform = Transform3D(1, -6.597005e-08, 1.6677107e-07, 3.58274e-08, 0.9846285, 0.17466208, -1.7573e-07, -0.17466208, 0.9846285, 0, 8.794931, 15.023551)
 current = true
 size = 22.186
-
-[node name="pixelator" type="MeshInstance3D" parent="camBase/Camera3D"]
-transform = Transform3D(1, 1.11759e-08, -1.11759e-08, -2.10479e-07, 0.0822341, -0.996613, -4.47035e-08, 0.996613, 0.0822341, -0.0235291, 0.0511169, -0.285915)
-visible = false
-material_override = SubResource("ShaderMaterial_37j6b")
-mesh = SubResource("PlaneMesh_2y7q1")
 
 [node name="detectionarea" type="Area3D" parent="."]
 collision_layer = 0

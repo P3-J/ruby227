@@ -31,11 +31,13 @@ public partial class player : CharacterBody3D
     Node3D MissileLauncherSwivel;
 
     private const float Gravity = -2.8f;
-    private const float JumpForce = 55.0f; //55
-    private const float MovementSpeed = 20F; //15
+    private const float JumpForce = 35.0f; //55
+    private const float MovementSpeed = 15F; //15
 
     int HP = 4;
     int cHP = 4;
+    int cPower = 100;
+    int Power = 100;
     bool playDropSound = false;
     bool canSeeEnemy = false;
     bool targetLocked = false;
@@ -130,11 +132,11 @@ public partial class player : CharacterBody3D
     public void HandleTurning(){
         float rotationInput = 0f;
         if (Input.IsActionPressed("left")){
-            rotationInput += 0.03f;
+            rotationInput += 0.02f;
             PlaySteamAudioIfCan();
         }
         if (Input.IsActionPressed("right")){
-            rotationInput -= 0.03f;
+            rotationInput -= 0.02f;
             PlaySteamAudioIfCan();
         }
 
@@ -156,13 +158,13 @@ public partial class player : CharacterBody3D
     public void HandleCameraTurning(){
          if (Input.IsActionPressed("camleft")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
-			v.Y += 4f;
+			v.Y += 3f;
 			PlayerCamBase.RotationDegrees = v;
 		}
 
 		 if (Input.IsActionPressed("camright")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
-			v.Y -= 4f;
+			v.Y -= 3f;
 			PlayerCamBase.RotationDegrees = v;
 		}
     }
