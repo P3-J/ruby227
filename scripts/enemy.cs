@@ -25,7 +25,7 @@ public partial class enemy : CharacterBody3D
 	AudioStreamPlayer3D rocket;
 	NavigationRegion3D navregion;
 
-	Boolean canMove = true;
+	bool canMove = true;
 	Vector3 velocity;
 	public  float Speed = 15f;
 	public const float Gravity = -9.8f;
@@ -43,6 +43,7 @@ public partial class enemy : CharacterBody3D
 	bool Disabled = true;
 	float lastSawPlayerSeconds;
 	private bool canShoot = true;
+	bool hasVisionOfTarget;
 	public Vector3 spawnLocation;
 
     /// <summary>
@@ -118,8 +119,7 @@ public partial class enemy : CharacterBody3D
 		}
 		if (!canMove)
 		{
-			velocity.X = 0;
-			velocity.Z = 0;
+			CreateTween().TweenProperty(this, "velocity", new Vector3(0,0,0), 1);
 		}
 
 		navagent.Velocity = velocity;
@@ -131,6 +131,7 @@ public partial class enemy : CharacterBody3D
     public override void _Process(double delta)
     {
 		base._Process(delta);
+		//GD.Print(cState);
 		if (Disabled) return;
 		LosCollsionChecks();
 		StateMachine(delta);
@@ -192,17 +193,22 @@ public partial class enemy : CharacterBody3D
 		else
 			lookDir = (lookPos - body.GlobalPosition).Normalized();
 	
-		Vector3 targetForward = lookDir;
-		float targetYaw = Mathf.Atan2(targetForward.X, targetForward.Z);
+		float currentYaw = body.RotationDegrees.Y;
+        float targetYaw = Mathf.RadToDeg(Mathf.Atan2(lookDir.X, lookDir.Z));
 
-		Tween tween = GetTree().CreateTween();
-		tween.TweenProperty(body, "rotation:y", targetYaw, 0.5);
+        float delta = Mathf.Wrap(targetYaw - currentYaw, -180f, 180f);
+        float finalYaw = currentYaw + delta;
+
+
+        Tween rotationTween = GetTree().CreateTween();
+        rotationTween.TweenProperty(body, "rotation_degrees:y", finalYaw, 0.1)
+                     .SetTrans(Tween.TransitionType.Sine)
+                     .SetEase(Tween.EaseType.InOut);
 	}
 
 	public bool CheckIfCanShoot(float distance)
 	{
-		//Raycast look at player, stop if in los, or move if not
-		if (distance < ShootDistance)
+		if (distance < ShootDistance && canShoot)
 		{
 			return true;
 		}
@@ -213,8 +219,6 @@ public partial class enemy : CharacterBody3D
     {
 		if (!canShoot) return;
 		canShoot = false;
-
-		bool playerInSight = CheckIfCanShoot(PlayerDistance);
 
 		SceneTreeTimer tr = GetTree().CreateTimer(2.0);
 		tr.Timeout += () => ShootBullet();
@@ -241,8 +245,8 @@ public partial class enemy : CharacterBody3D
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
-
-		if (!CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.HUNTING;
+		cState = EnemyStates.HUNTING;
+		SetTargetPos(Player.GlobalPosition);
     }
 
 	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)

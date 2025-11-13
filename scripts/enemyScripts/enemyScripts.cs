@@ -41,12 +41,18 @@ public partial class enemy : CharacterBody3D
 	
 		Node Collider = null;
         if (los.IsColliding()) Collider = (Node)los.GetCollider();
-        
+
         if (Collider is player)
-		{
-			PlayerDistance = GetPlayerDistance();
-			lastSawPlayerSeconds = 0;
-		}
+        {
+            PlayerDistance = GetPlayerDistance();
+            lastSawPlayerSeconds = 0;
+            hasVisionOfTarget = true;
+        }
+        else
+        {
+            hasVisionOfTarget = false;
+        }
+
 
 		hasAggro = PlayerDistance < AggroDistance;
     }
@@ -69,18 +75,19 @@ public partial class enemy : CharacterBody3D
                 canMove = true;
                 CheckAggroResetTime((float)delta);
                 next = navagent.GetNextPathPosition();
-                RotateBodyTowardsPlayer(false, next);
                 Vector3 dir = GlobalPosition.DirectionTo(next);
                 if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
                 if (next != Vector3.Zero)
                 {
                     velocity.X = dir.X * Speed;
                     velocity.Z = dir.Z * Speed;
-                } else
+                }
+                else
                 {
                     // get nearest point, go there if out of region
-                    next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(),GlobalPosition);
+                    next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
                 }
+                RotateBodyTowardsPlayer(false, next);
                 break;
         }
     }
