@@ -37,8 +37,8 @@ public partial class enemy : CharacterBody3D
 	enum EnemyTypes { SHOOTER = 1, BOMBER = 2 }
 	private EnemyTypes cType = EnemyTypes.SHOOTER;
 
-	int HP = 1;
-	int cHP = 1;
+	int HP = 3;
+	int cHP = 3;
     bool target;
 	bool Disabled = true;
 	float lastSawPlayerSeconds;
@@ -56,6 +56,8 @@ public partial class enemy : CharacterBody3D
     ///  invisible barriers just for bots +
 	/// 
 	/// dodge bullets? jump 
+	/// target lock on unlock
+	/// wings//wol
     /// </summary>
     public override void _Ready()
     {
@@ -113,13 +115,14 @@ public partial class enemy : CharacterBody3D
 		if (Disabled) return;
 		
 
+		
+		if (!canMove)
+		{
+			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 10f * (float)delta);
+		}
 		if (!IsOnFloor())
 		{
 			velocity.Y += Gravity * (float)delta;
-		}
-		if (!canMove)
-		{
-			CreateTween().TweenProperty(this, "velocity", new Vector3(0,0,0), 1);
 		}
 
 		navagent.Velocity = velocity;
@@ -245,8 +248,18 @@ public partial class enemy : CharacterBody3D
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
+		weaponAggroSwitchBool = true;
 		cState = EnemyStates.HUNTING;
 		SetTargetPos(Player.GlobalPosition);
+
+
+		GD.Randomize();
+		int randi = GD.RandRange(-15, 15);
+		int randi2 = GD.RandRange(-15, 15);
+
+		velocity.X += randi;
+		velocity.Z += randi2;
+
     }
 
 	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)

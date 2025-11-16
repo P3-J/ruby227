@@ -6,6 +6,7 @@ using System;
 public partial class enemy : CharacterBody3D
 {
     float PlayerDistance = 999;
+    bool weaponAggroSwitchBool = true;
 
     private void StateMachine(double delta)
     {
@@ -76,7 +77,19 @@ public partial class enemy : CharacterBody3D
                 CheckAggroResetTime((float)delta);
                 next = navagent.GetNextPathPosition();
                 Vector3 dir = GlobalPosition.DirectionTo(next);
-                if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
+
+
+                if (CheckIfCanShoot(PlayerDistance) && weaponAggroSwitchBool)
+                {
+                    GD.Randomize();
+                    weaponAggroSwitchBool = false;
+                    int randcooldown = GD.RandRange(1,3);
+                    SceneTreeTimer tr = GetTree().CreateTimer(randcooldown);
+                    GD.Print(randcooldown);
+		            tr.Timeout += () => cState = EnemyStates.SHOOTING;
+                }
+
+
                 if (next != Vector3.Zero)
                 {
                     velocity.X = dir.X * Speed;
