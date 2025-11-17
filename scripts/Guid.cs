@@ -10,6 +10,7 @@ public partial class Guid : Control
     [Export] ProgressBar leftbar;
     [Export] ProgressBar rightbar;
     [Export] RichTextLabel powerleveltext;
+    [Export] Sprite2D tsSquare2;
      
 
     Vector2 aimspotStartSpot;
@@ -28,6 +29,8 @@ public partial class Guid : Control
 
         if (!playerCam.IsPositionBehind(globaltransform) && playerCam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
             tsquareController.Position = tsquareController.Position.MoveToward(screenpos, 5f);
+
+            tsSquare2.Visible = tsquareController.Position == screenpos;
             return true;
         } else {
             ResetTargetingSquare();

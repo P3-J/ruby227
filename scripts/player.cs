@@ -31,8 +31,8 @@ public partial class player : CharacterBody3D
     Node3D MissileLauncherSwivel;
 
     private const float Gravity = -2.8f;
-    private const float JumpForce = 35.0f; //55
-    private const float MovementSpeed = 15F; //15
+    private const float JumpForce = 45.0f; //55
+    private const float MovementSpeed = 30F; //15
 
     int HP = 4;
     int cHP = 4;
@@ -58,7 +58,7 @@ public partial class player : CharacterBody3D
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
 
        
-
+        Input.MouseMode = Input.MouseModeEnum.Captured;
         guid.SetupHud(HP);
     }
 
@@ -187,6 +187,14 @@ public partial class player : CharacterBody3D
             Vector3 pos3 = playercam.ProjectPosition(pos2, 50);
             ShootBullet(pos3);
         }
+
+
+        if (@event is InputEventMouseMotion eventy)
+        {
+            PlayerCamBase.Rotation += new Vector3(-eventy.Relative.Y * 0.01f,-eventy.Relative.X * 0.01f,0);             
+        }
+     
+
     }
 
     public void ShootBullet(Transform3D pos)

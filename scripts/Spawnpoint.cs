@@ -29,7 +29,7 @@ public partial class Spawnpoint : Marker3D
 		int randi = GD.RandRange(0, 30);
         Enemy.ShootDistance = GD.RandRange(Enemy.ShootDistance, Enemy.ShootDistance + randi);
 
-        Enemy.spawnLocation = new Vector3(GlobalPosition.X, GlobalPosition.Y + 10, GlobalPosition.Z);
+        Enemy.spawnLocation = new Vector3(GlobalPosition.X, GlobalPosition.Y + 5, GlobalPosition.Z);
     }
     
 

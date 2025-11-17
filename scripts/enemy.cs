@@ -10,7 +10,7 @@ public partial class enemy : CharacterBody3D
 	[Export] private NavigationAgent3D navagent;
 	[Export] public PackedScene Bullet;
 	[Export] public int ShootDistance = 60;
-	[Export] public int AggroDistance = 90;
+	[Export] public int AggroDistance = 300;
 	Timer timer;
 	Timer retargetTimer;
 	RayCast3D los;
@@ -27,7 +27,7 @@ public partial class enemy : CharacterBody3D
 
 	bool canMove = true;
 	Vector3 velocity;
-	public  float Speed = 15f;
+	public  float Speed = 35f;
 	public const float Gravity = -9.8f;
 	public const float jumpstr = 10f;
 
@@ -122,7 +122,7 @@ public partial class enemy : CharacterBody3D
 		}
 		if (!IsOnFloor())
 		{
-			velocity.Y += Gravity * (float)delta;
+			velocity.Y += -1 * (float)delta;
 		}
 
 		navagent.Velocity = velocity;
@@ -248,7 +248,6 @@ public partial class enemy : CharacterBody3D
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
-		weaponAggroSwitchBool = true;
 		cState = EnemyStates.HUNTING;
 		SetTargetPos(Player.GlobalPosition);
 
