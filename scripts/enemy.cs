@@ -27,7 +27,7 @@ public partial class enemy : CharacterBody3D
 
 	bool canMove = true;
 	Vector3 velocity;
-	public  float Speed = 35f;
+	public  float Speed;
 	public const float Gravity = -9.8f;
 	public const float jumpstr = 10f;
 
@@ -183,7 +183,7 @@ public partial class enemy : CharacterBody3D
 	{
 		var map = GetWorld3D().NavigationMap;
 		var p = NavigationServer3D.MapGetClosestPoint(map, pos);
-		navagent.TargetPosition = p;
+		navagent.TargetPosition = p;				
 	}
 
 
@@ -223,7 +223,7 @@ public partial class enemy : CharacterBody3D
 		if (!canShoot) return;
 		canShoot = false;
 
-		SceneTreeTimer tr = GetTree().CreateTimer(2.0);
+		SceneTreeTimer tr = GetTree().CreateTimer(1.5);
 		tr.Timeout += () => ShootBullet();
     }	
 
@@ -253,11 +253,11 @@ public partial class enemy : CharacterBody3D
 
 
 		GD.Randomize();
-		int randi = GD.RandRange(-15, 15);
-		int randi2 = GD.RandRange(-15, 15);
+		//int randi = GD.RandRange(-15, 15);
+		//int randi2 = GD.RandRange(-15, 15);
 
-		velocity.X += randi;
-		velocity.Z += randi2;
+		//velocity.X += randi;
+		//velocity.Z += randi2;
 
     }
 
@@ -270,6 +270,7 @@ public partial class enemy : CharacterBody3D
 	{
 		if (cState == EnemyStates.AFK) return;
         SetTargetPos(Player.GlobalPosition);
+		next = navagent.GetNextPathPosition();
     }
 	#pragma warning disable IDE0060
     private void OnNavigationAgentLinkReached(Dictionary data)
@@ -277,12 +278,5 @@ public partial class enemy : CharacterBody3D
         Jump();
     } 
 
-	private void _on_retarget_timeout(){
-		if (cState == EnemyStates.AFK) return;
-		SetTargetPos(Player.GlobalPosition);
-		GD.Randomize();
-		int randi = GD.RandRange(1, 5);
-		retargetTimer.WaitTime = randi;
-		retargetTimer.Start();
-	}
+
 }

@@ -25,7 +25,7 @@ public partial class enemy : CharacterBody3D
         switch (cType)
         {
             case EnemyTypes.SHOOTER:
-                Speed = 15f;
+                Speed = 90f;
                 break;
             case EnemyTypes.BOMBER:
                 Speed = 30f;
@@ -56,6 +56,16 @@ public partial class enemy : CharacterBody3D
 
 		hasAggro = PlayerDistance < AggroDistance;
     }
+
+    private void _on_retarget_timeout(){
+		if (cState == EnemyStates.AFK) return;
+		SetTargetPos(Player.GlobalPosition);
+		next = navagent.GetNextPathPosition();
+		GD.Randomize();
+		int randi = GD.RandRange(1, 2);
+		retargetTimer.WaitTime = randi;
+		retargetTimer.Start();
+	}
 
 
     private void _shooterLoop(double delta)
@@ -112,7 +122,6 @@ public partial class enemy : CharacterBody3D
 				break;
 			case EnemyStates.HUNTING:
 				CheckAggroResetTime((float)delta);
-				next = navagent.GetNextPathPosition();
 				RotateBodyTowardsPlayer(false, next);
                 Vector3 dir = GlobalPosition.DirectionTo(next);
                 if (PlayerDistance < 5) cState = EnemyStates.SHOOTING;
