@@ -1,0 +1,9 @@
+newmtl F1/CNRR3_2
+map_Kd ../../textures/F1/CNRR3_2.png
+
+newmtl F1/CNVV1_1
+map_Kd ../../textures/F1/CNVV1_1.png
+
+newmtl newwithe/building_10_emiss
+map_Kd ../../textures/newwithe/building_10_emiss.png
+

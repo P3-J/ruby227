@@ -14,13 +14,14 @@ radius = 0.55
 height = 3.0
 
 [sub_resource type="Curve" id="Curve_wgpx4"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0222062), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.5527523), 0.0, 0.0, 0, 0, Vector2(1, 0.0222062), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_7tqs2"]
 curve = SubResource("Curve_wgpx4")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2j4ib"]
+emission_shape_scale = Vector3(0.1, 0.1, 0.3)
 emission_shape = 1
 emission_sphere_radius = 1.0
 gravity = Vector3(10, 0, 0)
@@ -42,28 +43,28 @@ collision_mask = 0
 script = ExtResource("1_4n7bp")
 BulletSpeed = 50.0
 bulletBody = NodePath("bcontroller/bulletBody")
-collisionRay = NodePath("bcontroller/bulletBody/ray")
+collisionRay = NodePath("bcontroller/ray")
 explosion = ExtResource("2_ugt12")
 
 [node name="bcontroller" type="Node3D" parent="."]
 transform = Transform3D(-0.0343064, 0, -0.999411, 0, 1, 0, 0.999411, 0, -0.0343064, 0, 0, 0)
 
 [node name="bulletBody" type="MeshInstance3D" parent="bcontroller"]
-transform = Transform3D(-0.000522099, 0.0343024, 0.999411, 0.999884, 0.0152187, 0, -0.0152097, 0.999296, -0.0343064, 0, 0, 0)
+transform = Transform3D(-0.0002088397, 0.013720919, 0.39976454, 0.3999537, 0.0060874796, 9.454535e-10, -0.0060838964, 0.39971825, -0.013722509, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_shm2i")
 skeleton = NodePath("")
 
-[node name="ray" type="RayCast3D" parent="bcontroller/bulletBody"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.0136957, -0.00748205, 4.77164e-07)
+[node name="ray" type="RayCast3D" parent="bcontroller"]
+transform = Transform3D(-0.000522099, -0.999411, 0.03430235, 0.999884, -6.652307e-10, 0.0152187, -0.0152097, 0.034306355, 0.99929595, -0.00026332587, 0.013580244, -0.007685106)
 target_position = Vector3(0, 0, 2)
 collision_mask = 3
 debug_shape_custom_color = Color(1, 1, 0, 1)
 debug_shape_thickness = 4
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="bcontroller/bulletBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0136957, -1.09474, 5.2469e-07)
-lifetime = 0.5
+[node name="GPUParticles3D" type="GPUParticles3D" parent="bcontroller"]
+transform = Transform3D(-0.000522099, 0.034302395, 0.999411, 0.999884, 0.0152187, 0, -0.0152097, 0.9992959, -0.0343064, -0.02126003, -0.0029664095, -0.6193623)
 trail_enabled = true
+trail_lifetime = 1.0
 process_material = SubResource("ParticleProcessMaterial_2j4ib")
 draw_pass_1 = SubResource("SphereMesh_6vhel")
 

@@ -1,14 +1,15 @@
-[gd_scene load_steps=17 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=18 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" uid="uid://bp1elsfh8gxed" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_hgwbl"]
+[ext_resource type="PackedScene" uid="uid://c6agxrp3l5fvt" path="res://scenes/m_1_legs.tscn" id="4_y4r1p"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
 [ext_resource type="PackedScene" uid="uid://btumhbmc6hq5e" path="res://scenes/guid.tscn" id="5_y4r1p"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
-[ext_resource type="PackedScene" uid="uid://h7uv5bu0uglm" path="res://assets/mech1/low_poly_mech_really_0708185304_refine.fbx" id="8_jej6c"]
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://d4mign5r2hgcl" path="res://sounds/dropsound.mp3" id="9_ik3sr"]
+[ext_resource type="PackedScene" uid="uid://dhj32tgp5xmxn" path="res://scenes/m_1.tscn" id="10_y4r1p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
 size = Vector3(80.172, 25.081, 80.348)
@@ -49,29 +50,43 @@ height = 5.0
 radius = 2.75
 height = 7.5
 
-[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("rightArm", "booster", "rocket", "steam", "jumpboostsound", "dropsound", "guid", "PlayerCamBase") groups=["player"]]
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("booster", "rocket", "steam", "jumpboostsound", "dropsound", "leftarm", "rightarm", "guid", "PlayerCamBase", "BodyManager") groups=["player"]]
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
-rightArm = NodePath("rightArm")
 booster = NodePath("soundsCooldowns/booster")
 rocket = NodePath("soundsCooldowns/rocket")
 steam = NodePath("soundsCooldowns/steam")
 jumpboostsound = NodePath("soundsCooldowns/jump")
 dropsound = NodePath("soundsCooldowns/dropsound")
+leftarm = NodePath("bodymanager/leftarm")
+rightarm = NodePath("bodymanager/rightarm")
 guid = NodePath("guid")
 PlayerCamBase = NodePath("camBase")
+BodyManager = NodePath("bodymanager")
 
-[node name="mech" parent="." instance=ExtResource("8_jej6c")]
-transform = Transform3D(-2.1855695e-07, 0, 5, 0, 5, 0, -5, 0, -2.1855695e-07, 0, 1.322439, 0)
+[node name="bodymanager" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3123566, 0, -0.1597929)
 
-[node name="missilelauncherspot" type="Marker3D" parent="mech"]
-transform = Transform3D(-8.742278e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.742278e-09, -0.09656089, 0.68478525, -0.5834322)
+[node name="m1" parent="bodymanager" instance=ExtResource("10_y4r1p")]
+transform = Transform3D(-0.025, 0, -3.774895e-09, 0, 0.025, 0, 3.774895e-09, 0, -0.025, 0, 0, 0)
+
+[node name="leftarm" type="Marker3D" parent="bodymanager"]
+transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, -2.371873, -0.03587812, 0.29083407)
+
+[node name="rightarm" type="Marker3D" parent="bodymanager"]
+transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, 2.386579, -0.03587812, 0.29083407)
+
+[node name="m1legs" parent="." instance=ExtResource("4_y4r1p")]
+transform = Transform3D(-0.025, 0, -2.1855695e-09, 0, 0.025, 0, 2.1855695e-09, 0, -0.025, -0.8976145, -1.5230143, -0.13702154)
 
 [node name="camBase" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25413656, -2.6986501, -2.8888779)
+top_level = true
 
 [node name="Camera3D" type="Camera3D" parent="camBase"]
-transform = Transform3D(1, -6.597005e-08, 1.6677107e-07, 3.58274e-08, 0.9846285, 0.17466208, -1.7573e-07, -0.17466208, 0.9846285, 0, 8.794931, 15.023551)
+transform = Transform3D(1, -6.597005e-08, 1.6677107e-07, 3.58274e-08, 0.9846285, 0.17466208, -1.7573e-07, -0.17466208, 0.9846285, 0, 7.8374186, 14.4930315)
 current = true
+fov = 64.6
 size = 22.186
 
 [node name="detectionarea" type="Area3D" parent="."]

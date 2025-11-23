@@ -1,0 +1,27 @@
+newmtl 128x128/Dirt/Dirt_07-128x128
+map_Kd ../../textures/128x128/Dirt/Dirt_07-128x128.png
+
+newmtl F1/CNRR3_2
+map_Kd ../../textures/F1/CNRR3_2.png
+
+newmtl F1/CNTC1_1
+map_Kd ../../textures/F1/CNTC1_1.png
+
+newmtl F1/CNVW1_2
+map_Kd ../../textures/F1/CNVW1_2.png
+
+newmtl F1/CNVW1_3
+map_Kd ../../textures/F1/CNVW1_3.png
+
+newmtl F1/CNWN2_1
+map_Kd ../../textures/F1/CNWN2_1.png
+
+newmtl Industrial/Materials/ac_vent_02
+map_Kd ../../textures/Industrial/Materials/ac_vent_02.jpg
+
+newmtl Windows/Materials/window_wood_old_01
+map_Kd ../../textures/Windows/Materials/window_wood_old_01.jpg
+
+newmtl newwithe/Facade003_1K-JPG_Color
+map_Kd ../../textures/newwithe/Facade003_1K-JPG_Color.jpg
+

@@ -1,0 +1,83 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://dt8xxemytva72"
+path="res://.godot/imported/m1.obj-9e68b4d0a0b42b3c817a4fb7f6df5ad8.scn"
+
+[deps]
+
+source_file="res://assets/mapsmech/m1.obj"
+dest_files=["res://.godot/imported/m1.obj-9e68b4d0a0b42b3c817a4fb7f6df5ad8.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"128x128/Dirt/Dirt_07-128x128": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/128x128_Dirt_Dirt_07-128x128.tres",
+"use_external/path": "uid://cfor7dr2ouhia"
+},
+"F1/CNRR3_2": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/F1_CNRR3_2.tres",
+"use_external/path": "uid://d1e15c1v6mc71"
+},
+"F1/CNTC1_1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/F1_CNTC1_1.tres",
+"use_external/path": "uid://q504ugucbicd"
+},
+"F1/CNVW1_2": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/F1_CNVW1_2.tres",
+"use_external/path": "uid://dxxaenbqrc4th"
+},
+"F1/CNVW1_3": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/F1_CNVW1_3.tres",
+"use_external/path": "uid://bu7jbnpcqnnkb"
+},
+"F1/CNWN2_1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/F1_CNWN2_1.tres",
+"use_external/path": "uid://b8vws682in7my"
+},
+"Industrial/Materials/ac_vent_02": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/Industrial_Materials_ac_vent_02.tres",
+"use_external/path": "uid://cdqanrrv4r7ra"
+},
+"Windows/Materials/window_wood_old_01": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/mapsmech/Windows_Materials_window_wood_old_01.tres",
+"use_external/path": "uid://ds0abn8t4p3go"
+}
+}
+}

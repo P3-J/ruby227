@@ -244,7 +244,7 @@ public partial class enemy : CharacterBody3D
         bulletInstance.Position = GlobalPosition;
 
 		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
-		bulletInstance.SetProps(1, "enemy");
+		bulletInstance.SetProps(1, "enemy", Vector3.Zero);
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();

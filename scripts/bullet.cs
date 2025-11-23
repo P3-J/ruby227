@@ -13,6 +13,8 @@ public partial class bullet : CharacterBody3D
 	public int damage = 1;
 	public float extraSpeed = 0f;
 	public string ownerGroup;
+	bool applyVeloExtra;
+	Vector3 Velo;
 
     public override void _Ready()
     {
@@ -24,16 +26,27 @@ public partial class bullet : CharacterBody3D
 	{
 
 		checkForCollision();
-		
+
 		_velocity = _direction * (BulletSpeed + extraSpeed);
-		Velocity = _velocity;
+
+		Vector3 extraVelo = applyVeloExtra ? Velo * 0.2f : Vector3.Zero;
+		Velocity = _velocity + extraVelo;
+
+		if (Velocity.Length() > 0.1) {
+            
+    		bcontroller.LookAt(bcontroller.GlobalTransform.Origin + Velocity.Normalized());
+        }
+
 		MoveAndSlide();
 	}
 
-	public void SetProps(int dmg, string ownergroup)
+	public void SetProps(int dmg, string ownergroup, Vector3 velo, float extraspeed = 0, bool abx = false)
 	{
 		damage = dmg;
 		ownerGroup = ownergroup;
+		Velo = velo;
+		extraSpeed = extraspeed;
+		applyVeloExtra = abx;
 	}
 	
 	private void checkForCollision()

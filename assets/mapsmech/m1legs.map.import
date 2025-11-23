@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://bn20rn3oudsik"
+path="res://.godot/imported/m1legs.map-c7ae6977bbf4178f5dc17615a79af9c2.tres"
+
+[deps]
+
+source_file="res://assets/mapsmech/m1legs.map"
+dest_files=["res://.godot/imported/m1legs.map-c7ae6977bbf4178f5dc17615a79af9c2.tres"]
+
+[params]
+

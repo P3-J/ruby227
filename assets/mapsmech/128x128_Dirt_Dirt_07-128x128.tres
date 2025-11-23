@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cfor7dr2ouhia"]
+
+[ext_resource type="Texture2D" uid="uid://bluiofsyvwvhq" path="res://textures/128x128/Dirt/Dirt_07-128x128.png" id="1_q0c25"]
+
+[resource]
+resource_name = "128x128/Dirt/Dirt_07-128x128"
+albedo_texture = ExtResource("1_q0c25")
+texture_filter = 0

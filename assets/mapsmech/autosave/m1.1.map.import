@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://hgbrod5md23h"
+path="res://.godot/imported/m1.1.map-dbce5192864082aa12512d0d3d4d68ac.tres"
+
+[deps]
+
+source_file="res://assets/mapsmech/autosave/m1.1.map"
+dest_files=["res://.godot/imported/m1.1.map-dbce5192864082aa12512d0d3d4d68ac.tres"]
+
+[params]
+

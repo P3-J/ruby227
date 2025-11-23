@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://ds0abn8t4p3go"]
+
+[ext_resource type="Texture2D" uid="uid://jchqx076cvdv" path="res://textures/Windows/Materials/window_wood_old_01.jpg" id="1_i2li7"]
+
+[resource]
+resource_name = "Windows/Materials/window_wood_old_01"
+albedo_texture = ExtResource("1_i2li7")
+texture_filter = 0

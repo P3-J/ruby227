@@ -6,15 +6,16 @@ public partial class player : CharacterBody3D
 {
 
     [Export] public PackedScene Bullet;
-    [Export] private Marker3D rightArm;
     [Export] AudioStreamPlayer booster;
 	[Export] AudioStreamPlayer rocket;
     [Export] AudioStreamPlayer steam;
     [Export] AudioStreamPlayer jumpboostsound;
     [Export] AudioStreamPlayer dropsound;
+    [Export] Marker3D leftarm;
+    [Export] Marker3D rightarm;
     [Export] Guid guid;
     [Export] Node3D PlayerCamBase;
-
+    [Export] Node3D BodyManager;
     Timer shotcooldown;
     Timer shotcooldownLeft;
     RayCast3D MissileTargeter;
@@ -24,15 +25,14 @@ public partial class player : CharacterBody3D
     Camera3D playercam;
     Timer EnemyTimer;
     Area3D DetArea;
+
     AnimationPlayer deathanim;
     GpuParticles3D deathExplosion;
     CharacterBody3D CurrentTarget = null;
-    Marker3D MissileLaunchSpot;
-    Node3D MissileLauncherSwivel;
 
     private const float Gravity = -2.8f;
     private const float JumpForce = 45.0f; //55
-    private const float MovementSpeed = 30F; //15
+    private const float MovementSpeed = 25F; //15
 
     int HP = 4;
     int cHP = 4;
@@ -41,6 +41,7 @@ public partial class player : CharacterBody3D
     bool playDropSound = false;
     bool canSeeEnemy = false;
     bool targetLocked = false;
+    bool cameraLocked = false;
     bool canMove = true;
 
     public override void _Ready()
@@ -52,7 +53,6 @@ public partial class player : CharacterBody3D
         playercam = GetNode<Camera3D>("camBase/Camera3D");
         EnemyTimer = GetNode<Timer>("detectionarea/enemytimer");
         DetArea = GetNode<Area3D>("detectionarea");
-        MissileLaunchSpot = GetNode<Marker3D>("mech/missilelauncherspot");
 
         deathExplosion = GetNode<GpuParticles3D>("particles/explosion");
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
@@ -73,27 +73,12 @@ public partial class player : CharacterBody3D
         }
 
         Vector3 fakeVelo = Velocity;
-
-        HandleTurning();
-        HandleCameraTurning(); // includes the left launcher rotation currently, should be based on targeter, doesnt have to be tho
-
         Vector3 direction = new();
         if (Input.IsActionPressed("up"))
             direction -= Transform.Basis.Z; 
         if (Input.IsActionPressed("down"))
             direction += Transform.Basis.Z; 
         direction = direction.Normalized();
-
-
-        if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
-            TargeterPosition();
-            targetLocked = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, canSeeEnemy);
-        } else {
-            guid.ResetTargetingSquare();
-            targetLocked = false;
-        }
-
-
         if (!IsOnFloor())
         {
             fakeVelo.Y += Gravity;
@@ -128,15 +113,37 @@ public partial class player : CharacterBody3D
     }
 
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        PlayerCamBase.GlobalPosition = this.GlobalPosition;
+
+        if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
+            TargeterPosition();
+            targetLocked = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, canSeeEnemy);
+            //cameraLocked = true;
+        } else {
+            CurrentTarget = null;
+            targetLocked = false;
+            cameraLocked = false;
+            guid.ResetTargetingSquare();
+        }
+
+        HandleTurning();
+        HandleCameraTurning(); // includes the left launcher rotation currently, should be based on targeter, doesnt have to be tho
+
+
+    }
+
 
     public void HandleTurning(){
         float rotationInput = 0f;
         if (Input.IsActionPressed("left")){
-            rotationInput += 0.02f;
+            rotationInput += 0.01f;
             PlaySteamAudioIfCan();
         }
         if (Input.IsActionPressed("right")){
-            rotationInput -= 0.02f;
+            rotationInput -= 0.01f;
             PlaySteamAudioIfCan();
         }
 
@@ -156,17 +163,24 @@ public partial class player : CharacterBody3D
     }
 
     public void HandleCameraTurning(){
-         if (Input.IsActionPressed("camleft")){
+        if (Input.IsActionPressed("camleft")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y += 3f;
 			PlayerCamBase.RotationDegrees = v;
 		}
 
-		 if (Input.IsActionPressed("camright")){
+		if (Input.IsActionPressed("camright")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y -= 3f;
 			PlayerCamBase.RotationDegrees = v;
 		}
+
+        if (cameraLocked && CurrentTarget != null)
+        {
+           PlayerCamBase.LookAt(CurrentTarget.GlobalPosition);
+        }
+
+        RotateMechBodyWithCamera();          
     }
 
     public override void _Input(InputEvent @event)
@@ -174,47 +188,67 @@ public partial class player : CharacterBody3D
         if (Input.IsActionJustPressed("shoot") && shotcooldown.IsStopped())
         {
             shotcooldown.Start();
-            ShootBullet(GlobalTransform);
+            ShootRightArm();
         }
         if (Input.IsActionJustPressed("shootleft") && shotcooldownLeft.IsStopped()) {
             shotcooldownLeft.Start();
-            Vector2 pos2 = guid.tsquareController.GlobalPosition;
-            if (targetLocked){
-                pos2.Y += 10; // sprite a bit higher then origin point so lower it.
-            } else {
-                pos2.Y -= 30; // boost even more on a not locked target.
-            }
-            Vector3 pos3 = playercam.ProjectPosition(pos2, 50);
-            ShootBullet(pos3);
+            ShootLeftArm();
+        }
+
+        if (Input.IsActionJustPressed("lockon") && CurrentTarget != null)
+        {
+            cameraLocked = !cameraLocked;
         }
 
 
-        if (@event is InputEventMouseMotion eventy)
+        if (@event is InputEventMouseMotion eventy && !cameraLocked)
         {
-            PlayerCamBase.Rotation += new Vector3(-eventy.Relative.Y * 0.01f,-eventy.Relative.X * 0.01f,0);             
+            PlayerCamBase.Rotation += new Vector3(-eventy.Relative.Y * 0.01f,-eventy.Relative.X * 0.01f,0); 
+            RotateMechBodyWithCamera();            
         }
      
 
     }
 
-    public void ShootBullet(Transform3D pos)
+    public void RotateMechBodyWithCamera()
     {
+        BodyManager.GlobalRotation = new Vector3(0, PlayerCamBase.GlobalTransform.Basis.GetEuler().Y ,0);
+    }
+
+    public void ShootRightArm()
+    {
+        Vector2 pos2 = guid.tsquareController.GlobalPosition;
+        if (targetLocked)
+            pos2.Y += 10; // sprite a bit higher then origin point so lower it.
+    
+        Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
+
         bullet bulletInstance = Bullet.Instantiate() as bullet;
-        bulletInstance.Position = rightArm.GlobalPosition;
-        bulletInstance.SetDirection(-pos.Basis.Z);
-        bulletInstance.SetProps(2, "player");
+        bulletInstance.Position = rightarm.GlobalPosition;
+        Vector3 direction = (targetPosition - rightarm.GlobalPosition).Normalized();
+        bulletInstance.SetDirection(direction);
+        bulletInstance.SetProps(1, "player", this.Velocity, 100);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         guid.ResetCooldown(true, 1);
     }
-    public void ShootBullet(Vector3 targetPosition)
+    public void ShootLeftArm()
     {
+
+        Vector2 pos2 = guid.tsquareController.GlobalPosition;
+        if (targetLocked){
+            pos2.Y += 10; // sprite a bit higher then origin point so lower it.
+        } else {
+            pos2.Y -= 30; // boost even more on a not locked target.
+        }
+        Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
+
         // meant for left arm
         bullet bulletInstance = Bullet.Instantiate() as bullet;
-        bulletInstance.Position = MissileLaunchSpot.GlobalPosition;
-        Vector3 direction = (targetPosition - MissileLaunchSpot.GlobalPosition).Normalized();
+        bulletInstance.Position = leftarm.GlobalPosition;
+        Vector3 direction = (targetPosition - leftarm.GlobalPosition).Normalized();
         bulletInstance.SetDirection(direction);
-        bulletInstance.SetProps(1, "player");
+        bulletInstance.SetProps(1, "player", this.Velocity, -25, true);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         guid.ResetCooldown(false, 3);

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://q504ugucbicd"]
+
+[ext_resource type="Texture2D" uid="uid://bhiwipvs3sx3f" path="res://textures/F1/CNTC1_1.png" id="1_od8fb"]
+
+[resource]
+resource_name = "F1/CNTC1_1"
+albedo_texture = ExtResource("1_od8fb")
+texture_filter = 0

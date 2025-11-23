@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhj32tgp5xmxn"]
+
+[ext_resource type="PackedScene" uid="uid://dt8xxemytva72" path="res://assets/mapsmech/m1.obj" id="1_wny4b"]
+
+[node name="m1" instance=ExtResource("1_wny4b")]
+transform = Transform3D(0.045, 0, 0, 0, 0.045, 0, 0, 0, 0.045, 0, 0, 0)
