@@ -1,6 +1,8 @@
 using Godot;
 using System;
 using System.Diagnostics.Tracing;
+using System.Linq;
+using System.Threading.Tasks;
 
 public partial class player : CharacterBody3D
 {
@@ -16,6 +18,8 @@ public partial class player : CharacterBody3D
     [Export] Guid guid;
     [Export] Node3D PlayerCamBase;
     [Export] Node3D BodyManager;
+    [Export] RayCast3D groundnormal;    
+    [Export] Node3D hlevel;
     Timer shotcooldown;
     Timer shotcooldownLeft;
     RayCast3D MissileTargeter;
@@ -32,7 +36,7 @@ public partial class player : CharacterBody3D
 
     private const float Gravity = -2.8f;
     private const float JumpForce = 45.0f; //55
-    private const float MovementSpeed = 25F; //15
+    private const float MovementSpeed = 15F; //15
 
     int HP = 4;
     int cHP = 4;
@@ -131,10 +135,53 @@ public partial class player : CharacterBody3D
 
         HandleTurning();
         HandleCameraTurning(); // includes the left launcher rotation currently, should be based on targeter, doesnt have to be tho
-
+        GroundNormalRotate();
 
     }
 
+    private void GroundNormalRotate()
+    {
+        if (groundnormal.IsColliding())
+        {
+            Vector3 n = groundnormal.GetCollisionNormal();      // up
+
+            float angle = Mathf.RadToDeg(Mathf.Acos(n.Dot(Vector3.Up)));
+            if (angle > 25)
+            {
+                // clamp by slerping toward flat ground
+                float t = (angle - 25) / angle;
+                n = n.Slerp(Vector3.Up, t);
+            }
+
+    
+            Vector3 f = hlevel.GlobalTransform.Basis.Z.Slide(n).Normalized();
+            Vector3 r = n.Cross(f).Normalized();
+
+            // correct Basis order
+            Basis b = new Basis(r, n, f)            ;
+
+            Basis current = hlevel.GlobalTransform.Basis;
+            Basis smooth = current.Slerp(b, (float)GetProcessDeltaTime() * 10f);
+
+            hlevel.GlobalTransform = new Transform3D(smooth, hlevel.GlobalTransform.Origin);
+        } 
+        if (!groundnormal.IsColliding())
+        {
+
+            Vector3 f = hlevel.GlobalTransform.Basis.Z.Normalized();
+            f = f.Slide(Vector3.Up).Normalized();
+            Vector3 r = Vector3.Up.Cross(f).Normalized();
+
+            Vector3 up = Vector3.Up;
+            Basis flat = new Basis(r, up, f).Orthonormalized();
+
+            Basis current = hlevel.GlobalTransform.Basis;
+            Basis smooth = current.Slerp(flat, (float)GetProcessDeltaTime() * 5f);
+
+            hlevel.GlobalTransform = new Transform3D(smooth, hlevel.GlobalTransform.Origin);
+        }
+    
+    }
 
     public void HandleTurning(){
         float rotationInput = 0f;
@@ -215,26 +262,36 @@ public partial class player : CharacterBody3D
         BodyManager.GlobalRotation = new Vector3(0, PlayerCamBase.GlobalTransform.Basis.GetEuler().Y ,0);
     }
 
-    public void ShootRightArm()
+    public async Task ShootRightArm()
     {
-        Vector2 pos2 = guid.tsquareController.GlobalPosition;
-        if (targetLocked)
-            pos2.Y += 10; // sprite a bit higher then origin point so lower it.
-    
-        Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
+        foreach (var _ in Enumerable.Range(0,3))
+        {
+            genRightArm();
 
-        bullet bulletInstance = Bullet.Instantiate() as bullet;
-        bulletInstance.Position = rightarm.GlobalPosition;
-        Vector3 direction = (targetPosition - rightarm.GlobalPosition).Normalized();
-        bulletInstance.SetDirection(direction);
-        bulletInstance.SetProps(1, "player", this.Velocity, 100);
-        GetParent().AddChild(bulletInstance);
-        rocket.Play();
+            await ToSignal(GetTree().CreateTimer(0.2f), "timeout");
+        }
+
         guid.ResetCooldown(true, 1);
     }
+    public void genRightArm()
+    {
+        bullet bulletInstance = CreateBullet(true);
+        bulletInstance.SetProps(1, "player", Velocity, 100, false, bullet.BulletType.FIVEFIVESIX);
+        GetParent().AddChild(bulletInstance);
+        rocket.Play();
+    }
+
     public void ShootLeftArm()
     {
+        bullet bulletInstance = CreateBullet(false);
+        bulletInstance.SetProps(5, "player", Velocity, -25, true, bullet.BulletType.EXPLODING);
+        GetParent().AddChild(bulletInstance);
+        rocket.Play();
+        guid.ResetCooldown(false, 3);
+    }
 
+    private bullet CreateBullet(bool rarm)
+    {
         Vector2 pos2 = guid.tsquareController.GlobalPosition;
         if (targetLocked){
             pos2.Y += 10; // sprite a bit higher then origin point so lower it.
@@ -243,15 +300,14 @@ public partial class player : CharacterBody3D
         }
         Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
 
-        // meant for left arm
         bullet bulletInstance = Bullet.Instantiate() as bullet;
-        bulletInstance.Position = leftarm.GlobalPosition;
-        Vector3 direction = (targetPosition - leftarm.GlobalPosition).Normalized();
+
+        Vector3 armPos = rarm ? rightarm.GlobalPosition : leftarm.GlobalPosition;
+
+        bulletInstance.Position = armPos;
+        Vector3 direction = (targetPosition - armPos).Normalized();
         bulletInstance.SetDirection(direction);
-        bulletInstance.SetProps(1, "player", this.Velocity, -25, true);
-        GetParent().AddChild(bulletInstance);
-        rocket.Play();
-        guid.ResetCooldown(false, 3);
+        return bulletInstance;
     }
 
 

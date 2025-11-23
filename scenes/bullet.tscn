@@ -1,43 +1,35 @@
-[gd_scene load_steps=10 format=3 uid="uid://cola0rmveia2c"]
+[gd_scene load_steps=8 format=3 uid="uid://cola0rmveia2c"]
 
 [ext_resource type="Script" uid="uid://cjldolkiud52o" path="res://scripts/bullet.cs" id="1_4n7bp"]
 [ext_resource type="PackedScene" uid="uid://c5mxi6blb072k" path="res://scenes/explosion.tscn" id="2_ugt12"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vwyva"]
-albedo_color = Color(0.00784314, 0.580392, 0.129412, 1)
-emission_enabled = true
-emission = Color(0.0980392, 0.0980392, 0.0980392, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l5glv"]
+albedo_color = Color(0.7221975, 0.42668694, 0.16724846, 1)
+metallic = 0.25
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_shm2i"]
-material = SubResource("StandardMaterial3D_vwyva")
-radius = 0.55
-height = 3.0
-
-[sub_resource type="Curve" id="Curve_wgpx4"]
-_data = [Vector2(0, 0.5527523), 0.0, 0.0, 0, 0, Vector2(1, 0.0222062), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_7tqs2"]
-curve = SubResource("Curve_wgpx4")
+[sub_resource type="CylinderMesh" id="CylinderMesh_y25gk"]
+material = SubResource("StandardMaterial3D_l5glv")
+top_radius = 0.4
+bottom_radius = 0.3
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2j4ib"]
-emission_shape_scale = Vector3(0.1, 0.1, 0.3)
-emission_shape = 1
-emission_sphere_radius = 1.0
-gravity = Vector3(10, 0, 0)
-scale_curve = SubResource("CurveTexture_7tqs2")
+gravity = Vector3(0, 0, 0)
 sub_emitter_keep_velocity = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tadp3"]
-emission_enabled = true
-emission = Color(0.611765, 0.611765, 0.611765, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y25gk"]
+transparency = 3
+alpha_hash_scale = 0.3
+alpha_antialiasing_mode = 0
+albedo_color = Color(1, 1, 1, 0.15294118)
 
-[sub_resource type="SphereMesh" id="SphereMesh_6vhel"]
-material = SubResource("StandardMaterial3D_tadp3")
-radius = 0.3
-height = 0.5
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_y25gk"]
+material = SubResource("StandardMaterial3D_y25gk")
+radius = 0.07
+section_length = 0.4
+cap_top = false
+cap_bottom = false
 
-[node name="bullet" type="CharacterBody3D" node_paths=PackedStringArray("bulletBody", "collisionRay")]
+[node name="bullet" type="CharacterBody3D" node_paths=PackedStringArray("bulletBody", "collisionRay", "trail", "body")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_4n7bp")
@@ -45,28 +37,32 @@ BulletSpeed = 50.0
 bulletBody = NodePath("bcontroller/bulletBody")
 collisionRay = NodePath("bcontroller/ray")
 explosion = ExtResource("2_ugt12")
+trail = NodePath("bcontroller/GPUParticles3D")
+body = NodePath("bcontroller/bulletBody")
 
 [node name="bcontroller" type="Node3D" parent="."]
 transform = Transform3D(-0.0343064, 0, -0.999411, 0, 1, 0, 0.999411, 0, -0.0343064, 0, 0, 0)
 
 [node name="bulletBody" type="MeshInstance3D" parent="bcontroller"]
-transform = Transform3D(-0.0002088397, 0.013720919, 0.39976454, 0.3999537, 0.0060874796, 9.454535e-10, -0.0060838964, 0.39971825, -0.013722509, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_shm2i")
+transform = Transform3D(-0.0005220993, 0.034302298, 0.99941134, 0.9998842, 0.015218699, 2.4708768e-09, -0.015209741, 0.99929553, -0.034306277, 0.011781996, 0, 0.34323207)
+mesh = SubResource("CylinderMesh_y25gk")
 skeleton = NodePath("")
 
 [node name="ray" type="RayCast3D" parent="bcontroller"]
-transform = Transform3D(-0.000522099, -0.999411, 0.03430235, 0.999884, -6.652307e-10, 0.0152187, -0.0152097, 0.034306355, 0.99929595, -0.00026332587, 0.013580244, -0.007685106)
+transform = Transform3D(-0.000522099, -0.999411, 0.034302346, 0.999884, -6.652307e-10, 0.0152187, -0.0152097, 0.034306355, 0.99929583, -0.039202128, 0.013580244, -1.1420463)
 target_position = Vector3(0, 0, 2)
-collision_mask = 3
+collision_mask = 7
+hit_from_inside = true
 debug_shape_custom_color = Color(1, 1, 0, 1)
 debug_shape_thickness = 4
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="bcontroller"]
-transform = Transform3D(-0.000522099, 0.034302395, 0.999411, 0.999884, 0.0152187, 0, -0.0152097, 0.9992959, -0.0343064, -0.02126003, -0.0029664095, -0.6193623)
+transform = Transform3D(-0.000522099, 0.03430235, 0.999411, 0.999884, 0.0152187, 0, -0.0152097, 0.9992943, -0.0343064, 0.0062501123, -0.0029664095, 0.18206339)
+amount = 32
 trail_enabled = true
-trail_lifetime = 1.0
+trail_lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_2j4ib")
-draw_pass_1 = SubResource("SphereMesh_6vhel")
+draw_pass_1 = SubResource("TubeTrailMesh_y25gk")
 
 [node name="queuefree" type="Timer" parent="."]
 wait_time = 4.0

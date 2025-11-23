@@ -50,7 +50,7 @@ height = 5.0
 radius = 2.75
 height = 7.5
 
-[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("booster", "rocket", "steam", "jumpboostsound", "dropsound", "leftarm", "rightarm", "guid", "PlayerCamBase", "BodyManager") groups=["player"]]
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("booster", "rocket", "steam", "jumpboostsound", "dropsound", "leftarm", "rightarm", "guid", "PlayerCamBase", "BodyManager", "groundnormal", "hlevel") groups=["player"]]
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 booster = NodePath("soundsCooldowns/booster")
@@ -58,25 +58,33 @@ rocket = NodePath("soundsCooldowns/rocket")
 steam = NodePath("soundsCooldowns/steam")
 jumpboostsound = NodePath("soundsCooldowns/jump")
 dropsound = NodePath("soundsCooldowns/dropsound")
-leftarm = NodePath("bodymanager/leftarm")
-rightarm = NodePath("bodymanager/rightarm")
+leftarm = NodePath("hlevel/bodymanager/leftarm")
+rightarm = NodePath("hlevel/bodymanager/rightarm")
 guid = NodePath("guid")
 PlayerCamBase = NodePath("camBase")
-BodyManager = NodePath("bodymanager")
+BodyManager = NodePath("hlevel/bodymanager")
+groundnormal = NodePath("hlevel/bodymanager/groundnormal")
+hlevel = NodePath("hlevel")
 
-[node name="bodymanager" type="Node3D" parent="."]
+[node name="hlevel" type="Node3D" parent="."]
+
+[node name="bodymanager" type="Node3D" parent="hlevel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3123566, 0, -0.1597929)
 
-[node name="m1" parent="bodymanager" instance=ExtResource("10_y4r1p")]
+[node name="m1" parent="hlevel/bodymanager" instance=ExtResource("10_y4r1p")]
 transform = Transform3D(-0.025, 0, -3.774895e-09, 0, 0.025, 0, 3.774895e-09, 0, -0.025, 0, 0, 0)
 
-[node name="leftarm" type="Marker3D" parent="bodymanager"]
+[node name="leftarm" type="Marker3D" parent="hlevel/bodymanager"]
 transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, -2.371873, -0.03587812, 0.29083407)
 
-[node name="rightarm" type="Marker3D" parent="bodymanager"]
+[node name="rightarm" type="Marker3D" parent="hlevel/bodymanager"]
 transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, 2.386579, -0.03587812, 0.29083407)
 
-[node name="m1legs" parent="." instance=ExtResource("4_y4r1p")]
+[node name="groundnormal" type="RayCast3D" parent="hlevel/bodymanager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.420878, 0)
+collide_with_areas = true
+
+[node name="m1legs" parent="hlevel" instance=ExtResource("4_y4r1p")]
 transform = Transform3D(-0.025, 0, -2.1855695e-09, 0, 0.025, 0, 2.1855695e-09, 0, -0.025, -0.8976145, -1.5230143, -0.13702154)
 
 [node name="camBase" type="Node3D" parent="."]

@@ -233,7 +233,7 @@ transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
-[node name="FuncGodotMap" type="Node3D" parent="." groups=["terrain"]]
+[node name="FuncGodotMap" type="Node3D" parent="."]
 script = ExtResource("1_b0qwf")
 local_map_file = "uid://drxrydbtylajf"
 map_settings = ExtResource("2_rq5pq")
@@ -257,10 +257,10 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -95.
 [node name="entity_6_spawnPoint" parent="FuncGodotMap" instance=ExtResource("9_5kmsq")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -129.5, 72.5, -108.5)
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="FuncGodotMap"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="FuncGodotMap" groups=["terrain"]]
 navigation_mesh = SubResource("NavigationMesh_7m60w")
 
-[node name="entity_0_worldspawn" type="StaticBody3D" parent="FuncGodotMap/NavigationRegion3D"]
+[node name="entity_0_worldspawn" type="StaticBody3D" parent="FuncGodotMap/NavigationRegion3D" groups=["terrain"]]
 collision_mask = 0
 
 [node name="entity_0_mesh_instance" type="MeshInstance3D" parent="FuncGodotMap/NavigationRegion3D/entity_0_worldspawn"]
@@ -350,7 +350,7 @@ shape = SubResource("ConvexPolygonShape3D_yh1m3")
 [node name="entity_0_brush_26_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/NavigationRegion3D/entity_0_worldspawn"]
 shape = SubResource("ConvexPolygonShape3D_uunpn")
 
-[node name="terrainManager" type="Node3D" parent="FuncGodotMap/NavigationRegion3D"]
+[node name="terrainManager" type="Node3D" parent="FuncGodotMap/NavigationRegion3D" groups=["terrain"]]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1221.6243, 1.6666985, 203.6253)
 
 [node name="HTerrain" type="Node3D" parent="FuncGodotMap/NavigationRegion3D/terrainManager"]
@@ -383,4 +383,4 @@ mesh = SubResource("ArrayMesh_q08rk")
 [node name="worldDefaults" type="Node3D" parent="."]
 
 [node name="player" parent="worldDefaults" instance=ExtResource("5_tktjs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80.411896, 171.77374, -283.0151)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.32207, 42.26744, -19.730404)

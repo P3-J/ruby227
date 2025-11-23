@@ -25,7 +25,7 @@ public partial class enemy : CharacterBody3D
         switch (cType)
         {
             case EnemyTypes.SHOOTER:
-                Speed = 90f;
+                Speed = 120f;
                 break;
             case EnemyTypes.BOMBER:
                 Speed = 30f;

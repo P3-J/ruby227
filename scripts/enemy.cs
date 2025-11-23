@@ -9,8 +9,8 @@ public partial class enemy : CharacterBody3D
 
 	[Export] private NavigationAgent3D navagent;
 	[Export] public PackedScene Bullet;
-	[Export] public int ShootDistance = 60;
-	[Export] public int AggroDistance = 300;
+	[Export] public int ShootDistance = 90;
+	[Export] public int AggroDistance = 400;
 	Timer timer;
 	Timer retargetTimer;
 	RayCast3D los;
@@ -114,15 +114,13 @@ public partial class enemy : CharacterBody3D
 	{
 		if (Disabled) return;
 		
-
-		
 		if (!canMove)
 		{
-			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 10f * (float)delta);
+			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 5f * (float)delta);
 		}
 		if (!IsOnFloor())
 		{
-			velocity.Y += -1 * (float)delta;
+			velocity.Y += -5 * (float)delta;
 		}
 
 		navagent.Velocity = velocity;
@@ -138,7 +136,10 @@ public partial class enemy : CharacterBody3D
 		if (Disabled) return;
 		LosCollsionChecks();
 		StateMachine(delta);
+
     }
+
+	
 
     private void CheckAggroResetTime(float delta)
     {
@@ -223,7 +224,10 @@ public partial class enemy : CharacterBody3D
 		if (!canShoot) return;
 		canShoot = false;
 
-		SceneTreeTimer tr = GetTree().CreateTimer(1.5);
+		GD.Randomize();
+		int randi = GD.RandRange(1, 2);
+
+		SceneTreeTimer tr = GetTree().CreateTimer(randi);
 		tr.Timeout += () => ShootBullet();
     }	
 
@@ -244,7 +248,7 @@ public partial class enemy : CharacterBody3D
         bulletInstance.Position = GlobalPosition;
 
 		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
-		bulletInstance.SetProps(1, "enemy", Vector3.Zero);
+		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 0, true, bullet.BulletType.EXPLODING);
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
@@ -253,11 +257,11 @@ public partial class enemy : CharacterBody3D
 
 
 		GD.Randomize();
-		//int randi = GD.RandRange(-15, 15);
-		//int randi2 = GD.RandRange(-15, 15);
+		int randi = GD.RandRange(-10, 30);
+		int randi2 = GD.RandRange(-30, 10);
 
-		//velocity.X += randi;
-		//velocity.Z += randi2;
+		velocity.X += randi;
+		velocity.Z += randi2;
 
     }
 
