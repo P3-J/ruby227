@@ -62,7 +62,7 @@ public partial class player : CharacterBody3D
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
 
        
-        Input.MouseMode = Input.MouseModeEnum.Captured;
+        //Input.MouseMode = Input.MouseModeEnum.Captured;
         guid.SetupHud(HP);
     }
 
@@ -141,46 +141,28 @@ public partial class player : CharacterBody3D
 
     private void GroundNormalRotate()
     {
-        if (groundnormal.IsColliding())
-        {
-            Vector3 n = groundnormal.GetCollisionNormal();      // up
+        bool onground = groundnormal.IsColliding();
 
-            float angle = Mathf.RadToDeg(Mathf.Acos(n.Dot(Vector3.Up)));
+        Vector3 normal = onground ? groundnormal.GetCollisionNormal() : Vector3.Up;
+
+        if (onground)
+        {
+            float angle = Mathf.RadToDeg(Mathf.Acos(normal.Dot(Vector3.Up)));
             if (angle > 25)
             {
-                // clamp by slerping toward flat ground
                 float t = (angle - 25) / angle;
-                n = n.Slerp(Vector3.Up, t);
+                normal = normal.Slerp(Vector3.Up, t);
             }
-
-    
-            Vector3 f = hlevel.GlobalTransform.Basis.Z.Slide(n).Normalized();
-            Vector3 r = n.Cross(f).Normalized();
-
-            // correct Basis order
-            Basis b = new Basis(r, n, f)            ;
-
-            Basis current = hlevel.GlobalTransform.Basis;
-            Basis smooth = current.Slerp(b, (float)GetProcessDeltaTime() * 10f);
-
-            hlevel.GlobalTransform = new Transform3D(smooth, hlevel.GlobalTransform.Origin);
-        } 
-        if (!groundnormal.IsColliding())
-        {
-
-            Vector3 f = hlevel.GlobalTransform.Basis.Z.Normalized();
-            f = f.Slide(Vector3.Up).Normalized();
-            Vector3 r = Vector3.Up.Cross(f).Normalized();
-
-            Vector3 up = Vector3.Up;
-            Basis flat = new Basis(r, up, f).Orthonormalized();
-
-            Basis current = hlevel.GlobalTransform.Basis;
-            Basis smooth = current.Slerp(flat, (float)GetProcessDeltaTime() * 5f);
-
-            hlevel.GlobalTransform = new Transform3D(smooth, hlevel.GlobalTransform.Origin);
         }
-    
+
+        Vector3 forward = hlevel.GlobalTransform.Basis.Z.Slide(normal).Normalized();
+        Vector3 r = normal.Cross(forward).Normalized();
+
+        Basis basis = new Basis(r, normal, forward).Orthonormalized();
+        Basis current = hlevel.GlobalTransform.Basis.Orthonormalized();
+        Basis smooth = current.Slerp(basis, (float)GetProcessDeltaTime() * 10f);
+        hlevel.GlobalTransform = new Transform3D(smooth, hlevel.GlobalTransform.Origin);
+
     }
 
     public void HandleTurning(){
