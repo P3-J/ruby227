@@ -75,7 +75,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3123566, 0, -0.1597929)
 transform = Transform3D(-0.025, 0, -3.774895e-09, 0, 0.025, 0, 3.774895e-09, 0, -0.025, 0, 0, 0)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="hlevel/bodymanager/m1"]
-transform = Transform3D(-39.999813, -1.0188943e-06, -0.12147543, -0.020493403, 39.42673, 6.747802, 0.11973429, 6.7478323, -39.426544, 0, 0, 0)
+transform = Transform3D(-39.999817, -1.0258793e-06, -0.12147545, -0.020493407, 39.426727, 6.7478013, 0.119734295, 6.747832, -39.426544, 22.401737, 43.170746, -30.049374)
+light_energy = 8.684
+spot_range = 62.942966
+spot_angle = 27.74551
+
+[node name="OmniLight3D" type="OmniLight3D" parent="hlevel/bodymanager/m1"]
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -32.426285, 98.60254, -76.50806)
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="hlevel/bodymanager/m1"]
+transform = Transform3D(-39.999817, -1.0258793e-06, -0.12147545, -0.020493407, 39.426727, 6.7478013, 0.119734295, 6.747832, -39.426544, -20.876316, 43.170746, -30.049381)
 light_energy = 8.684
 spot_range = 62.942966
 spot_angle = 27.74551
