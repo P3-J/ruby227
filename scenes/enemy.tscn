@@ -49,10 +49,10 @@ navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")
 
 [node name="bodyController" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0493662, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.93012, 0)
 
 [node name="low_poly_mech_really_0708185600_refine" parent="bodyController" instance=ExtResource("5_c4w8v")]
-transform = Transform3D(-1.3113416e-07, 0, 3, 0, 3, 0, -3, 0, -1.3113416e-07, -0.6916306, -0.7331083, 1.1560147)
+transform = Transform3D(-1.3113416e-07, 0, 3, 0, 3, 0, -3, 0, -1.3113416e-07, 0, 0, 0)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 5.0
@@ -76,11 +76,10 @@ stream = ExtResource("5_617fx")
 volume_db = -10.435
 
 [node name="retarget" type="Timer" parent="."]
-wait_time = 3.0
 autostart = true
 
 [node name="los" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14414644, 2.3232183, -1.8347127)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14414644, -1.8873329, 2.0677195)
 target_position = Vector3(0, 0, -160)
 collide_with_areas = true
 debug_shape_custom_color = Color(0.379437, 0.473598, 1, 1)

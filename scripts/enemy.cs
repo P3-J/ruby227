@@ -9,7 +9,7 @@ public partial class enemy : CharacterBody3D
 
 	[Export] private NavigationAgent3D navagent;
 	[Export] public PackedScene Bullet;
-	[Export] public int ShootDistance = 90;
+	[Export] public int ShootDistance = 40;
 	[Export] public int AggroDistance = 400;
 	Timer timer;
 	Timer retargetTimer;
@@ -37,8 +37,8 @@ public partial class enemy : CharacterBody3D
 	enum EnemyTypes { SHOOTER = 1, BOMBER = 2 }
 	private EnemyTypes cType = EnemyTypes.SHOOTER;
 
-	int HP = 3;
-	int cHP = 3;
+	int HP = 30;
+	int cHP = 30;
     bool target;
 	bool Disabled = true;
 	float lastSawPlayerSeconds;
@@ -189,7 +189,7 @@ public partial class enemy : CharacterBody3D
 
 
 	public void RotateBodyTowardsPlayer(bool lookAtPlayer, Vector3 lookPos){
-
+		
 		Vector3 lookDir;
 
 		if (lookAtPlayer)

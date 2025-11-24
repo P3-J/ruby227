@@ -128,7 +128,7 @@ shader_parameter/exposure = 1.0
 shader_parameter/contrast = 1.05
 shader_parameter/saturation = 0.9
 shader_parameter/enable_pixelate = true
-shader_parameter/pixel_factor = 3.146000125685
+shader_parameter/pixel_factor = 1.00000002375
 shader_parameter/enable_posterize = true
 shader_parameter/color_levels = 16.0
 shader_parameter/dither_strength = 0.362000017195
@@ -180,15 +180,14 @@ position = Vector2(400, 300)
 [node name="tsquare" type="Sprite2D" parent="tsquarecontroller"]
 modulate = Color(1, 1, 1, 0.329412)
 texture_filter = 1
-scale = Vector2(2, 2)
 texture = ExtResource("2_sraot")
 
 [node name="shooterright" type="Sprite2D" parent="tsquarecontroller"]
 modulate = Color(1, 1, 1, 0.831373)
 texture_filter = 1
-position = Vector2(48, 0)
+position = Vector2(32, 0)
 rotation = 1.5708
-scale = Vector2(3, 3)
+scale = Vector2(2, 2)
 texture = ExtResource("3_mlnga")
 
 [node name="shooterbar" type="ProgressBar" parent="tsquarecontroller/shooterright"]
@@ -210,9 +209,9 @@ metadata/_edit_use_anchors_ = true
 [node name="shooterleft" type="Sprite2D" parent="tsquarecontroller"]
 modulate = Color(1, 1, 1, 0.831373)
 texture_filter = 1
-position = Vector2(-48, 0)
+position = Vector2(-32, 0)
 rotation = 1.5708
-scale = Vector2(3, 3)
+scale = Vector2(2, 2)
 texture = ExtResource("3_mlnga")
 flip_v = true
 
@@ -236,7 +235,6 @@ metadata/_edit_use_anchors_ = true
 visible = false
 modulate = Color(0.96862745, 0, 0, 0.69411767)
 texture_filter = 1
-scale = Vector2(2, 2)
 texture = ExtResource("2_sraot")
 
 [node name="deathscreen" type="Node2D" parent="."]
@@ -307,7 +305,6 @@ theme_override_font_sizes/normal_font_size = 32
 text = "power 1000"
 
 [node name="ColorRect" type="ColorRect" parent="."]
-visible = false
 z_index = -2
 material = SubResource("ShaderMaterial_k12ah")
 layout_mode = 0

@@ -38,8 +38,8 @@ public partial class player : CharacterBody3D
     private const float JumpForce = 45.0f; //55
     private const float MovementSpeed = 15F; //15
 
-    int HP = 4;
-    int cHP = 4;
+    int HP = 400;
+    int cHP = 400;
     int cPower = 100;
     int Power = 100;
     bool playDropSound = false;
@@ -62,7 +62,7 @@ public partial class player : CharacterBody3D
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
 
        
-        //Input.MouseMode = Input.MouseModeEnum.Captured;
+        Input.MouseMode = Input.MouseModeEnum.Captured;
         guid.SetupHud(HP);
     }
 
@@ -277,9 +277,9 @@ public partial class player : CharacterBody3D
         Vector2 pos2 = guid.tsquareController.GlobalPosition;
         if (targetLocked){
             pos2.Y += 10; // sprite a bit higher then origin point so lower it.
-        } else {
-            pos2.Y -= 30; // boost even more on a not locked target.
-        }
+        }  else {
+            pos2.Y += 30; // boost even more on a not locked target.
+        } 
         Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
 
         bullet bulletInstance = Bullet.Instantiate() as bullet;
@@ -320,6 +320,7 @@ public partial class player : CharacterBody3D
                     if (distanceTo < Distance){
                         Distance = distanceTo;
                         CurrentTarget = (CharacterBody3D)enemy;
+                        //dropsound.Play();
                     }
                 }
             }

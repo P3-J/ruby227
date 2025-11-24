@@ -60,7 +60,11 @@ public partial class enemy : CharacterBody3D
     private void _on_retarget_timeout(){
 		if (cState == EnemyStates.AFK) return;
 		SetTargetPos(Player.GlobalPosition);
-		next = navagent.GetNextPathPosition();
+
+        if (PlayerDistance > 10)
+        {
+		    next = navagent.GetNextPathPosition();
+        }
 		GD.Randomize();
 		int randi = GD.RandRange(1, 2);
 		retargetTimer.WaitTime = randi;
@@ -70,6 +74,7 @@ public partial class enemy : CharacterBody3D
 
     private void _shooterLoop(double delta)
     {
+        GD.Print(cState);
         switch (cState)
         {
             case EnemyStates.SHOOTING:
@@ -84,9 +89,7 @@ public partial class enemy : CharacterBody3D
             case EnemyStates.HUNTING:
                 canMove = true;
                 CheckAggroResetTime((float)delta);
-                next = navagent.GetNextPathPosition();
                 Vector3 dir = GlobalPosition.DirectionTo(next);
-
 
                 if (CheckIfCanShoot(PlayerDistance))
                 {

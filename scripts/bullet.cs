@@ -51,7 +51,7 @@ public partial class bullet : CharacterBody3D
             
     		bcontroller.LookAt(bcontroller.GlobalTransform.Origin + Velocity.Normalized());
         }
-		checkForCollision();
+		CheckForCollision();
 	}
 
     public override void _PhysicsProcess(double delta)
@@ -75,15 +75,16 @@ public partial class bullet : CharacterBody3D
 		cBulletType = btype;
 	}
 	
-	private void checkForCollision()
+	private void CheckForCollision()
     {
         if (!collisionRay.IsColliding()) { return; }
 		Node collider = (Node)collisionRay.GetCollider();
 
+		Godot.Collections.Array<StringName> arr = collider.GetGroups();
 
-		if (collider.IsInGroup(ownerGroup)) { return; }
+		if (arr.Contains(ownerGroup)) { return; }
 		
-		if (collider.GetGroups().Count != 0 && IsInstanceValid(collider))
+		if (arr.Count != 0 && collider is not StaticBody3D)
 		{
 			collider.Call("GetHit", damage);
 		} 

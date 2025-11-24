@@ -23,7 +23,7 @@ public partial class Guid : Control
 
     public bool ReposSquare(Vector3 globaltransform, bool canSeeEnemy){
         Vector2 screenpos = playerCam.UnprojectPosition(globaltransform);
-        screenpos.Y -= 15; // OFFSET so sprite is centered.
+        screenpos.Y += 15; // OFFSET so sprite is centered.
         /// text next to it indicating distance / else Zero 
         /// do anti of unproject - project position into world to aim
 
