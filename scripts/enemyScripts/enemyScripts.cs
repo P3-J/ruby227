@@ -1,14 +1,20 @@
 using Godot;
 using Godot.Collections;
-using Microsoft.VisualBasic;
-using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 
 public partial class enemy : CharacterBody3D
 {
+    public Godot.Collections.Array<Marker3D> patrolPoints;
+
+    List<Vector3> patrolPointsPos = [];
     float PlayerDistance = 999;
+    int currentPatrolStep = 0;
 
     private void StateMachine(double delta)
     {
+        //GD.Print(cState);
         switch (cType)
         {
             case EnemyTypes.SHOOTER:
@@ -30,6 +36,16 @@ public partial class enemy : CharacterBody3D
             case EnemyTypes.BOMBER:
                 Speed = 30f;
                 break;
+        }
+
+        // collect patrol points
+        if (patrolPoints == null) return;
+
+
+        foreach (Marker3D p in patrolPoints)
+        {
+            Vector3 point = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), p.GlobalPosition);
+            patrolPointsPos.Add(point);
         }
     }
 
@@ -59,55 +75,70 @@ public partial class enemy : CharacterBody3D
 
     private void _on_retarget_timeout(){
 		if (cState == EnemyStates.AFK) return;
-		SetTargetPos(Player.GlobalPosition);
+        //GD.Print("called");
 
+        SetTargetPos(cState == EnemyStates.PATROL ? patrolPointsPos[currentPatrolStep] : Player.GlobalPosition);
         if (PlayerDistance > 10)
         {
 		    next = navagent.GetNextPathPosition();
-        }
+            RotateBodyTowardsPlayer(false, next);
+        }  
+
+        
 		GD.Randomize();
-		int randi = GD.RandRange(1, 2);
-		retargetTimer.WaitTime = randi;
+		int randi = GD.RandRange(0, 1);
+		retargetTimer.WaitTime = 0.2f;
 		retargetTimer.Start();
 	}
+
+    private void OnNavigationAgentTargetReached()
+	{
+		if (cState == EnemyStates.AFK) return;
+        RaisePatrolPointStep();
+        
+        retargetTimer.Stop();
+        //GD.Print("reached2");
+        _on_retarget_timeout();
+        
+    }
+
+    private void _on_navigation_agent_3d_waypoint_reached(Dictionary details)
+    {
+        //GD.Print("reached1");
+        //next = navagent.GetNextPathPosition();
+    }
 
 
     private void _shooterLoop(double delta)
     {
-        GD.Print(cState);
         switch (cState)
         {
             case EnemyStates.SHOOTING:
                 canMove = false;
-                RotateBodyTowardsPlayer(true, Vector3.Zero);
+                RotateBodyTowardsPlayer(true, Vector3.Zero, 0.1f);
                 if (hasAggro) TryToShoot(PlayerDistance);
                 break;
+
             case EnemyStates.AFK:
                 canMove = false;
+                if (patrolPointsPos.Count > 0) {
+                    cState = EnemyStates.PATROL; // costly?
+                    SetTargetPos(patrolPointsPos[currentPatrolStep]);
+                }
                 if (hasAggro) cState = EnemyStates.HUNTING;
                 break;
+
             case EnemyStates.HUNTING:
                 canMove = true;
                 CheckAggroResetTime((float)delta);
-                Vector3 dir = GlobalPosition.DirectionTo(next);
+                MoveTowardsTarget();
+                if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
+                break;
 
-                if (CheckIfCanShoot(PlayerDistance))
-                {
-                    cState = EnemyStates.SHOOTING;
-                }
-
-
-                if (next != Vector3.Zero)
-                {
-                    velocity.X = dir.X * Speed;
-                    velocity.Z = dir.Z * Speed;
-                }
-                else
-                {
-                    // get nearest point, go there if out of region
-                    next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
-                }
-                RotateBodyTowardsPlayer(false, next);
+            case EnemyStates.PATROL:
+                canMove = true;
+                MoveTowardsTarget();
+                if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
                 break;
         }
     }
@@ -135,6 +166,35 @@ public partial class enemy : CharacterBody3D
 				} 
 				break;
         }
+    }
+
+    private void MoveTowardsTarget()
+    {
+        
+        if (next != Vector3.Zero)
+        {
+            Vector3 dir = GlobalPosition.DirectionTo(next);
+            velocity.X = dir.X * Speed;
+            velocity.Z = dir.Z * Speed;
+        }
+        else
+        {
+            // get nearest point, go there if out of region
+            //next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
+        }
+    }
+
+    private void RaisePatrolPointStep()
+    {
+        if (cState != EnemyStates.PATROL) return;
+        
+        if (patrolPointsPos.Count - 1 <= currentPatrolStep)
+        {
+            currentPatrolStep = 0;
+            return;
+        }
+        currentPatrolStep += 1;
+
     }
 
 }

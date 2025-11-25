@@ -9,8 +9,8 @@ public partial class enemy : CharacterBody3D
 
 	[Export] private NavigationAgent3D navagent;
 	[Export] public PackedScene Bullet;
-	[Export] public int ShootDistance = 40;
-	[Export] public int AggroDistance = 400;
+	[Export] public int ShootDistance = 30;
+	[Export] public int AggroDistance = 100;
 	Timer timer;
 	Timer retargetTimer;
 	RayCast3D los;
@@ -32,7 +32,7 @@ public partial class enemy : CharacterBody3D
 	public const float jumpstr = 10f;
 
 
-	enum EnemyStates { AFK = 0, HUNTING = 1, SHOOTING = 2 }
+	enum EnemyStates { AFK = 0, HUNTING = 1, SHOOTING = 2, PATROL = 3 }
 	private EnemyStates cState = EnemyStates.AFK;
 	enum EnemyTypes { SHOOTER = 1, BOMBER = 2 }
 	private EnemyTypes cType = EnemyTypes.SHOOTER;
@@ -85,8 +85,7 @@ public partial class enemy : CharacterBody3D
 		//int randi = GD.RandRange(1, 2);
 		//	cType = randi == 1 ? EnemyTypes.SHOOTER : EnemyTypes.BOMBER;
 
-		SetupProps();
-
+		
 		SceneTreeTimer tr = GetTree().CreateTimer(1.0);
 		tr.Timeout += OnTimeOut;
 
@@ -106,21 +105,23 @@ public partial class enemy : CharacterBody3D
         {
 			GD.PushWarning("no player"); 
         }
+
+		SetupProps();
 	}
 
 
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Disabled) return;
+		//if (Disabled) return;
 		
 		if (!canMove)
 		{
 			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 5f * (float)delta);
 		}
-		if (!IsOnFloor())
+		if (!IsOnFloor() && velocity.Y > -10)
 		{
-			velocity.Y += -5 * (float)delta;
+			velocity.Y += -10 * (float)delta;
 		}
 
 		navagent.Velocity = velocity;
@@ -133,7 +134,7 @@ public partial class enemy : CharacterBody3D
     {
 		base._Process(delta);
 		//GD.Print(cState);
-		if (Disabled) return;
+		//if (Disabled) return;
 		LosCollsionChecks();
 		StateMachine(delta);
 
@@ -144,7 +145,7 @@ public partial class enemy : CharacterBody3D
     private void CheckAggroResetTime(float delta)
     {
         lastSawPlayerSeconds += delta;
-        if (lastSawPlayerSeconds >= 20f)
+        if (lastSawPlayerSeconds >= 2000f)
 		{
 			GD.Print("We afk");
 			cState = EnemyStates.AFK;
@@ -188,8 +189,8 @@ public partial class enemy : CharacterBody3D
 	}
 
 
-	public void RotateBodyTowardsPlayer(bool lookAtPlayer, Vector3 lookPos){
-		
+	public void RotateBodyTowardsPlayer(bool lookAtPlayer, Vector3 lookPos, float len = 0.5f){
+		// needs rework
 		Vector3 lookDir;
 
 		if (lookAtPlayer)
@@ -205,7 +206,7 @@ public partial class enemy : CharacterBody3D
 
 
         Tween rotationTween = GetTree().CreateTween();
-        rotationTween.TweenProperty(body, "rotation_degrees:y", finalYaw, 0.1)
+        rotationTween.TweenProperty(body, "rotation_degrees:y", finalYaw, len)
                      .SetTrans(Tween.TransitionType.Sine)
                      .SetEase(Tween.EaseType.InOut);
 	}
@@ -226,6 +227,14 @@ public partial class enemy : CharacterBody3D
 
 		GD.Randomize();
 		int randi = GD.RandRange(1, 2);
+
+
+		GD.Randomize();
+		int randii = GD.RandRange(-30, 30);
+		int randi2 = GD.RandRange(-30, 30);
+
+		velocity.X += randii;
+		velocity.Z += randi2;
 
 		SceneTreeTimer tr = GetTree().CreateTimer(randi);
 		tr.Timeout += () => ShootBullet();
@@ -255,14 +264,6 @@ public partial class enemy : CharacterBody3D
 		cState = EnemyStates.HUNTING;
 		SetTargetPos(Player.GlobalPosition);
 
-
-		GD.Randomize();
-		int randi = GD.RandRange(-10, 30);
-		int randi2 = GD.RandRange(-30, 10);
-
-		velocity.X += randi;
-		velocity.Z += randi2;
-
     }
 
 	private void OnNavigationAgentVelocityComputed(Vector3 safevelo)
@@ -270,12 +271,7 @@ public partial class enemy : CharacterBody3D
         Velocity = safevelo;
     }
 
-    private void OnNavigationAgentTargetReached()
-	{
-		if (cState == EnemyStates.AFK) return;
-        SetTargetPos(Player.GlobalPosition);
-		next = navagent.GetNextPathPosition();
-    }
+
 	#pragma warning disable IDE0060
     private void OnNavigationAgentLinkReached(Dictionary data)
     {

@@ -1,9 +1,11 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 public partial class Spawnpoint : Marker3D
 {
     [Export] PackedScene enemyInstance;
+    [Export] Array<Marker3D> patrolPoints;
 
     public override void _Ready()
     {
@@ -30,6 +32,8 @@ public partial class Spawnpoint : Marker3D
         Enemy.ShootDistance = GD.RandRange(Enemy.ShootDistance, Enemy.ShootDistance + randi);
 
         Enemy.spawnLocation = new Vector3(GlobalPosition.X, GlobalPosition.Y + 5, GlobalPosition.Z);
+
+        Enemy.patrolPoints = patrolPoints;
     }
     
 
