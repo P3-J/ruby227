@@ -320,7 +320,11 @@ public partial class player : CharacterBody3D
                     if (distanceTo < Distance){
                         Distance = distanceTo;
                         CurrentTarget = (CharacterBody3D)enemy;
-                        //dropsound.Play();
+
+                        if (CurrentTarget != enemy)
+                        {
+                            dropsound.Play();
+                        }
                     }
                 }
             }
