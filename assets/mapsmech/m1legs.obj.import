@@ -39,20 +39,10 @@ materials/extract_format=0
 materials/extract_path=""
 _subresources={
 "materials": {
-"F1/CNRR3_2": {
+"128x128/Brick/Brick_12-128x128": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://assets/mapsmech/F1_CNRR3_2.tres",
-"use_external/path": "uid://d1e15c1v6mc71"
-},
-"F1/CNVV1_1": {
-"use_external/enabled": true,
-"use_external/fallback_path": "res://assets/mapsmech/F1_CNVV1_1.tres",
-"use_external/path": "uid://oa2sri4o477"
-},
-"newwithe/building_10_emiss": {
-"use_external/enabled": true,
-"use_external/fallback_path": "res://assets/mapsmech/newwithe_building_10_emiss.tres",
-"use_external/path": "uid://d1hhcxxr451tu"
+"use_external/fallback_path": "res://textures/128x128/Metal/Metal_05-128x128.tres",
+"use_external/path": "uid://cnirxa4p01kum"
 }
 }
 }

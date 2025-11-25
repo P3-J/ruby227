@@ -3,4 +3,4 @@
 [ext_resource type="PackedScene" uid="uid://b5amficotrp6q" path="res://assets/mapsmech/m1legs.obj" id="1_e7l4u"]
 
 [node name="m1legs" instance=ExtResource("1_e7l4u")]
-transform = Transform3D(0.045, 0, 0, 0, 0.045, 0, 0, 0, 0.045, 0.50787234, 0, 0.91124105)
+transform = Transform3D(0.045, 0, 0, 0, 0.045, 0, 0, 0, 0.045, 0, 0, 0)

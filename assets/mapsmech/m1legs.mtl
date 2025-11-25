@@ -1,9 +1,24 @@
-newmtl F1/CNRR3_2
-map_Kd ../../textures/F1/CNRR3_2.png
+newmtl F1/CNBA1_2
+map_Kd ../../textures/F1/CNBA1_2.png
 
-newmtl F1/CNVV1_1
-map_Kd ../../textures/F1/CNVV1_1.png
+newmtl F1/CNBA3_1
+map_Kd ../../textures/F1/CNBA3_1.png
 
-newmtl newwithe/building_10_emiss
-map_Kd ../../textures/newwithe/building_10_emiss.png
+newmtl F1/CNDE1A6
+map_Kd ../../textures/F1/CNDE1A6.png
+
+newmtl F1/CNDE1_6
+map_Kd ../../textures/F1/CNDE1_6.png
+
+newmtl F1/CNGR8_1
+map_Kd ../../textures/F1/CNGR8_1.png
+
+newmtl F1/CNHL1_2
+map_Kd ../../textures/F1/CNHL1_2.png
+
+newmtl F1/CNWN1_1
+map_Kd ../../textures/F1/CNWN1_1.png
+
+newmtl F1/CNWN4
+map_Kd ../../textures/F1/CNWN4.png
 

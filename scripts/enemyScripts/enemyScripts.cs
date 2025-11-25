@@ -15,6 +15,7 @@ public partial class enemy : CharacterBody3D
     private void StateMachine(double delta)
     {
         //GD.Print(cState);
+        // silent crash when path not found
         switch (cType)
         {
             case EnemyTypes.SHOOTER:

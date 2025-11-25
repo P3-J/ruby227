@@ -296,6 +296,10 @@ public partial class player : CharacterBody3D
     public void _on_enemytimer_timeout(){
         ScanForEnemies();
         EnemyTimer.Start();
+
+        if (CurrentTarget == null) return;
+        float distanceTo = CurrentTarget.GlobalPosition.DistanceTo(GlobalPosition);
+        if (distanceTo > 10000f) cameraLocked = false;
     }
 
     public void TargeterPosition(){
@@ -304,31 +308,30 @@ public partial class player : CharacterBody3D
             canSeeEnemy = true;
         } else {
             canSeeEnemy = false;
+            cameraLocked = false;
         }
     }
 
 
     public void ScanForEnemies(){
-        if (DetArea.HasOverlappingBodies()){
-            Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
+        if (!DetArea.HasOverlappingBodies()) return;
 
-            float Distance = 10000.0f; //cutoff
-            foreach (Node3D enemy in enemies)
-            {
-                if (enemy is CharacterBody3D && enemy != this){
-                    float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
-                    if (distanceTo < Distance){
-                        Distance = distanceTo;
-                        CurrentTarget = (CharacterBody3D)enemy;
+        Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
+        if (cameraLocked) return;
 
-                        if (CurrentTarget != enemy)
-                        {
-                            dropsound.Play();
-                        }
-                    }
+        float MaxScanDistance = 10000.0f; //cutoff
+
+        foreach (Node3D enemy in enemies)
+        {
+            if (enemy is CharacterBody3D e && enemy != this){
+                float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
+                if (distanceTo < MaxScanDistance){
+                    MaxScanDistance = distanceTo;
+                    CurrentTarget = e;
                 }
             }
         }
+    
     }
 
     public void PlaySteamAudioIfCan(){

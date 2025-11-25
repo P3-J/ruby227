@@ -67,9 +67,10 @@ groundnormal = NodePath("hlevel/bodymanager/groundnormal")
 hlevel = NodePath("hlevel")
 
 [node name="hlevel" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9044962, 0)
 
 [node name="bodymanager" type="Node3D" parent="hlevel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3123566, 0, -0.1597929)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08830428, 2.5695453, 0.04058838)
 
 [node name="m1" parent="hlevel/bodymanager" instance=ExtResource("10_y4r1p")]
 transform = Transform3D(-0.025, 0, -3.774895e-09, 0, 0.025, 0, 3.774895e-09, 0, -0.025, 0, 0, 0)
@@ -98,11 +99,11 @@ transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, -2.3
 transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, 2.386579, -0.03587812, 0.29083407)
 
 [node name="groundnormal" type="RayCast3D" parent="hlevel/bodymanager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.4376783, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.0491056, 0)
 collide_with_areas = true
 
 [node name="m1legs" parent="hlevel" instance=ExtResource("4_y4r1p")]
-transform = Transform3D(-0.025, 0, -2.1855695e-09, 0, 0.025, 0, 2.1855695e-09, 0, -0.025, -0.8976145, -1.5230143, -0.13702154)
+transform = Transform3D(0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04, -0.10571277, 0.5931376, -0.4949274)
 
 [node name="camBase" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25413656, -2.6986501, -2.8888779)
@@ -123,7 +124,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.482948, 1.42955, 0.0438538)
 shape = SubResource("BoxShape3D_1xqye")
 
 [node name="enemytimer" type="Timer" parent="detectionarea"]
-wait_time = 0.5
 autostart = true
 
 [node name="particles" type="Node3D" parent="."]

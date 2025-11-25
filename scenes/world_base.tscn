@@ -1550,7 +1550,6 @@ _surfaces = [{
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.50000006, -2.1855696e-08, 0, -4.371139e-08, 1, -0.50000006, 0.8660254, 3.7855173e-08, 0, 0, 0)
-visible = false
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
@@ -2547,6 +2546,10 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -43.
 
 [node name="entity_8_patrolpoint" parent="FuncGodotMap/NavigationRegion3D" instance=ExtResource("4_caedr")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -20.5, 63.809376, 472.5)
+
+[node name="entity_5_spawnPoint2" parent="FuncGodotMap/NavigationRegion3D" node_paths=PackedStringArray("patrolPoints") instance=ExtResource("9_5kmsq")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -20.5, 67.36115, 481.32974)
+patrolPoints = [NodePath("../entity_8_patrolpoint"), NodePath("../entity_7_patrolpoint"), NodePath("../entity_6_patrolpoint")]
 
 [node name="worldDefaults" type="Node3D" parent="."]
 

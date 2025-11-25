@@ -117,7 +117,7 @@ public partial class enemy : CharacterBody3D
 		
 		if (!canMove)
 		{
-			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 5f * (float)delta);
+			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 4f * (float)delta);
 		}
 		if (!IsOnFloor() && velocity.Y > -10)
 		{
