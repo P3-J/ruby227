@@ -38,7 +38,7 @@ public partial class enemy : CharacterBody3D
 	private EnemyTypes cType = EnemyTypes.SHOOTER;
 
 	int HP = 30;
-	int cHP = 30;
+	int cHP = 4;
     bool target;
 	bool Disabled = true;
 	float lastSawPlayerSeconds;

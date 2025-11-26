@@ -21,20 +21,17 @@ public partial class Guid : Control
 
     }
 
-    public bool ReposSquare(Vector3 globaltransform, bool canSeeEnemy){
-        Vector2 screenpos = playerCam.UnprojectPosition(globaltransform);
+    public void ReposSquare(Vector3 globaltransform, bool canseeenemy){
+        Vector2 screenpos = playerCam.UnprojectPosition(globaltransform);   
         screenpos.Y += 15; // OFFSET so sprite is centered.
         /// text next to it indicating distance / else Zero 
         /// do anti of unproject - project position into world to aim
 
-        if (!playerCam.IsPositionBehind(globaltransform) && playerCam.IsPositionInFrustum(globaltransform) && canSeeEnemy){
+        if (!playerCam.IsPositionBehind(globaltransform) && playerCam.IsPositionInFrustum(globaltransform) && canseeenemy){
             tsquareController.Position = tsquareController.Position.MoveToward(screenpos, 5f);
-
             tsSquare2.Visible = tsquareController.Position == screenpos;
-            return true;
         } else {
             ResetTargetingSquare();
-            return false;
         }
     }
 
@@ -42,6 +39,11 @@ public partial class Guid : Control
     {
         // reset targeting square to center of screen
         tsquareController.Position = tsquareController.Position.MoveToward(aimspotStartSpot, 5f);
+    }
+
+    public bool TargetInView(Vector3 targetPos)
+    {
+        return !playerCam.IsPositionBehind(targetPos) && playerCam.IsPositionInFrustum(targetPos);
     }
 
     public void RefreshHud(int cHP)

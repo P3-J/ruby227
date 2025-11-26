@@ -83,8 +83,10 @@ public partial class bullet : CharacterBody3D
 		Godot.Collections.Array<StringName> arr = collider.GetGroups();
 
 		if (arr.Contains(ownerGroup)) { return; }
+
+
 		
-		if (arr.Count != 0 && collider is not StaticBody3D)
+		if (arr.Count != 0 && (collider.IsInGroup("enemy") || collider.IsInGroup("player")))
 		{
 			collider.Call("GetHit", damage);
 		} 

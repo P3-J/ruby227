@@ -78,11 +78,22 @@ public partial class enemy : CharacterBody3D
 		if (cState == EnemyStates.AFK) return;
         //GD.Print("called");
 
-        SetTargetPos(cState == EnemyStates.PATROL ? patrolPointsPos[currentPatrolStep] : Player.GlobalPosition);
+        Vector3 targetPos = cState == EnemyStates.PATROL ? patrolPointsPos[currentPatrolStep] : Vector3.Zero;
+        if (cState == EnemyStates.HUNTING && Player != null)
+        {
+            targetPos = Player.GlobalPosition;
+        }
+
+        SetTargetPos(targetPos);
         if (PlayerDistance > 10)
         {
 		    next = navagent.GetNextPathPosition();
-            RotateBodyTowardsPlayer(false, next);
+            Node3D parent = GetParent<Node3D>();
+            if (next == parent.GlobalPosition)
+            {
+                RotateBodyTowardsPlayer(false, next);
+            }
+            
         }  
 
         
@@ -171,8 +182,11 @@ public partial class enemy : CharacterBody3D
 
     private void MoveTowardsTarget()
     {
-        
-        if (next != Vector3.Zero)
+        GD.Print(next);
+
+
+        Node3D parent = GetParent<Node3D>();
+        if (next !=  parent.GlobalPosition)
         {
             Vector3 dir = GlobalPosition.DirectionTo(next);
             velocity.X = dir.X * Speed;

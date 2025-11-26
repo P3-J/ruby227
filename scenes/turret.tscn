@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4msscfgc40q3"]
+
+[ext_resource type="Script" uid="uid://bjm3oxt5euijx" path="res://scenes/Turret.cs" id="1_x3mc5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fowog"]
+size = Vector3(0.4, 0.4, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x3mc5"]
+size = Vector3(5, 5, 5)
+
+[node name="turret" type="StaticBody3D" groups=["enemy"]]
+script = ExtResource("1_x3mc5")
+
+[node name="bodycontroller" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="bodycontroller"]
+mesh = SubResource("BoxMesh_fowog")
+skeleton = NodePath("../..")
+
+[node name="RayCast3D" type="RayCast3D" parent="bodycontroller"]
+target_position = Vector3(2, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.006652832, -0.007019043, -0.044281006)
+shape = SubResource("BoxShape3D_x3mc5")

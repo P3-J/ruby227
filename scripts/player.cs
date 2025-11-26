@@ -32,11 +32,12 @@ public partial class player : CharacterBody3D
 
     AnimationPlayer deathanim;
     GpuParticles3D deathExplosion;
-    CharacterBody3D CurrentTarget = null;
+    Node3D CurrentTarget = null;
 
     private const float Gravity = -2.8f;
     private const float JumpForce = 45.0f; //55
-    private const float MovementSpeed = 15F; //15
+    private float MovementSpeed = 15F; //15
+    private const float BaseMovementSpeed = 15F;
 
     int HP = 400;
     int cHP = 400;
@@ -46,6 +47,7 @@ public partial class player : CharacterBody3D
     bool canSeeEnemy = false;
     bool targetLocked = false;
     bool cameraLocked = false;
+    bool enemyinview = false;
     bool canMove = true;
 
     public override void _Ready()
@@ -78,17 +80,26 @@ public partial class player : CharacterBody3D
 
         Vector3 fakeVelo = Velocity;
         Vector3 direction = new();
+
         if (Input.IsActionPressed("up"))
-            direction -= Transform.Basis.Z; 
-        if (Input.IsActionPressed("down"))
-            direction += Transform.Basis.Z; 
-        direction = direction.Normalized();
-        if (!IsOnFloor())
         {
-            fakeVelo.Y += Gravity;
-            playDropSound = true;
+            direction -= Transform.Basis.Z; 
+            if (MovementSpeed < 50) MovementSpeed += 1; 
         }
-        else
+        if (Input.IsActionJustReleased("up"))
+        {
+            MovementSpeed = BaseMovementSpeed;
+        }
+        if (Input.IsActionPressed("down"))
+        {
+            direction += Transform.Basis.Z; 
+            if (MovementSpeed >= 16) MovementSpeed -= 1;
+        }
+
+
+        direction = direction.Normalized();
+     
+        if (IsOnFloor())
         {
             if (playDropSound && !dropsound.Playing){
                 dropsound.Play();
@@ -108,12 +119,23 @@ public partial class player : CharacterBody3D
 
         if (direction == Vector3.Zero){
             booster.Stop();
-        } else if (!booster.Playing) {
-            booster.Play();
+            Velocity = Velocity.MoveToward(Vector3.Zero, 0.5f);
+        }  else
+        {
+            Velocity = fakeVelo;  
         }
 
-        Velocity = fakeVelo;
+        if (!IsOnFloor())
+        {
+            fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f);
+            fakeVelo.Y += Gravity;
+            Velocity = fakeVelo;
+        } 
+
+
+              
         MoveAndSlide();
+
     }
 
 
@@ -121,10 +143,9 @@ public partial class player : CharacterBody3D
     {
         base._Process(delta);
         PlayerCamBase.GlobalPosition = this.GlobalPosition;
-
         if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
+            guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, canSeeEnemy);
             TargeterPosition();
-            targetLocked = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, canSeeEnemy);
             //cameraLocked = true;
         } else {
             CurrentTarget = null;
@@ -204,7 +225,7 @@ public partial class player : CharacterBody3D
 			PlayerCamBase.RotationDegrees = v;
 		}
 
-        if (cameraLocked && CurrentTarget != null)
+        if (cameraLocked && CurrentTarget != null && IsInstanceValid(CurrentTarget))
         {
            PlayerCamBase.LookAt(CurrentTarget.GlobalPosition);
         }
@@ -226,6 +247,7 @@ public partial class player : CharacterBody3D
 
         if (Input.IsActionJustPressed("lockon") && CurrentTarget != null)
         {
+            GD.Print(CurrentTarget);
             cameraLocked = !cameraLocked;
         }
 
@@ -275,11 +297,7 @@ public partial class player : CharacterBody3D
     private bullet CreateBullet(bool rarm)
     {
         Vector2 pos2 = guid.tsquareController.GlobalPosition;
-        if (targetLocked){
-            pos2.Y += 10; // sprite a bit higher then origin point so lower it.
-        }  else {
-            pos2.Y += 30; // boost even more on a not locked target.
-        } 
+
         Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
 
         bullet bulletInstance = Bullet.Instantiate() as bullet;
@@ -299,16 +317,26 @@ public partial class player : CharacterBody3D
 
         if (CurrentTarget == null) return;
         float distanceTo = CurrentTarget.GlobalPosition.DistanceTo(GlobalPosition);
-        if (distanceTo > 10000f) cameraLocked = false;
+        if (distanceTo > 50f) {
+            cameraLocked = false;
+            CurrentTarget = null;
+        }
     }
 
     public void TargeterPosition(){
+        //if (!IsInstanceValid(CurrentTarget)) return;
+
         MissileTargeter.LookAt(CurrentTarget.GlobalPosition);
-        if (MissileTargeter.IsColliding() && MissileTargeter.GetCollider() is CharacterBody3D){
-            canSeeEnemy = true;
-        } else {
+        if (!MissileTargeter.IsColliding()){
             canSeeEnemy = false;
             cameraLocked = false;
+            return;
+        } 
+        
+        Node3D collider = (Node3D)MissileTargeter.GetCollider();
+        if (collider.IsInGroup("enemy"))
+        {
+            canSeeEnemy = true;
         }
     }
 
@@ -319,17 +347,19 @@ public partial class player : CharacterBody3D
         Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
         if (cameraLocked) return;
 
-        float MaxScanDistance = 10000.0f; //cutoff
+        float MaxScanDistance = 100.0f; //cutoff
 
         foreach (Node3D enemy in enemies)
         {
-            if (enemy is CharacterBody3D e && enemy != this){
-                float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
-                if (distanceTo < MaxScanDistance){
-                    MaxScanDistance = distanceTo;
-                    CurrentTarget = e;
-                }
-            }
+            if (!enemy.IsInGroup("enemy") || enemy == this) continue;
+
+            float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
+            bool canSee = guid.TargetInView(enemy.GlobalPosition);
+            if (distanceTo > MaxScanDistance || !canSee) continue;
+            MaxScanDistance = distanceTo;
+            CurrentTarget = enemy;
+            
+            
         }
     
     }

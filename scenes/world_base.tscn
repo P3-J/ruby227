@@ -1,4 +1,4 @@
-[gd_scene load_steps=380 format=4 uid="uid://bcswvaap8fymt"]
+[gd_scene load_steps=381 format=4 uid="uid://bcswvaap8fymt"]
 
 [ext_resource type="Script" uid="uid://cn46hnbpnmitv" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_b0qwf"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="2_rq5pq"]
@@ -50,6 +50,7 @@
 [ext_resource type="Material" uid="uid://bd301yatiw4ge" path="res://textures/128x128/Tile/Tile_01-128x128.tres" id="38_jwd7w"]
 [ext_resource type="Material" uid="uid://dtehps3qajaqs" path="res://textures/128x128/Metal/Metal_08-128x128.tres" id="39_mrag0"]
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="40_gubq1"]
+[ext_resource type="PackedScene" uid="uid://b4msscfgc40q3" path="res://scenes/turret.tscn" id="51_ofa4v"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_uunpn"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -1550,6 +1551,7 @@ _surfaces = [{
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.50000006, -2.1855696e-08, 0, -4.371139e-08, 1, -0.50000006, 0.8660254, 3.7855173e-08, 0, 0, 0)
+visible = false
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
@@ -2593,3 +2595,6 @@ shadow_enabled = true
 distance_fade_enabled = true
 spot_range = 47.18375
 spot_angle = 50.131275
+
+[node name="turret" parent="worldDefaults" instance=ExtResource("51_ofa4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.685184, 69.86573, 567.2439)
