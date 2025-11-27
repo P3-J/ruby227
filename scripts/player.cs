@@ -84,7 +84,7 @@ public partial class player : CharacterBody3D
         if (Input.IsActionPressed("up"))
         {
             direction -= Transform.Basis.Z; 
-            if (MovementSpeed < 50) MovementSpeed += 1; 
+            if (MovementSpeed < 30 ) MovementSpeed += 1; 
         }
         if (Input.IsActionJustReleased("up"))
         {
@@ -171,7 +171,7 @@ public partial class player : CharacterBody3D
             float angle = Mathf.RadToDeg(Mathf.Acos(normal.Dot(Vector3.Up)));
             if (angle > 25)
             {
-                float t = (angle - 25) / angle;
+                float t = (angle - 35) / angle;
                 normal = normal.Slerp(Vector3.Up, t);
             }
         }

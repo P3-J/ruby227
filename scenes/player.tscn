@@ -48,9 +48,10 @@ height = 5.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c5rbk"]
 radius = 2.75
-height = 7.5
+height = 7.336426
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("booster", "rocket", "steam", "jumpboostsound", "dropsound", "leftarm", "rightarm", "guid", "PlayerCamBase", "BodyManager", "groundnormal", "hlevel") groups=["player"]]
+floor_max_angle = 0.61086524
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 booster = NodePath("soundsCooldowns/booster")
@@ -67,7 +68,6 @@ groundnormal = NodePath("hlevel/bodymanager/groundnormal")
 hlevel = NodePath("hlevel")
 
 [node name="hlevel" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9044962, 0)
 
 [node name="bodymanager" type="Node3D" parent="hlevel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08830428, 2.5695453, 0.04058838)
@@ -83,7 +83,9 @@ spot_range = 62.942966
 spot_angle = 27.74551
 
 [node name="OmniLight3D" type="OmniLight3D" parent="hlevel/bodymanager/m1"]
-transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -32.426285, 98.60254, -76.50806)
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 12.973423, 25.254913, -128.64291)
+shadow_enabled = true
+omni_range = 15.353628
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="hlevel/bodymanager/m1"]
 transform = Transform3D(-39.999817, -1.0258793e-06, -0.12147545, -0.020493407, 39.426727, 6.7478013, 0.119734295, 6.747832, -39.426544, -20.876324, 43.170746, 16.175325)
@@ -99,7 +101,7 @@ transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, -2.3
 transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, 2.386579, -0.03587812, 0.29083407)
 
 [node name="groundnormal" type="RayCast3D" parent="hlevel/bodymanager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.0491056, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.7905297, 0)
 collide_with_areas = true
 
 [node name="m1legs" parent="hlevel" instance=ExtResource("4_y4r1p")]
@@ -116,6 +118,7 @@ fov = 63.6
 size = 22.186
 
 [node name="detectionarea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2008424, 0)
 collision_layer = 0
 collision_mask = 3
 
@@ -141,9 +144,8 @@ draw_pass_1 = SubResource("SphereMesh_m2ms5")
 playerCam = NodePath("../camBase/Camera3D")
 
 [node name="body" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0995221, 1.11757, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0995221, 2.1952806, 0)
 shape = SubResource("CapsuleShape3D_c5rbk")
-metadata/_edit_lock_ = true
 
 [node name="rightArm" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
