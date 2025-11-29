@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=23 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" uid="uid://bp1elsfh8gxed" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
@@ -11,6 +11,23 @@
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://bii4sb26r88jh" path="res://sounds/powerUp.wav" id="10_d2wvv"]
 [ext_resource type="PackedScene" uid="uid://dhj32tgp5xmxn" path="res://scenes/m_1.tscn" id="10_y4r1p"]
+
+[sub_resource type="Curve" id="Curve_d2wvv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_3v2ag"]
+curve = SubResource("Curve_d2wvv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jej6c"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(0, 0, 30)
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_3v2ag")
+
+[sub_resource type="SphereMesh" id="SphereMesh_f1ej7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
 size = Vector3(80.172, 25.081, 80.348)
@@ -95,6 +112,38 @@ transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0.43521237, -45.353054, 13
 target_position = Vector3(0, -2, 0)
 collide_with_areas = true
 
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="hlevel/m1legs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.892189, 9.326989, 51.734745)
+amount = 16
+randomness = 0.34
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_jej6c")
+draw_pass_1 = SubResource("SphereMesh_f1ej7")
+
+[node name="GPUParticles3D3" type="GPUParticles3D" parent="hlevel/m1legs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.038494, 9.985448, 51.73473)
+amount = 16
+randomness = 0.34
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_jej6c")
+draw_pass_1 = SubResource("SphereMesh_f1ej7")
+
+[node name="GPUParticles3D4" type="GPUParticles3D" parent="hlevel/m1legs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.892189, -1.2835684, 49.4384)
+amount = 16
+randomness = 0.34
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_jej6c")
+draw_pass_1 = SubResource("SphereMesh_f1ej7")
+
+[node name="GPUParticles3D5" type="GPUParticles3D" parent="hlevel/m1legs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.038494, -0.6251097, 49.438385)
+amount = 16
+randomness = 0.34
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_jej6c")
+draw_pass_1 = SubResource("SphereMesh_f1ej7")
+
 [node name="camBase" type="Node3D" parent="." node_paths=PackedStringArray("playercam", "pCameraRay")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62234783, 0)
 top_level = true
@@ -112,6 +161,7 @@ debug_shape_thickness = 5
 transform = Transform3D(1, -6.597005e-08, 1.6677109e-07, 3.705948e-08, 0.9858297, 0.16774942, -1.7547431e-07, -0.16774942, 0.9858297, 0, 9.694229, 12.933797)
 current = true
 size = 22.186
+far = 7000.0
 
 [node name="detectionarea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2008424, 0)

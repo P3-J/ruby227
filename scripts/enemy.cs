@@ -237,7 +237,7 @@ public partial class enemy : CharacterBody3D
 		velocity.Z += randi2;
 
 		SceneTreeTimer tr = GetTree().CreateTimer(randi);
-		tr.Timeout += () => ShootBullet();
+		tr.Timeout += ShootBullet;
     }	
 
 	public void Jump()
@@ -254,15 +254,14 @@ public partial class enemy : CharacterBody3D
 		if (Disabled) return;
 		canShoot = true;
         bullet bulletInstance = Bullet.Instantiate() as bullet;
-        bulletInstance.Position = GlobalPosition;
+        bulletInstance.GlobalPosition = Position;
 
 		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
-		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 0, true, bullet.BulletType.EXPLODING);
+		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 25, true, bullet.BulletType.EXPLODING);
 
         GetParent().AddChild(bulletInstance);
 		rocket.Play();
 		cState = EnemyStates.HUNTING;
-		SetTargetPos(Player.GlobalPosition);
 
     }
 

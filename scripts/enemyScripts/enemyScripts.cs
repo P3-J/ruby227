@@ -78,22 +78,19 @@ public partial class enemy : CharacterBody3D
 		if (cState == EnemyStates.AFK) return;
         //GD.Print("called");
 
-        Vector3 targetPos = cState == EnemyStates.PATROL ? patrolPointsPos[currentPatrolStep] : Vector3.Zero;
-        if (cState == EnemyStates.HUNTING && Player != null)
+        Vector3 targetPos = cState == EnemyStates.PATROL ? patrolPointsPos[currentPatrolStep] : Player.GlobalPosition;
+
+     /*    if (cState == EnemyStates.HUNTING && Player != null)
         {
             targetPos = Player.GlobalPosition;
-        }
+        } */
 
         SetTargetPos(targetPos);
-        if (PlayerDistance > 10)
+        if (PlayerDistance > 100)
         {
 		    next = navagent.GetNextPathPosition();
             Node3D parent = GetParent<Node3D>();
-            
-            
             RotateBodyTowardsPlayer(false, next);
-            
-            
         }  
 
         
