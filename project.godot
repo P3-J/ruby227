@@ -106,6 +106,7 @@ lockon={
 
 [navigation]
 
+baking/use_crash_prevention_checks=false
 3d/default_cell_height=1.0
 3d/default_link_connection_radius=10.0
 

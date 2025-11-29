@@ -32,7 +32,7 @@ public partial class enemy : CharacterBody3D
         switch (cType)
         {
             case EnemyTypes.SHOOTER:
-                Speed = 120f;
+                Speed = 220f;
                 break;
             case EnemyTypes.BOMBER:
                 Speed = 30f;
@@ -89,10 +89,10 @@ public partial class enemy : CharacterBody3D
         {
 		    next = navagent.GetNextPathPosition();
             Node3D parent = GetParent<Node3D>();
-            if (next == parent.GlobalPosition)
-            {
-                RotateBodyTowardsPlayer(false, next);
-            }
+            
+            
+            RotateBodyTowardsPlayer(false, next);
+            
             
         }  
 
@@ -195,7 +195,7 @@ public partial class enemy : CharacterBody3D
         else
         {
             // get nearest point, go there if out of region
-            //next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
+            next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
         }
     }
 

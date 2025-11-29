@@ -36,7 +36,7 @@ public partial class player : CharacterBody3D
 
     private const float Gravity = -2.8f;
     private const float JumpForce = 45.0f; //55
-    private float MovementSpeed = 15F; //15
+    private float MovementSpeed = 35F; //15
     private const float BaseMovementSpeed = 15F;
 
     int HP = 400;
@@ -84,7 +84,7 @@ public partial class player : CharacterBody3D
         if (Input.IsActionPressed("up"))
         {
             direction -= Transform.Basis.Z; 
-            if (MovementSpeed < 30 ) MovementSpeed += 1; 
+            if (MovementSpeed < 35 ) MovementSpeed += 1; 
         }
         if (Input.IsActionJustReleased("up"))
         {
@@ -106,10 +106,23 @@ public partial class player : CharacterBody3D
             }
             playDropSound = false;
             fakeVelo.Y = 0;
-        }
+        } 
 
         fakeVelo.X = direction.X * MovementSpeed;
         fakeVelo.Z = direction.Z * MovementSpeed;
+
+
+
+        if (direction == Vector3.Zero){
+            booster.Stop();
+            fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f);
+        }  
+
+        if (!IsOnFloor())
+        {
+            fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f);
+            fakeVelo.Y += Gravity;
+        } 
 
         if (Input.IsActionJustPressed("jump") && IsOnFloor())
         {
@@ -117,22 +130,7 @@ public partial class player : CharacterBody3D
             jumpboostsound.Play();
         }
 
-        if (direction == Vector3.Zero){
-            booster.Stop();
-            Velocity = Velocity.MoveToward(Vector3.Zero, 0.5f);
-        }  else
-        {
-            Velocity = fakeVelo;  
-        }
-
-        if (!IsOnFloor())
-        {
-            fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f);
-            fakeVelo.Y += Gravity;
-            Velocity = fakeVelo;
-        } 
-
-
+        Velocity = fakeVelo;
               
         MoveAndSlide();
 
@@ -176,7 +174,7 @@ public partial class player : CharacterBody3D
             }
         }
 
-        Vector3 forward = hlevel.GlobalTransform.Basis.Z.Slide(normal).Normalized();
+        Vector3 forward = this.GlobalTransform.Basis.Z.Slide(normal).Normalized();
         Vector3 r = normal.Cross(forward).Normalized();
 
         Basis basis = new Basis(r, normal, forward).Orthonormalized();
@@ -255,6 +253,15 @@ public partial class player : CharacterBody3D
         if (@event is InputEventMouseMotion eventy && !cameraLocked)
         {
             PlayerCamBase.Rotation += new Vector3(-eventy.Relative.Y * 0.01f,-eventy.Relative.X * 0.01f,0); 
+            
+            float pitch = PlayerCamBase.Rotation.X;
+            pitch = Mathf.Clamp(pitch, Mathf.DegToRad(-80f), Mathf.DegToRad(80f));
+            PlayerCamBase.Rotation = new Vector3(
+                pitch,
+                PlayerCamBase.Rotation.Y,
+                0
+            );
+
             RotateMechBodyWithCamera();            
         }
      
@@ -280,7 +287,7 @@ public partial class player : CharacterBody3D
     public void genRightArm()
     {
         bullet bulletInstance = CreateBullet(true);
-        bulletInstance.SetProps(1, "player", Velocity, 100, false, bullet.BulletType.FIVEFIVESIX);
+        bulletInstance.SetProps(1, "player", Velocity, 50, false, bullet.BulletType.FIVEFIVESIX);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
     }
@@ -299,6 +306,7 @@ public partial class player : CharacterBody3D
         Vector2 pos2 = guid.tsquareController.GlobalPosition;
 
         Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
+
 
         bullet bulletInstance = Bullet.Instantiate() as bullet;
 

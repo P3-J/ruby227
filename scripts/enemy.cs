@@ -9,7 +9,7 @@ public partial class enemy : CharacterBody3D
 
 	[Export] private NavigationAgent3D navagent;
 	[Export] public PackedScene Bullet;
-	[Export] public int ShootDistance = 30;
+	[Export] public int ShootDistance = 60;
 	[Export] public int AggroDistance = 100;
 	Timer timer;
 	Timer retargetTimer;

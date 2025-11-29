@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=19 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" uid="uid://bp1elsfh8gxed" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_hgwbl"]
 [ext_resource type="PackedScene" uid="uid://c6agxrp3l5fvt" path="res://scenes/m_1_legs.tscn" id="4_y4r1p"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
+[ext_resource type="Script" uid="uid://do7u14ly2cf3x" path="res://scripts/CamBase.cs" id="5_d2wvv"]
 [ext_resource type="PackedScene" uid="uid://btumhbmc6hq5e" path="res://scenes/guid.tscn" id="5_y4r1p"]
 [ext_resource type="AudioStream" uid="uid://dme6hsbnrq3k4" path="res://sounds/steam.mp3" id="6_00jq5"]
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
@@ -51,7 +52,7 @@ radius = 2.75
 height = 7.336426
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("booster", "rocket", "steam", "jumpboostsound", "dropsound", "leftarm", "rightarm", "guid", "PlayerCamBase", "BodyManager", "groundnormal", "hlevel") groups=["player"]]
-floor_max_angle = 0.61086524
+wall_min_slide_angle = 0.5235988
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 booster = NodePath("soundsCooldowns/booster")
@@ -64,10 +65,11 @@ rightarm = NodePath("hlevel/bodymanager/rightarm")
 guid = NodePath("guid")
 PlayerCamBase = NodePath("camBase")
 BodyManager = NodePath("hlevel/bodymanager")
-groundnormal = NodePath("hlevel/bodymanager/groundnormal")
+groundnormal = NodePath("hlevel/m1legs/groundnormal")
 hlevel = NodePath("hlevel")
 
 [node name="hlevel" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16491187, 0)
 
 [node name="bodymanager" type="Node3D" parent="hlevel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08830428, 2.5695453, 0.04058838)
@@ -75,24 +77,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08830428, 2.5695453, 0.040
 [node name="m1" parent="hlevel/bodymanager" instance=ExtResource("10_y4r1p")]
 transform = Transform3D(-0.025, 0, -3.774895e-09, 0, 0.025, 0, 3.774895e-09, 0, -0.025, 0, 0, 0)
 
-[node name="SpotLight3D" type="SpotLight3D" parent="hlevel/bodymanager/m1"]
-transform = Transform3D(-39.999817, -1.0258793e-06, -0.12147545, -0.020493407, 39.426727, 6.7478013, 0.119734295, 6.747832, -39.426544, 22.40173, 43.170746, 16.175335)
-light_energy = 8.684
-shadow_enabled = true
-spot_range = 62.942966
-spot_angle = 27.74551
-
 [node name="OmniLight3D" type="OmniLight3D" parent="hlevel/bodymanager/m1"]
-transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 12.973423, 25.254913, -128.64291)
-shadow_enabled = true
-omni_range = 15.353628
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="hlevel/bodymanager/m1"]
-transform = Transform3D(-39.999817, -1.0258793e-06, -0.12147545, -0.020493407, 39.426727, 6.7478013, 0.119734295, 6.747832, -39.426544, -20.876324, 43.170746, 16.175325)
-light_energy = 8.684
-shadow_enabled = true
-spot_range = 62.942966
-spot_angle = 27.74551
+transform = Transform3D(-40, 0, 6.039832e-06, 0, 40, 0, -6.039832e-06, 0, -40, 5.2413435, 45.314064, -96.31934)
+omni_range = 3.2665396
 
 [node name="leftarm" type="Marker3D" parent="hlevel/bodymanager"]
 transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, -2.371873, -0.03587812, 0.29083407)
@@ -100,21 +87,30 @@ transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, -2.3
 [node name="rightarm" type="Marker3D" parent="hlevel/bodymanager"]
 transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, 2.386579, -0.03587812, 0.29083407)
 
-[node name="groundnormal" type="RayCast3D" parent="hlevel/bodymanager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.7905297, 0)
-collide_with_areas = true
-
 [node name="m1legs" parent="hlevel" instance=ExtResource("4_y4r1p")]
 transform = Transform3D(0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04, -0.10571277, 0.5931376, -0.4949274)
 
-[node name="camBase" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25413656, -2.6986501, -2.8888779)
+[node name="groundnormal" type="RayCast3D" parent="hlevel/m1legs"]
+transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0.43521237, -45.353054, 13.387895)
+target_position = Vector3(0, -2, 0)
+collide_with_areas = true
+
+[node name="camBase" type="Node3D" parent="." node_paths=PackedStringArray("playercam", "pCameraRay")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62234783, 0)
 top_level = true
+script = ExtResource("5_d2wvv")
+playercam = NodePath("Camera3D")
+pCameraRay = NodePath("playercamraycast")
+
+[node name="playercamraycast" type="RayCast3D" parent="camBase"]
+transform = Transform3D(0.9999998, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, -0.0995221, 1.2807784, 0)
+target_position = Vector3(10, 0, 0)
+debug_shape_custom_color = Color(0, 1, 0, 1)
+debug_shape_thickness = 5
 
 [node name="Camera3D" type="Camera3D" parent="camBase"]
-transform = Transform3D(1, -6.597005e-08, 1.6677107e-07, 3.58274e-08, 0.9846285, 0.17466208, -1.7573e-07, -0.17466208, 0.9846285, 1.777425, 7.8374186, 14.4930315)
+transform = Transform3D(1, -6.597005e-08, 1.6677109e-07, 3.705948e-08, 0.9858297, 0.16774942, -1.7547431e-07, -0.16774942, 0.9858297, 0, 9.694229, 12.933797)
 current = true
-fov = 63.6
 size = 22.186
 
 [node name="detectionarea" type="Area3D" parent="."]

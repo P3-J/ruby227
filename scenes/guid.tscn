@@ -125,7 +125,7 @@ vertical = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k12ah"]
 shader = ExtResource("6_mlnga")
 shader_parameter/exposure = 1.0
-shader_parameter/contrast = 1.1170000293075
+shader_parameter/contrast = 1.05
 shader_parameter/saturation = 0.9
 shader_parameter/enable_pixelate = true
 shader_parameter/pixel_factor = 1.00000002375

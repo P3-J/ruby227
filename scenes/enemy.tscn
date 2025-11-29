@@ -65,6 +65,8 @@ avoidance_enabled = true
 height = 3.0
 radius = 8.0
 neighbor_distance = 40.0
+max_speed = 25.0
+debug_enabled = true
 
 [node name="shotCooldown" type="Timer" parent="."]
 wait_time = 2.0
