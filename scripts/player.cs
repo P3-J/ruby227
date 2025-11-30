@@ -39,6 +39,8 @@ public partial class player : CharacterBody3D
     private float MovementSpeed = 35F; //15
     private const float BaseMovementSpeed = 15F;
 
+    float MaxScanDistance = 300.0f; //cutoff
+
     int HP = 400;
     int cHP = 400;
     int cPower = 100;
@@ -116,7 +118,9 @@ public partial class player : CharacterBody3D
         if (direction == Vector3.Zero){
             booster.Stop();
             fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f);
-        }  
+        }  else {
+            if (!booster.Playing) booster.Play();
+        }
 
         if (!IsOnFloor())
         {
@@ -287,7 +291,7 @@ public partial class player : CharacterBody3D
     public void genRightArm()
     {
         bullet bulletInstance = CreateBullet(true);
-        bulletInstance.SetProps(1, "player", Velocity, 50, false, bullet.BulletType.FIVEFIVESIX);
+        bulletInstance.SetProps(1, "player", Velocity * 0.2f, 50, true, bullet.BulletType.FIVEFIVESIX);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
     }
@@ -325,7 +329,7 @@ public partial class player : CharacterBody3D
 
         if (CurrentTarget == null) return;
         float distanceTo = CurrentTarget.GlobalPosition.DistanceTo(GlobalPosition);
-        if (distanceTo > 50f) {
+        if (distanceTo > MaxScanDistance) {
             cameraLocked = false;
             CurrentTarget = null;
         }
@@ -355,7 +359,6 @@ public partial class player : CharacterBody3D
         Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
         if (cameraLocked) return;
 
-        float MaxScanDistance = 100.0f; //cutoff
 
         foreach (Node3D enemy in enemies)
         {
@@ -363,11 +366,10 @@ public partial class player : CharacterBody3D
 
             float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
             bool canSee = guid.TargetInView(enemy.GlobalPosition);
+            GD.Print(canSee, distanceTo);
             if (distanceTo > MaxScanDistance || !canSee) continue;
-            MaxScanDistance = distanceTo;
             CurrentTarget = enemy;
-            
-            
+            GD.Print("target");
         }
     
     }

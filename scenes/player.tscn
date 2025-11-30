@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=30 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" uid="uid://bp1elsfh8gxed" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
@@ -12,25 +12,53 @@
 [ext_resource type="AudioStream" uid="uid://bii4sb26r88jh" path="res://sounds/powerUp.wav" id="10_d2wvv"]
 [ext_resource type="PackedScene" uid="uid://dhj32tgp5xmxn" path="res://scenes/m_1.tscn" id="10_y4r1p"]
 
+[sub_resource type="Curve" id="Curve_3v2ag"]
+_data = [Vector2(0.1543307, 0.1875), 0.0, 0.0, 0, 0, Vector2(0.6251968, 0.8434633), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_jej6c"]
+curve = SubResource("Curve_3v2ag")
+
+[sub_resource type="Gradient" id="Gradient_jej6c"]
+offsets = PackedFloat32Array(0.04269294, 0.9885057)
+colors = PackedColorArray(0.9254902, 1, 0, 1, 0.9254902, 1, 0.6666667, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f1ej7"]
+gradient = SubResource("Gradient_jej6c")
+
+[sub_resource type="Curve" id="Curve_f1ej7"]
+_data = [Vector2(0.033070866, 0.95900226), 0.0, 0.0, 0, 0, Vector2(0.63779527, 0.8546445), 0.0, 0.0, 0, 0, Vector2(0.9070866, 0.124139905), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_oprun"]
+curve = SubResource("Curve_f1ej7")
+
 [sub_resource type="Curve" id="Curve_d2wvv"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.036220472, 0.0011467934), 0.0, 0.0, 0, 0, Vector2(0.8850393, 0.6869266), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_3v2ag"]
 curve = SubResource("Curve_d2wvv")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jej6c"]
-emission_shape = 1
-emission_sphere_radius = 1.0
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
 gravity = Vector3(0, 0, 30)
-scale_min = 10.0
-scale_max = 10.0
+scale_min = 8.0
+scale_max = 8.0
 scale_curve = SubResource("CurveTexture_3v2ag")
+color_ramp = SubResource("GradientTexture1D_f1ej7")
+alpha_curve = SubResource("CurveTexture_jej6c")
+emission_curve = SubResource("CurveTexture_oprun")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a8ls1"]
+vertex_color_use_as_albedo = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_f1ej7"]
+material = SubResource("StandardMaterial3D_a8ls1")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
-size = Vector3(80.172, 25.081, 80.348)
+size = Vector3(160, 80, 160)
 
 [sub_resource type="Curve" id="Curve_wjuwv"]
 _data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
@@ -113,7 +141,7 @@ target_position = Vector3(0, -2, 0)
 collide_with_areas = true
 
 [node name="GPUParticles3D2" type="GPUParticles3D" parent="hlevel/m1legs"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.892189, 9.326989, 51.734745)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.892189, 9.326989, 49.649464)
 amount = 16
 randomness = 0.34
 local_coords = true
@@ -121,7 +149,7 @@ process_material = SubResource("ParticleProcessMaterial_jej6c")
 draw_pass_1 = SubResource("SphereMesh_f1ej7")
 
 [node name="GPUParticles3D3" type="GPUParticles3D" parent="hlevel/m1legs"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.038494, 9.985448, 51.73473)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.038494, 9.985448, 49.649445)
 amount = 16
 randomness = 0.34
 local_coords = true
@@ -129,7 +157,7 @@ process_material = SubResource("ParticleProcessMaterial_jej6c")
 draw_pass_1 = SubResource("SphereMesh_f1ej7")
 
 [node name="GPUParticles3D4" type="GPUParticles3D" parent="hlevel/m1legs"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.892189, -1.2835684, 49.4384)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.892189, -1.2835684, 47.35312)
 amount = 16
 randomness = 0.34
 local_coords = true
@@ -137,7 +165,7 @@ process_material = SubResource("ParticleProcessMaterial_jej6c")
 draw_pass_1 = SubResource("SphereMesh_f1ej7")
 
 [node name="GPUParticles3D5" type="GPUParticles3D" parent="hlevel/m1legs"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.038494, -0.6251097, 49.438385)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.038494, -0.6251097, 47.353104)
 amount = 16
 randomness = 0.34
 local_coords = true
@@ -169,7 +197,6 @@ collision_layer = 0
 collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="detectionarea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.482948, 1.42955, 0.0438538)
 shape = SubResource("BoxShape3D_1xqye")
 
 [node name="enemytimer" type="Timer" parent="detectionarea"]
@@ -198,7 +225,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
 
 [node name="targeter" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13149, -0.681591)
-target_position = Vector3(0, 0, -80)
+target_position = Vector3(0, 0, -160)
 collision_mask = 3
 collide_with_areas = true
 debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)

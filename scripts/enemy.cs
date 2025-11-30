@@ -255,6 +255,7 @@ public partial class enemy : CharacterBody3D
 		canShoot = true;
         bullet bulletInstance = Bullet.Instantiate() as bullet;
         bulletInstance.GlobalPosition = Position;
+		// mybe shootbug?
 
 		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
 		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 25, true, bullet.BulletType.EXPLODING);

@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b4msscfgc40q3"]
+[gd_scene load_steps=9 format=3 uid="uid://b4msscfgc40q3"]
 
 [ext_resource type="Script" uid="uid://bjm3oxt5euijx" path="res://scenes/Turret.cs" id="1_x3mc5"]
+[ext_resource type="AudioStream" uid="uid://kjf4f3bx5b03" path="res://sounds/warning-sound-6686.mp3" id="2_485p4"]
+[ext_resource type="AudioStream" uid="uid://s71ikh8oxx6r" path="res://sounds/laser-381976.mp3" id="3_pp6j5"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_fowog"]
 size = Vector3(0.4, 0.4, 0.4)
@@ -8,8 +10,27 @@ size = Vector3(0.4, 0.4, 0.4)
 [sub_resource type="BoxShape3D" id="BoxShape3D_x3mc5"]
 size = Vector3(5, 5, 5)
 
-[node name="turret" type="StaticBody3D" groups=["enemy"]]
+[sub_resource type="BoxShape3D" id="BoxShape3D_485p4"]
+size = Vector3(611.10254, 504.09863, 400)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3mc5"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 6.93
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_x3mc5"]
+material = SubResource("StandardMaterial3D_x3mc5")
+
+[node name="turret" type="StaticBody3D" node_paths=PackedStringArray("detArea", "rayc", "rayCManager", "lazor", "lazor2", "warningAudio", "laserAudio") groups=["enemy"]]
 script = ExtResource("1_x3mc5")
+detArea = NodePath("detectionarea")
+rayc = NodePath("lazor/RayCast3D")
+rayCManager = NodePath("lazor")
+lazor = NodePath("lazor/lazormesh")
+lazor2 = NodePath("lazor/lazormesh2")
+warningAudio = NodePath("assets/warning")
+laserAudio = NodePath("assets/fire")
 
 [node name="bodycontroller" type="Node3D" parent="."]
 
@@ -17,9 +38,40 @@ script = ExtResource("1_x3mc5")
 mesh = SubResource("BoxMesh_fowog")
 skeleton = NodePath("../..")
 
-[node name="RayCast3D" type="RayCast3D" parent="bodycontroller"]
-target_position = Vector3(2, 0, 0)
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.006652832, -0.007019043, -0.044281006)
 shape = SubResource("BoxShape3D_x3mc5")
+
+[node name="detectionarea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 193.76418, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="detectionarea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100.22325, -235.466, 0)
+shape = SubResource("BoxShape3D_485p4")
+
+[node name="lazor" type="Node3D" parent="."]
+
+[node name="lazormesh" type="MeshInstance3D" parent="lazor"]
+mesh = SubResource("CylinderMesh_x3mc5")
+
+[node name="lazormesh2" type="MeshInstance3D" parent="lazor"]
+mesh = SubResource("CylinderMesh_x3mc5")
+
+[node name="RayCast3D" type="RayCast3D" parent="lazor"]
+target_position = Vector3(0, 0, -600)
+debug_shape_custom_color = Color(0.99607843, 0, 0.9607843, 1)
+debug_shape_thickness = 5
+
+[node name="assets" type="Node" parent="."]
+
+[node name="fire" type="AudioStreamPlayer3D" parent="assets"]
+stream = ExtResource("3_pp6j5")
+volume_db = 30.0
+unit_size = 22.21
+max_db = 6.0
+pitch_scale = 1.5
+
+[node name="warning" type="AudioStreamPlayer3D" parent="assets"]
+stream = ExtResource("2_485p4")
+volume_db = 30.0
+unit_size = 23.04

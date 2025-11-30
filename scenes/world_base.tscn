@@ -1,4 +1,4 @@
-[gd_scene load_steps=324 format=4 uid="uid://bcswvaap8fymt"]
+[gd_scene load_steps=325 format=4 uid="uid://bcswvaap8fymt"]
 
 [ext_resource type="Script" uid="uid://cn46hnbpnmitv" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_b0qwf"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="2_rq5pq"]
@@ -31,6 +31,7 @@
 [ext_resource type="Material" uid="uid://bdqtfphoherct" path="res://textures/Metal/Materials/misc_metal_01.tres" id="31_xki1g"]
 [ext_resource type="Material" uid="uid://d2l708448xe40" path="res://textures/Walls/Materials/siding_metal_red_01.tres" id="32_hg1ck"]
 [ext_resource type="Material" uid="uid://bj4nb85duo2ha" path="res://textures/newwithe/Facade010_1K-JPG_Color.tres" id="33_3012d"]
+[ext_resource type="PackedScene" uid="uid://di0bk031v33ol" path="res://scenes/patrol_point.tscn" id="33_b48ca"]
 [ext_resource type="Material" uid="uid://bacegdipvmpw8" path="res://textures/Metal/Materials/metal_grunge_03.tres" id="33_gwh05"]
 [ext_resource type="Material" uid="uid://khanxif6n3la" path="res://textures/Walls/Materials/siding_wood_05.tres" id="34_56ir1"]
 [ext_resource type="Script" uid="uid://cjlx2qeo1tbim" path="res://addons/zylann.hterrain/hterrain.gd" id="35_b48ca"]
@@ -41,7 +42,9 @@
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_b48ca"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+sky_energy_multiplier = 0.1
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_energy_multiplier = 0.0
 
 [sub_resource type="Sky" id="Sky_pvynf"]
 sky_material = SubResource("ProceduralSkyMaterial_b48ca")
@@ -50,6 +53,12 @@ sky_material = SubResource("ProceduralSkyMaterial_b48ca")
 background_mode = 2
 sky = SubResource("Sky_pvynf")
 tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 1.0
+fog_light_color = Color(0.032182526, 0.039000113, 0.050264046, 1)
+fog_sky_affect = 0.845
+volumetric_fog_density = 0.0238
+volumetric_fog_albedo = Color(0.8088747, 0.7482047, 0.28895715, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_7b8bg"]
 _surfaces = [{
@@ -1276,6 +1285,7 @@ _surfaces = [{
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, -1.6840468e-07, 4.701943e-08, 0, 0.2689198, 0.96316254, -1.7484555e-07, -0.96316254, 0.2689198, 0, 0, 0)
+light_energy = 0.1
 shadow_enabled = true
 shadow_blur = 0.209
 directional_shadow_max_distance = 4096.0
@@ -2127,24 +2137,19 @@ shape = SubResource("ConvexPolygonShape3D_jf486")
 [node name="entity_0_brush_275_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/entity_0_worldspawn"]
 shape = SubResource("ConvexPolygonShape3D_lxx4w")
 
+[node name="entity_1_spawnPoint2" parent="FuncGodotMap" node_paths=PackedStringArray("patrolPoints") instance=ExtResource("9_5kmsq")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -59.803833, 12.588196, 581.2107)
+patrolPoints = [NodePath("../patrolPoint"), NodePath("../patrolPoint2")]
+
+[node name="patrolPoint" parent="FuncGodotMap" instance=ExtResource("33_b48ca")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -747.2267, 12.588196, 770.4863)
+
 [node name="entity_1_spawnPoint" parent="FuncGodotMap" node_paths=PackedStringArray("patrolPoints") instance=ExtResource("9_5kmsq")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1520.088, 80.17059, 2414.2039)
-patrolPoints = []
-
-[node name="entity_2_spawnPoint" parent="FuncGodotMap" node_paths=PackedStringArray("patrolPoints") instance=ExtResource("9_5kmsq")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1908.088, 112.98346, 1686)
-patrolPoints = []
-
-[node name="entity_3_spawnPoint" parent="FuncGodotMap" node_paths=PackedStringArray("patrolPoints") instance=ExtResource("9_5kmsq")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1396.088, 112.98346, 1846)
-patrolPoints = []
-
-[node name="entity_4_spawnPoint" parent="FuncGodotMap" node_paths=PackedStringArray("patrolPoints") instance=ExtResource("9_5kmsq")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1456.088, 179.10596, 2034)
-patrolPoints = []
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -59.803833, 12.588196, 677.9265)
+patrolPoints = [NodePath("../patrolPoint"), NodePath("../patrolPoint2")]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="FuncGodotMap" groups=["terrain"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3355.9268, -181.17639, -2347.1567)
+transform = Transform3D(0.6890379, 0, -0.72472525, 0, 1, 0, 0.72472525, 0, 0.6890379, -391.79333, -393.78632, -3419.8945)
 navigation_mesh = SubResource("NavigationMesh_7m60w")
 
 [node name="HTerrain" type="Node3D" parent="FuncGodotMap/NavigationRegion3D"]
@@ -2173,10 +2178,13 @@ metadata/_custom_type_script = "uid://cjlx2qeo1tbim"
 [node name="HTerrain_FullMesh" type="MeshInstance3D" parent="FuncGodotMap/NavigationRegion3D"]
 mesh = SubResource("ArrayMesh_epcm3")
 
+[node name="patrolPoint2" parent="FuncGodotMap" instance=ExtResource("33_b48ca")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 302.83948, 12.588196, 385.22607)
+
 [node name="worldDefaults" type="Node3D" parent="."]
 
 [node name="player" parent="worldDefaults" instance=ExtResource("5_tktjs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2509.4893, 643.0323, -1053.4552)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1327.3077, 643.0323, -2771.5925)
 
 [node name="terrainManager" type="Node3D" parent="worldDefaults" groups=["terrain"]]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -3585.8142, 252.10614, -4986.7227)
@@ -2189,5 +2197,8 @@ distance_fade_enabled = true
 spot_range = 47.18375
 spot_angle = 50.131275
 
-[node name="turret" parent="worldDefaults" instance=ExtResource("51_ofa4v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2508.7441, 644.0783, -1067.8392)
+[node name="turret2" parent="worldDefaults" instance=ExtResource("51_ofa4v")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1057.643, 751.97986, -3394.1697)
+
+[node name="turret3" parent="worldDefaults" instance=ExtResource("51_ofa4v")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1420.7406, 751.97986, -3394.1697)
