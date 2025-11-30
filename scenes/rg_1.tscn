@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b21dfy6yugfy0"]
+
+[ext_resource type="PackedScene" uid="uid://c7tylenyetbni" path="res://assets/wpn/rg1.obj" id="1_k850a"]
+
+[node name="rg1" instance=ExtResource("1_k850a")]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0)

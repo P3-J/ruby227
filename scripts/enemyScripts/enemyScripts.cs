@@ -11,6 +11,7 @@ public partial class enemy : CharacterBody3D
     List<Vector3> patrolPointsPos = [];
     float PlayerDistance = 999;
     int currentPatrolStep = 0;
+    bool hasSeenPlayer = false;
 
     private void StateMachine(double delta)
     {
@@ -64,6 +65,7 @@ public partial class enemy : CharacterBody3D
             PlayerDistance = GetPlayerDistance();
             lastSawPlayerSeconds = 0;
             hasVisionOfTarget = true;
+            hasSeenPlayer = true;
         }
         else
         {
@@ -86,22 +88,23 @@ public partial class enemy : CharacterBody3D
         } */
 
         SetTargetPos(targetPos);
-        if (PlayerDistance > 100)
-        {
-		    next = navagent.GetNextPathPosition();
-            Node3D parent = GetParent<Node3D>();
-            RotateBodyTowardsPlayer(false, next);
-        }  
+        
+        
+		next = navagent.GetNextPathPosition();
+        Node3D parent = GetParent<Node3D>();
+        //RotateBodyTowards(next, "legs");
+        
 
         
 		GD.Randomize();
 		int randi = GD.RandRange(0, 1);
-		retargetTimer.WaitTime = 0.2f;
+		retargetTimer.WaitTime = 0.5f;
 		retargetTimer.Start();
 	}
 
     private void OnNavigationAgentTargetReached()
 	{
+        return;
 		if (cState == EnemyStates.AFK) return;
         RaisePatrolPointStep();
         
@@ -124,13 +127,13 @@ public partial class enemy : CharacterBody3D
         {
             case EnemyStates.SHOOTING:
                 canMove = false;
-                RotateBodyTowardsPlayer(true, Vector3.Zero, 0.1f);
+                RotateBodyTowards(Player.GlobalPosition, "body", delta);
                 if (hasAggro) TryToShoot(PlayerDistance);
                 break;
 
             case EnemyStates.AFK:
                 canMove = false;
-                if (patrolPointsPos.Count > 0) {
+                if (patrolPointsPos.Count > 0 && !hasSeenPlayer) {
                     cState = EnemyStates.PATROL; // costly?
                     SetTargetPos(patrolPointsPos[currentPatrolStep]);
                 }
@@ -141,6 +144,7 @@ public partial class enemy : CharacterBody3D
                 canMove = true;
                 CheckAggroResetTime((float)delta);
                 MoveTowardsTarget();
+                RotateBodyTowards(next, "legs", delta);
                 if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
                 break;
 
@@ -165,7 +169,7 @@ public partial class enemy : CharacterBody3D
 				break;
 			case EnemyStates.HUNTING:
 				CheckAggroResetTime((float)delta);
-				RotateBodyTowardsPlayer(false, next);
+				//RotateBodyTowards(next, "legs");
                 Vector3 dir = GlobalPosition.DirectionTo(next);
                 if (PlayerDistance < 5) cState = EnemyStates.SHOOTING;
 				if (next != Vector3.Zero)
@@ -179,21 +183,14 @@ public partial class enemy : CharacterBody3D
 
     private void MoveTowardsTarget()
     {
-        GD.Print(next);
+        //GD.Print(next);
 
-
-        Node3D parent = GetParent<Node3D>();
-        if (next !=  parent.GlobalPosition)
-        {
-            Vector3 dir = GlobalPosition.DirectionTo(next);
-            velocity.X = dir.X * Speed;
-            velocity.Z = dir.Z * Speed;
-        }
-        else
-        {
-            // get nearest point, go there if out of region
-            next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
-        }
+  
+        Vector3 dir = GlobalPosition.DirectionTo(next);
+        velocity.X = dir.X * Speed;
+        velocity.Z = dir.Z * Speed;
+        //next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
+        
     }
 
     private void RaisePatrolPointStep()

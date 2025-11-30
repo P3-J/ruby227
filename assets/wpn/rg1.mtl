@@ -1,0 +1,15 @@
+newmtl F1/CNDE1A6
+map_Kd ../../textures/F1/CNDE1A6.png
+
+newmtl F1/CNPS1_1
+map_Kd ../../textures/F1/CNPS1_1.png
+
+newmtl F1/CNRF/CNRF15
+map_Kd ../../textures/F1/CNRF/CNRF15.png
+
+newmtl Windows/Materials/window_shutter_black
+map_Kd ../../textures/Windows/Materials/window_shutter_black.png
+
+newmtl road
+map_Kd ../../textures/road.png
+

@@ -10,6 +10,7 @@ public partial class player : CharacterBody3D
     [Export] public PackedScene Bullet;
     [Export] AudioStreamPlayer booster;
 	[Export] AudioStreamPlayer rocket;
+    [Export] AnimationPlayer rgunshoot;
     [Export] AudioStreamPlayer steam;
     [Export] AudioStreamPlayer jumpboostsound;
     [Export] AudioStreamPlayer dropsound;
@@ -283,7 +284,7 @@ public partial class player : CharacterBody3D
         {
             genRightArm();
 
-            await ToSignal(GetTree().CreateTimer(0.2f), "timeout");
+            await ToSignal(GetTree().CreateTimer(0.4f), "timeout");
         }
 
         guid.ResetCooldown(true, 1);
@@ -294,6 +295,7 @@ public partial class player : CharacterBody3D
         bulletInstance.SetProps(1, "player", Velocity * 0.2f, 50, true, bullet.BulletType.FIVEFIVESIX);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
+        rgunshoot.Play("firegun");
     }
 
     public void ShootLeftArm()

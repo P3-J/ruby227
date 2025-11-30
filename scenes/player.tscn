@@ -1,7 +1,8 @@
-[gd_scene load_steps=30 format=3 uid="uid://dw2i435p3nkp5"]
+[gd_scene load_steps=38 format=3 uid="uid://dw2i435p3nkp5"]
 
 [ext_resource type="Script" uid="uid://bp1elsfh8gxed" path="res://scripts/player.cs" id="1_exk0v"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_rt76a"]
+[ext_resource type="PackedScene" uid="uid://b21dfy6yugfy0" path="res://scenes/rg_1.tscn" id="4_3v2ag"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_hgwbl"]
 [ext_resource type="PackedScene" uid="uid://c6agxrp3l5fvt" path="res://scenes/m_1_legs.tscn" id="4_y4r1p"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_0ojmk"]
@@ -11,6 +12,86 @@
 [ext_resource type="AudioStream" uid="uid://b55h8he5s2jcr" path="res://sounds/peooow.mp3" id="8_u2vev"]
 [ext_resource type="AudioStream" uid="uid://bii4sb26r88jh" path="res://sounds/powerUp.wav" id="10_d2wvv"]
 [ext_resource type="PackedScene" uid="uid://dhj32tgp5xmxn" path="res://scenes/m_1.tscn" id="10_y4r1p"]
+
+[sub_resource type="Animation" id="Animation_3v2ag"]
+resource_name = "firegun"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666668, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.17953825, -0.2724111, -0.61033887), Vector3(-0.17953825, -0.2724111, -0.23382682), Vector3(-0.17953825, -0.2724111, -0.61033887)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles3D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_jej6c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.17953825, -0.2724111, -0.61033887)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles3D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jej6c"]
+_data = {
+&"RESET": SubResource("Animation_jej6c"),
+&"firegun": SubResource("Animation_3v2ag")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3v2ag"]
+vertex_color_use_as_albedo = true
+emission_enabled = true
+emission = Color(0.80784315, 1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jej6c"]
+material = SubResource("StandardMaterial3D_3v2ag")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="Curve" id="Curve_oprun"]
+_limits = [0.0, 20.0, 0.0, 1.0]
+_data = [Vector2(0.050370365, 10.515022), 0.0, 0.0, 0, 0, Vector2(0.30666667, 18.674894), 0.0, 0.0, 0, 0, Vector2(0.7140741, 8.910945), 0.0, 0.0, 0, 0, Vector2(0.93777776, 7.725322), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Gradient" id="Gradient_a8ls1"]
+offsets = PackedFloat32Array(0.2542373, 0.59322035)
+colors = PackedColorArray(1.5876135, 1.5876135, 0, 1, 1.5876759, 0.66414523, 0, 1)
 
 [sub_resource type="Curve" id="Curve_3v2ag"]
 _data = [Vector2(0.1543307, 0.1875), 0.0, 0.0, 0, 0, Vector2(0.6251968, 0.8434633), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -96,12 +177,13 @@ height = 5.0
 radius = 2.75
 height = 7.336426
 
-[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("booster", "rocket", "steam", "jumpboostsound", "dropsound", "leftarm", "rightarm", "guid", "PlayerCamBase", "BodyManager", "groundnormal", "hlevel") groups=["player"]]
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("booster", "rocket", "rgunshoot", "steam", "jumpboostsound", "dropsound", "leftarm", "rightarm", "guid", "PlayerCamBase", "BodyManager", "groundnormal", "hlevel") groups=["player"]]
 wall_min_slide_angle = 0.5235988
 script = ExtResource("1_exk0v")
 Bullet = ExtResource("2_rt76a")
 booster = NodePath("soundsCooldowns/booster")
 rocket = NodePath("soundsCooldowns/rocket")
+rgunshoot = NodePath("hlevel/bodymanager/rightarm/rg1/fireanim")
 steam = NodePath("soundsCooldowns/steam")
 jumpboostsound = NodePath("soundsCooldowns/jump")
 dropsound = NodePath("soundsCooldowns/dropsound")
@@ -131,6 +213,28 @@ transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, -2.3
 
 [node name="rightarm" type="Marker3D" parent="hlevel/bodymanager"]
 transform = Transform3D(1, 0, 3.5527137e-15, 0, 1, 0, -3.5527137e-15, 0, 1, 2.386579, -0.03587812, 0.29083407)
+
+[node name="rg1" parent="hlevel/bodymanager/rightarm" instance=ExtResource("4_3v2ag")]
+transform = Transform3D(-8.7422775e-10, 0, -0.02, 0, 0.02, 0, 0.02, 0, -8.7422775e-10, -0.17953825, -0.2724111, -0.61033887)
+
+[node name="fireanim" type="AnimationPlayer" parent="hlevel/bodymanager/rightarm/rg1"]
+libraries = {
+&"": SubResource("AnimationLibrary_jej6c")
+}
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="hlevel/bodymanager/rightarm/rg1"]
+transform = Transform3D(-0.993197, 0, 0.116445325, 0, 1, 0, -0.116445325, 0, -0.993197, -128.41078, -0.9650879, -8.251144)
+emitting = false
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+mesh = SubResource("CapsuleMesh_jej6c")
+gravity = Vector3(-50, 0, 0)
+initial_velocity_max = 206.9
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_oprun")
+color_ramp = SubResource("Gradient_a8ls1")
 
 [node name="m1legs" parent="hlevel" instance=ExtResource("4_y4r1p")]
 transform = Transform3D(0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04, -0.10571277, 0.5931376, -0.4949274)

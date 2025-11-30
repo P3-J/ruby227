@@ -11,6 +11,7 @@ public partial class enemy : CharacterBody3D
 	[Export] public PackedScene Bullet;
 	[Export] public int ShootDistance = 60;
 	[Export] public int AggroDistance = 100;
+	[Export] Node3D legs;
 	Timer timer;
 	Timer retargetTimer;
 	RayCast3D los;
@@ -63,7 +64,7 @@ public partial class enemy : CharacterBody3D
     {
 
 		navagent = GetNode<NavigationAgent3D>("NavigationAgent3D");
-		body = GetNode<Node3D>("bodyController");
+		body = GetNode<Node3D>("bodyController/body");
 		timer = GetNode<Timer>("shotCooldown");
 		los = GetNode<RayCast3D>("los");
 
@@ -189,26 +190,19 @@ public partial class enemy : CharacterBody3D
 	}
 
 
-	public void RotateBodyTowardsPlayer(bool lookAtPlayer, Vector3 lookPos, float len = 0.5f){
-		// needs rework
-		Vector3 lookDir;
-
-		if (lookAtPlayer)
-			lookDir = (Player.GlobalPosition - body.GlobalPosition).Normalized();
-		else
-			lookDir = (lookPos - body.GlobalPosition).Normalized();
+	public void RotateBodyTowards(Vector3 lookPos, string part, double delta){
+		Node3D cBody = part == "legs" ? legs : body;
 	
-		float currentYaw = body.RotationDegrees.Y;
-        float targetYaw = Mathf.RadToDeg(Mathf.Atan2(lookDir.X, lookDir.Z));
+		Vector3 lookDir = lookPos - cBody.GlobalPosition;
+		lookDir.Y = 0;
 
-        float delta = Mathf.Wrap(targetYaw - currentYaw, -180f, 180f);
-        float finalYaw = currentYaw + delta;
+		if (lookDir.LengthSquared() < 0.0001f)
+        	return;
+
+		Basis targetBasis = Basis.LookingAt(lookDir.Normalized(), Vector3.Up);
+		cBody.GlobalBasis = cBody.GlobalBasis.Slerp(targetBasis, 20f * (float)delta).Orthonormalized();;
 
 
-        Tween rotationTween = GetTree().CreateTween();
-        rotationTween.TweenProperty(body, "rotation_degrees:y", finalYaw, len)
-                     .SetTrans(Tween.TransitionType.Sine)
-                     .SetEase(Tween.EaseType.InOut);
 	}
 
 	public bool CheckIfCanShoot(float distance)
@@ -228,13 +222,13 @@ public partial class enemy : CharacterBody3D
 		GD.Randomize();
 		int randi = GD.RandRange(1, 2);
 
-
+/* 
 		GD.Randomize();
 		int randii = GD.RandRange(-30, 30);
 		int randi2 = GD.RandRange(-30, 30);
 
 		velocity.X += randii;
-		velocity.Z += randi2;
+		velocity.Z += randi2; */
 
 		SceneTreeTimer tr = GetTree().CreateTimer(randi);
 		tr.Timeout += ShootBullet;
@@ -254,13 +248,15 @@ public partial class enemy : CharacterBody3D
 		if (Disabled) return;
 		canShoot = true;
         bullet bulletInstance = Bullet.Instantiate() as bullet;
-        bulletInstance.GlobalPosition = Position;
+       
 		// mybe shootbug?
 
+		
 		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
 		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 25, true, bullet.BulletType.EXPLODING);
 
         GetParent().AddChild(bulletInstance);
+		bulletInstance.GlobalPosition = GlobalPosition;
 		rocket.Play();
 		cState = EnemyStates.HUNTING;
 
