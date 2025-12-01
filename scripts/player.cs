@@ -102,14 +102,14 @@ public partial class player : CharacterBody3D
 
         direction = direction.Normalized();
      
-        if (IsOnFloor())
+/*         if (IsOnFloor())
         {
             if (playDropSound && !dropsound.Playing){
                 dropsound.Play();
             }
             playDropSound = false;
             fakeVelo.Y = 0;
-        } 
+        }  */
 
         fakeVelo.X = direction.X * MovementSpeed;
         fakeVelo.Z = direction.Z * MovementSpeed;
@@ -216,18 +216,12 @@ public partial class player : CharacterBody3D
     }
 
     public void HandleCameraTurning(){
-        if (Input.IsActionPressed("camleft")){
+/*         if (Input.IsActionPressed("camleft")){
 			Vector3 v = PlayerCamBase.RotationDegrees;
 			v.Y += 3f;
 			PlayerCamBase.RotationDegrees = v;
-		}
-
-		if (Input.IsActionPressed("camright")){
-			Vector3 v = PlayerCamBase.RotationDegrees;
-			v.Y -= 3f;
-			PlayerCamBase.RotationDegrees = v;
-		}
-
+		} */
+        
         if (cameraLocked && CurrentTarget != null && IsInstanceValid(CurrentTarget))
         {
            PlayerCamBase.LookAt(CurrentTarget.GlobalPosition);
@@ -241,7 +235,7 @@ public partial class player : CharacterBody3D
         if (Input.IsActionJustPressed("shoot") && shotcooldown.IsStopped())
         {
             shotcooldown.Start();
-            ShootRightArm();
+            _ = ShootRightArm();
         }
         if (Input.IsActionJustPressed("shootleft") && shotcooldownLeft.IsStopped()) {
             shotcooldownLeft.Start();
@@ -311,7 +305,7 @@ public partial class player : CharacterBody3D
     {
         Vector2 pos2 = guid.tsquareController.GlobalPosition;
 
-        Vector3 targetPosition = playercam.ProjectPosition(pos2, 50);
+        Vector3 targetPosition = playercam.ProjectPosition(pos2, 100);
 
 
         bullet bulletInstance = Bullet.Instantiate() as bullet;
@@ -328,13 +322,6 @@ public partial class player : CharacterBody3D
     public void _on_enemytimer_timeout(){
         ScanForEnemies();
         EnemyTimer.Start();
-
-        if (CurrentTarget == null) return;
-        float distanceTo = CurrentTarget.GlobalPosition.DistanceTo(GlobalPosition);
-        if (distanceTo > MaxScanDistance) {
-            cameraLocked = false;
-            CurrentTarget = null;
-        }
     }
 
     public void TargeterPosition(){
@@ -344,13 +331,16 @@ public partial class player : CharacterBody3D
         if (!MissileTargeter.IsColliding()){
             canSeeEnemy = false;
             cameraLocked = false;
+            
             return;
         } 
         
         Node3D collider = (Node3D)MissileTargeter.GetCollider();
+        //GD.Print(collider.Name);
         if (collider.IsInGroup("enemy"))
         {
             canSeeEnemy = true;
+            //GD.Print(canSeeEnemy);
         }
     }
 
@@ -361,19 +351,33 @@ public partial class player : CharacterBody3D
         Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
         if (cameraLocked) return;
 
-
         foreach (Node3D enemy in enemies)
         {
             if (!enemy.IsInGroup("enemy") || enemy == this) continue;
 
-            float distanceTo = enemy.GlobalPosition.DistanceTo(GlobalPosition);
+            float targetDistance = enemy.GlobalPosition.DistanceTo(GlobalPosition);
+
+
+            if (enemy == CurrentTarget && CurrentTarget != null)
+            {
+                float cTargetDistance = CurrentTarget.GlobalPosition.DistanceTo(GlobalPosition);
+                if (cTargetDistance > MaxScanDistance)
+                {
+                    CurrentTarget = null;
+                    continue;
+                }
+            }
+
+            if (targetDistance > MaxScanDistance) continue;
+
             bool canSee = guid.TargetInView(enemy.GlobalPosition);
-            GD.Print(canSee, distanceTo);
-            if (distanceTo > MaxScanDistance || !canSee) continue;
+            if (!canSee) continue;
+
             CurrentTarget = enemy;
             GD.Print("target");
+            break;
         }
-    
+
     }
 
     public void PlaySteamAudioIfCan(){

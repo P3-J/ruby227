@@ -11,11 +11,14 @@ public partial class Turret : StaticBody3D
     [Export] MeshInstance3D lazor2;
     [Export] AudioStreamPlayer3D warningAudio;
     [Export] AudioStreamPlayer3D laserAudio;
+    [Export] bool IsKill = false;
       
     TurretStates cState = TurretStates.AFK;
     player Player;
 
-    int[] HP = [5];
+    Timer scanTimer;     
+
+    int[] HP = [500];
     int CooldownBetweenShots = 3;      
     enum TurretStates
     {
@@ -28,14 +31,26 @@ public partial class Turret : StaticBody3D
         DISABLED,
     }
 
+    public override void _Ready()
+    {
+        base._Ready();
+        scanTimer = new Timer();
+        scanTimer.WaitTime = 2f;
+        scanTimer.OneShot = true;
+        scanTimer.Connect("timeout", new Callable(this,nameof(_on_scantimer_timeout)));
+        AddChild(scanTimer);
+    }
+
     public override void _Process(double delta)
     {
         base._Process(delta);
-
+        if (IsKill) return;
+        
         switch (cState)
         {
             case TurretStates.AFK:
-                ScanForEnemies();
+                if (!scanTimer.IsStopped()) break;
+                scanTimer.Start();
                 break;
             case TurretStates.SCANNING:
                 ScanForEnemies();
@@ -87,6 +102,7 @@ public partial class Turret : StaticBody3D
             break;
         }
 
+        // bad fix like in p1mine
         if (Playerperm == null) {
             Player = null;
         } else
@@ -109,6 +125,11 @@ public partial class Turret : StaticBody3D
         {
             cState = TurretStates.LOCKEDON;
         }
+    }
+
+    public void _on_scantimer_timeout()
+    {
+        ScanForEnemies();
     }
 
     private async void StartFiringMylazoor()

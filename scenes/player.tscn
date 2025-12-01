@@ -13,6 +13,33 @@
 [ext_resource type="AudioStream" uid="uid://bii4sb26r88jh" path="res://sounds/powerUp.wav" id="10_d2wvv"]
 [ext_resource type="PackedScene" uid="uid://dhj32tgp5xmxn" path="res://scenes/m_1.tscn" id="10_y4r1p"]
 
+[sub_resource type="Animation" id="Animation_jej6c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.17953825, -0.2724111, -0.61033887)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles3D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="Animation" id="Animation_3v2ag"]
 resource_name = "firegun"
 length = 0.3
@@ -39,33 +66,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
-}
-
-[sub_resource type="Animation" id="Animation_jej6c"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.17953825, -0.2724111, -0.61033887)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CPUParticles3D:emitting")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jej6c"]
@@ -138,8 +138,8 @@ vertex_color_use_as_albedo = true
 [sub_resource type="SphereMesh" id="SphereMesh_f1ej7"]
 material = SubResource("StandardMaterial3D_a8ls1")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1xqye"]
-size = Vector3(160, 80, 160)
+[sub_resource type="SphereShape3D" id="SphereShape3D_3v2ag"]
+radius = 150.0
 
 [sub_resource type="Curve" id="Curve_wjuwv"]
 _data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
@@ -301,7 +301,7 @@ collision_layer = 0
 collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="detectionarea"]
-shape = SubResource("BoxShape3D_1xqye")
+shape = SubResource("SphereShape3D_3v2ag")
 
 [node name="enemytimer" type="Timer" parent="detectionarea"]
 autostart = true
@@ -329,9 +329,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
 
 [node name="targeter" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13149, -0.681591)
-target_position = Vector3(0, 0, -160)
+target_position = Vector3(0, 0, -150)
 collision_mask = 3
-collide_with_areas = true
 debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)
 debug_shape_thickness = 5
 

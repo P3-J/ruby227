@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://20dx5co782y4"
+path="res://.godot/imported/mine.map-c95a1f0dbb2f1c505ad81c4dcd3207af.tres"
+
+[deps]
+
+source_file="res://assets/minecraft/mine.map"
+dest_files=["res://.godot/imported/mine.map-c95a1f0dbb2f1c505ad81c4dcd3207af.tres"]
+
+[params]
+

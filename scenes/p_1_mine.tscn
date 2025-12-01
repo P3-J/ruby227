@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://1a77dt6qh1vw"]
+
+[ext_resource type="Script" uid="uid://b4uer2akxfjlk" path="res://scripts/P1Mine.cs" id="1_he6q2"]
+[ext_resource type="PackedScene" uid="uid://6mi72tjgl7ry" path="res://scenes/mine.tscn" id="2_gjky5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_he6q2"]
+radius = 3.0
+height = 10.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3geat"]
+radius = 200.0
+
+[node name="p1mine" type="StaticBody3D" node_paths=PackedStringArray("detArea", "minenode") groups=["enemy"]]
+script = ExtResource("1_he6q2")
+detArea = NodePath("scanarea")
+minenode = NodePath("mine")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_he6q2")
+
+[node name="scanarea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="scanarea"]
+shape = SubResource("SphereShape3D_3geat")
+
+[node name="mine" parent="." instance=ExtResource("2_gjky5")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
