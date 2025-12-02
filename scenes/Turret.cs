@@ -39,6 +39,8 @@ public partial class Turret : StaticBody3D
         scanTimer.OneShot = true;
         scanTimer.Connect("timeout", new Callable(this,nameof(_on_scantimer_timeout)));
         AddChild(scanTimer);
+
+        LaserVisibility(true);
     }
 
     public override void _Process(double delta)
@@ -55,6 +57,7 @@ public partial class Turret : StaticBody3D
             case TurretStates.SCANNING:
                 ScanForEnemies();
                 TryToLockOn();
+                LaserVisibility(true);
                 break;
             case TurretStates.LOCKEDON or TurretStates.STARTFIRE:
                 StartFiringMylazoor();
@@ -127,6 +130,12 @@ public partial class Turret : StaticBody3D
         }
     }
 
+    private void LaserVisibility(bool state)
+    {
+        lazor.Visible = state;
+        lazor2.Visible = state;
+    }
+
     public void _on_scantimer_timeout()
     {
         ScanForEnemies();
@@ -168,9 +177,11 @@ public partial class Turret : StaticBody3D
     {
         if (cState == TurretStates.DISABLED) return;
 
-        cState = TurretStates.DISABLED;
 	    SceneTreeTimer tr = GetTree().CreateTimer(1);
-		tr.Timeout += () => cState = TurretStates.AFK;
+		tr.Timeout += () => {
+            cState = TurretStates.AFK;
+            LaserVisibility(false);   
+        }; 
     }
 
     private void AdjustLazor()
@@ -181,7 +192,7 @@ public partial class Turret : StaticBody3D
 
         Vector3 dir = end - start;
         float len = dir.Length();
-        Vector3 mid = start + dir * 0.5f;
+        Vector3 mid = start + dir * 0.9f;
 
 
         Transform3D t = lazor.GlobalTransform;

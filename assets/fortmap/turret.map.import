@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://dldrx8jsqvpyp"
+path="res://.godot/imported/turret.map-cd1dc531524be82584eaa1eb743ddfe0.tres"
+
+[deps]
+
+source_file="res://assets/fortmap/turret.map"
+dest_files=["res://.godot/imported/turret.map-cd1dc531524be82584eaa1eb743ddfe0.tres"]
+
+[params]
+

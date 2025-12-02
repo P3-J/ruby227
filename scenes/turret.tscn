@@ -2,19 +2,17 @@
 
 [ext_resource type="Script" uid="uid://bjm3oxt5euijx" path="res://scenes/Turret.cs" id="1_x3mc5"]
 [ext_resource type="AudioStream" uid="uid://kjf4f3bx5b03" path="res://sounds/warning-sound-6686.mp3" id="2_485p4"]
+[ext_resource type="PackedScene" uid="uid://dv6k844ny85xv" path="res://scenes/turretmodel.tscn" id="2_pp6j5"]
 [ext_resource type="AudioStream" uid="uid://s71ikh8oxx6r" path="res://sounds/laser-381976.mp3" id="3_pp6j5"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_fowog"]
-size = Vector3(0.4, 0.4, 0.4)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_x3mc5"]
-size = Vector3(5, 5, 5)
+size = Vector3(25, 25, 25)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_485p4"]
-size = Vector3(611.10254, 504.09863, 400)
+[sub_resource type="SphereShape3D" id="SphereShape3D_6fjxm"]
+radius = 600.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3mc5"]
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(1, 0, 0, 0.52156866)
 emission_enabled = true
 emission = Color(1, 0, 0, 1)
 emission_energy_multiplier = 6.93
@@ -33,21 +31,19 @@ warningAudio = NodePath("assets/warning")
 laserAudio = NodePath("assets/fire")
 
 [node name="bodycontroller" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -26.754322, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="bodycontroller"]
-mesh = SubResource("BoxMesh_fowog")
-skeleton = NodePath("../..")
+[node name="turretmodel" parent="bodycontroller" instance=ExtResource("2_pp6j5")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.006652832, -0.007019043, -0.044281006)
 shape = SubResource("BoxShape3D_x3mc5")
 
 [node name="detectionarea" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 193.76418, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="detectionarea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100.22325, -235.466, 0)
-shape = SubResource("BoxShape3D_485p4")
+shape = SubResource("SphereShape3D_6fjxm")
 
 [node name="lazor" type="Node3D" parent="."]
 

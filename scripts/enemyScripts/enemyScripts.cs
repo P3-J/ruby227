@@ -15,7 +15,7 @@ public partial class enemy : CharacterBody3D
 
     private void StateMachine(double delta)
     {
-        //GD.Print(cState);
+        // GD.Print(cState);
         // silent crash when path not found
         switch (cType)
         {
@@ -87,10 +87,15 @@ public partial class enemy : CharacterBody3D
             targetPos = Player.GlobalPosition;
         } */
 
-        SetTargetPos(targetPos);
+
+        if (PlayerDistance > 50)
+        {
+            SetTargetPos(targetPos);
+            next = navagent.GetNextPathPosition();
+        }
         
         
-		next = navagent.GetNextPathPosition();
+		
         Node3D parent = GetParent<Node3D>();
         //RotateBodyTowards(next, "legs");
         
@@ -104,12 +109,11 @@ public partial class enemy : CharacterBody3D
 
     private void OnNavigationAgentTargetReached()
 	{
-        return;
 		if (cState == EnemyStates.AFK) return;
         RaisePatrolPointStep();
         
         retargetTimer.Stop();
-        //GD.Print("reached2");
+        GD.Print("reached2");
         _on_retarget_timeout();
         
     }
@@ -142,9 +146,12 @@ public partial class enemy : CharacterBody3D
 
             case EnemyStates.HUNTING:
                 canMove = true;
-                CheckAggroResetTime((float)delta);
+                //CheckAggroResetTime((float)delta);        
                 MoveTowardsTarget();
-                RotateBodyTowards(next, "legs", delta);
+
+                RotateBodyTowards(Velocity.Normalized(), "legs", delta);
+                if (velocity.Length() > 0.001f) legs.LookAt(legs.GlobalTransform.Origin + velocity, Vector3.Up);
+
                 if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
                 break;
 
@@ -158,6 +165,7 @@ public partial class enemy : CharacterBody3D
     
     private void _bomberLoop(double delta)
     {
+        return;
         switch (cState)
         {
             case EnemyStates.SHOOTING:
@@ -189,7 +197,11 @@ public partial class enemy : CharacterBody3D
         Vector3 dir = GlobalPosition.DirectionTo(next);
         velocity.X = dir.X * Speed;
         velocity.Z = dir.Z * Speed;
-        //next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
+
+      /*   if (Velocity == Vector3.Zero)
+        {
+            next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
+        } */
         
     }
 

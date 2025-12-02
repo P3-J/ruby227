@@ -139,7 +139,7 @@ vertex_color_use_as_albedo = true
 material = SubResource("StandardMaterial3D_a8ls1")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3v2ag"]
-radius = 150.0
+radius = 200.0
 
 [sub_resource type="Curve" id="Curve_wjuwv"]
 _data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
@@ -324,12 +324,9 @@ playerCam = NodePath("../camBase/Camera3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0995221, 2.1952806, 0)
 shape = SubResource("CapsuleShape3D_c5rbk")
 
-[node name="rightArm" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92239, 1.67508, -1.61031)
-
 [node name="targeter" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13149, -0.681591)
-target_position = Vector3(0, 0, -150)
+target_position = Vector3(0, 0, -200)
 collision_mask = 3
 debug_shape_custom_color = Color(0, 0.964706, 0.713726, 1)
 debug_shape_thickness = 5

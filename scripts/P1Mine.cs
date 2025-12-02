@@ -128,6 +128,7 @@ public partial class P1Mine : StaticBody3D
             return;
         }
 
+
         Godot.Collections.Array<Node3D> entities = detArea.GetOverlappingBodies();
         foreach (Node3D entity in entities)
         {

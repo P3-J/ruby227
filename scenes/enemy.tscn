@@ -56,12 +56,13 @@ legs = NodePath("bodyController/legs")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.93012, 0)
 
 [node name="body" type="Node3D" parent="bodyController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.93012, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44599533, 0)
 
 [node name="low_poly_mech_really_0708185600_refine" parent="bodyController/body" instance=ExtResource("5_c4w8v")]
 transform = Transform3D(-1.3113416e-07, 0, -3, 0, 3, 0, 3, 0, -1.3113416e-07, 0, 1.0601263, 0)
 
 [node name="legs" type="Node3D" parent="bodyController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.4684434, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="bodyController/legs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8600111, -1.3256838)
@@ -70,7 +71,6 @@ mesh = SubResource("BoxMesh_c4w8v")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 10.0
 target_desired_distance = 20.0
-path_height_offset = 10.0
 path_max_distance = 30.01
 path_postprocessing = 1
 simplify_path = true
@@ -80,6 +80,7 @@ radius = 8.0
 neighbor_distance = 20.0
 max_speed = 25.0
 avoidance_priority = 0.49
+debug_enabled = true
 debug_path_custom_color = Color(1, 1, 0, 1)
 
 [node name="shotCooldown" type="Timer" parent="."]

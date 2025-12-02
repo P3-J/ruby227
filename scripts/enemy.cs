@@ -38,8 +38,8 @@ public partial class enemy : CharacterBody3D
 	enum EnemyTypes { SHOOTER = 1, BOMBER = 2 }
 	private EnemyTypes cType = EnemyTypes.SHOOTER;
 
-	int HP = 30;
-	int cHP = 4;
+	int HP = 3;
+	int cHP = 3;
     bool target;
 	bool Disabled = true;
 	float lastSawPlayerSeconds;
@@ -200,7 +200,7 @@ public partial class enemy : CharacterBody3D
         	return;
 
 		Basis targetBasis = Basis.LookingAt(lookDir.Normalized(), Vector3.Up);
-		cBody.GlobalBasis = cBody.GlobalBasis.Slerp(targetBasis, 20f * (float)delta).Orthonormalized();;
+		cBody.GlobalBasis = cBody.GlobalBasis.Slerp(targetBasis, 20f * (float)delta).Orthonormalized();
 
 
 	}

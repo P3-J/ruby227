@@ -4,6 +4,3 @@ map_Kd ../../textures/F1/CNDE1A6.png
 newmtl F1/CNDE1_2
 map_Kd ../../textures/F1/CNDE1_2.png
 
-newmtl F1/CNDE1_3
-map_Kd ../../textures/F1/CNDE1_3.png
-

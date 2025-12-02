@@ -348,6 +348,8 @@ public partial class player : CharacterBody3D
     public void ScanForEnemies(){
         if (!DetArea.HasOverlappingBodies()) return;
 
+        // change based on length please
+
         Godot.Collections.Array<Node3D> enemies = DetArea.GetOverlappingBodies();
         if (cameraLocked) return;
 
