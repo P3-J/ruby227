@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://dqabawa3kswh8"]
+
+[ext_resource type="Shader" uid="uid://b7hov1mexw3gk" path="res://assets/enemyv2/pp.gdshader" id="2_8tcdj"]
+[ext_resource type="Texture2D" uid="uid://buq4tf27h18nq" path="res://textures/F1/CNCC/CNCC10_1.png" id="2_lxlnf"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("2_8tcdj")
+shader_parameter/albedo_tex = ExtResource("2_lxlnf")
+shader_parameter/scroll_speed = -1.0
+shader_parameter/scrolling_enabled = true

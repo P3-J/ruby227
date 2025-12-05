@@ -1,0 +1,68 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://ceuydrxgiiw7q"
+path="res://.godot/imported/enemy2.obj-333357c6256736a16a4121401da5b277.scn"
+
+[deps]
+
+source_file="res://assets/enemyv2/enemy2.obj"
+dest_files=["res://.godot/imported/enemy2.obj-333357c6256736a16a4121401da5b277.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"128x128/Brick/Brick_19-128x128": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/enemyv2/128x128_Brick_Brick_19-128x128.tres",
+"use_external/path": "uid://cyu4wqidf8wdl"
+},
+"F1/CNCC/CNCC10_1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/enemyv2/test.tres",
+"use_external/path": "uid://dqabawa3kswh8"
+},
+"F1/CNDE1A6": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/enemyv2/F1_CNDE1A6.tres",
+"use_external/path": "uid://drud8ry1bh5l0"
+},
+"F1/CNDE1B1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/enemyv2/F1_CNDE1B1.tres",
+"use_external/path": "uid://bkphkgbtrxybv"
+},
+"F1/CNDE1B6": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/enemyv2/F1_CNDE1B6.tres",
+"use_external/path": "uid://ck6ng5fch5py"
+}
+}
+}

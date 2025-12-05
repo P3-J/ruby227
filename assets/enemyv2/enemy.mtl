@@ -1,0 +1,6 @@
+newmtl 128x128/Brick/Brick_19-128x128
+map_Kd ../../textures/128x128/Brick/Brick_19-128x128.png
+
+newmtl F1/CNCC/CNCC10_1
+map_Kd ../../textures/F1/CNCC/CNCC10_1.png
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://com2vqubvau20"
+path="res://.godot/imported/enemy2.1.map-5229d07991caef4d26406e4abf212ba9.tres"
+
+[deps]
+
+source_file="res://assets/enemyv2/autosave/enemy2.1.map"
+dest_files=["res://.godot/imported/enemy2.1.map-5229d07991caef4d26406e4abf212ba9.tres"]
+
+[params]
+

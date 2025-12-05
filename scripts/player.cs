@@ -287,7 +287,7 @@ public partial class player : CharacterBody3D
     public void genRightArm()
     {
         bullet bulletInstance = CreateBullet(true);
-        bulletInstance.SetProps(1, "player", Velocity * 0.1f, 50, true, bullet.BulletType.FIVEFIVESIX);
+        bulletInstance.SetProps(1, "player", Vector3.Zero, 25, true, bullet.BulletType.FIVEFIVESIX);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         rgunshoot.Play("firegun");
@@ -308,6 +308,10 @@ public partial class player : CharacterBody3D
 
         Vector3 targetPosition = playercam.ProjectPosition(pos2, 100);
 
+        if (CurrentTarget != null)
+        {
+           targetPosition = CurrentTarget.GlobalPosition;
+        }
 
         bullet bulletInstance = Bullet.Instantiate() as bullet;
 
@@ -361,20 +365,23 @@ public partial class player : CharacterBody3D
             float targetDistance = enemy.GlobalPosition.DistanceTo(GlobalPosition);
 
 
-            if (enemy == CurrentTarget && CurrentTarget != null)
+            if (enemy == CurrentTarget && targetDistance > MaxScanDistance)
             {
-                float cTargetDistance = CurrentTarget.GlobalPosition.DistanceTo(GlobalPosition);
-                if (cTargetDistance > MaxScanDistance)
-                {
-                    CurrentTarget = null;
-                    continue;
-                }
+                CurrentTarget = null;
+                continue;
             }
 
             if (targetDistance > MaxScanDistance) continue;
 
             bool canSee = guid.TargetInView(enemy.GlobalPosition);
             if (!canSee) continue;
+
+            if (CurrentTarget != null)
+            {
+                float cDis = CurrentTarget.GlobalPosition.DistanceTo(GlobalPosition);
+                if (cDis > targetDistance) CurrentTarget = enemy;
+                continue;
+            }
 
             CurrentTarget = enemy;
             GD.Print("target");

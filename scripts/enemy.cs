@@ -11,6 +11,8 @@ public partial class enemy : CharacterBody3D
 	[Export] public PackedScene Bullet;
 	[Export] public int ShootDistance = 60;
 	[Export] public int AggroDistance = 100;
+	[Export] CpuParticles3D shotparticle;
+	[Export] Selfdestruct selfD;
 	[Export] Node3D legs;
 	Timer timer;
 	Timer retargetTimer;
@@ -64,7 +66,7 @@ public partial class enemy : CharacterBody3D
     {
 
 		navagent = GetNode<NavigationAgent3D>("NavigationAgent3D");
-		body = GetNode<Node3D>("bodyController/body");
+		body = GetNode<Node3D>("bodyController/legs/body");
 		timer = GetNode<Timer>("shotCooldown");
 		los = GetNode<RayCast3D>("los");
 
@@ -172,10 +174,11 @@ public partial class enemy : CharacterBody3D
     }
 
 	private void Die(){	
+		if (Disabled) return;
 		Disabled = true;
 		deathTimer.Start();
+		selfD.Explode(3, this.Name);
 		deathExplosion.Emitting = true;
-		
 	}
 
 	private void _on_deathtime_timeout(){
@@ -247,6 +250,7 @@ public partial class enemy : CharacterBody3D
 	{
 		if (Disabled) return;
 		canShoot = true;
+		shotparticle.Emitting = true;
         bullet bulletInstance = Bullet.Instantiate() as bullet;
        
 		// mybe shootbug?

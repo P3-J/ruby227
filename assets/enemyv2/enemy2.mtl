@@ -1,0 +1,15 @@
+newmtl 128x128/Brick/Brick_19-128x128
+map_Kd ../../textures/128x128/Brick/Brick_19-128x128.png
+
+newmtl F1/CNCC/CNCC10_1
+map_Kd ../../textures/F1/CNCC/CNCC10_1.png
+
+newmtl F1/CNDE1A6
+map_Kd ../../textures/F1/CNDE1A6.png
+
+newmtl F1/CNDE1B1
+map_Kd ../../textures/F1/CNDE1B1.png
+
+newmtl F1/CNDE1B6
+map_Kd ../../textures/F1/CNDE1B6.png
+
