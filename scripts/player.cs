@@ -209,6 +209,7 @@ public partial class player : CharacterBody3D
     public void GetHit(int dmg){
         cHP -= dmg;
         guid.RefreshHud(cHP);
+        GD.Print("took dmg :", dmg);
         // check for megadeth
         if (cHP <= 0){
             Die();
@@ -286,7 +287,7 @@ public partial class player : CharacterBody3D
     public void genRightArm()
     {
         bullet bulletInstance = CreateBullet(true);
-        bulletInstance.SetProps(1, "player", Velocity * 0.2f, 50, true, bullet.BulletType.FIVEFIVESIX);
+        bulletInstance.SetProps(1, "player", Velocity * 0.1f, 50, true, bullet.BulletType.FIVEFIVESIX);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         rgunshoot.Play("firegun");

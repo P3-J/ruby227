@@ -40,7 +40,8 @@ public partial class Turret : StaticBody3D
         scanTimer.Connect("timeout", new Callable(this,nameof(_on_scantimer_timeout)));
         AddChild(scanTimer);
 
-        LaserVisibility(true);
+        LaserVisibility(false, true);
+        LaserVisibility(false, false);
     }
 
     public override void _Process(double delta)
@@ -57,7 +58,6 @@ public partial class Turret : StaticBody3D
             case TurretStates.SCANNING:
                 ScanForEnemies();
                 TryToLockOn();
-                LaserVisibility(true);
                 break;
             case TurretStates.LOCKEDON or TurretStates.STARTFIRE:
                 StartFiringMylazoor();
@@ -114,25 +114,56 @@ public partial class Turret : StaticBody3D
             cState = TurretStates.SCANNING;
         }
     }
+
+    private bool CheckVodCol()
+    {
+        
+        rayc.LookAt(Player.GlobalTransform.Origin);
+
+        if (!rayc.IsColliding()) {
+            cState = TurretStates.AFK;
+            return true;
+        }
+
+
+        Node3D collider = (Node3D)rayc.GetCollider();
+
+        if (!collider.IsInGroup("player"))
+        {
+            LaserVisibility(false, false);
+            LaserVisibility(false, true);
+            cState = TurretStates.AFK;
+            return true;
+        }
+        return false;
+
+    }
+
     private void TryToLockOn()
     {
         if (Player == null) return;
 
         rayc.LookAt(Player.GlobalTransform.Origin);
 
-        if (!rayc.IsColliding()) return;
+        if (!rayc.IsColliding()) {
+            return;
+        }
 
         Node3D collider = (Node3D)rayc.GetCollider();
 
         if (collider.IsInGroup("player"))
         {
             cState = TurretStates.LOCKEDON;
-        }
+            LaserVisibility(true, true);
+        } 
     }
 
-    private void LaserVisibility(bool state)
+    private void LaserVisibility(bool state, bool small)
     {
-        lazor.Visible = state;
+        if (small) {
+            lazor.Visible = state;
+            return;
+        }
         lazor2.Visible = state;
     }
 
@@ -148,6 +179,8 @@ public partial class Turret : StaticBody3D
 
         if (!warningAudio.Playing) warningAudio.Play();
 
+        if (CheckVodCol()){return;}
+
         if (cState != TurretStates.STARTFIRE)
         {
             cState = TurretStates.STARTFIRE;
@@ -159,8 +192,11 @@ public partial class Turret : StaticBody3D
 
     private void Fire()
     {
+        if (CheckVodCol()){return;}
+        if (cState != TurretStates.FIRING) return;
         cState = TurretStates.DISABLED;
         laserAudio.Play();
+        LaserVisibility(true, false);  
 
         SceneTreeTimer tr = GetTree().CreateTimer(0.5);     
 		tr.Timeout += ShootLazor; 
@@ -168,7 +204,7 @@ public partial class Turret : StaticBody3D
 
     private void ShootLazor()
     {
-        float len = (Player.GlobalTransform.Origin - GlobalTransform.Origin).Length();
+        float len = (Player.GlobalTransform.Origin - GlobalTransform.Origin).Length(); 
         lazor2.Scale = new Vector3(20, len , 20);
         cState = TurretStates.COOLDOWN;
     }
@@ -180,7 +216,8 @@ public partial class Turret : StaticBody3D
 	    SceneTreeTimer tr = GetTree().CreateTimer(1);
 		tr.Timeout += () => {
             cState = TurretStates.AFK;
-            LaserVisibility(false);   
+            LaserVisibility(false, false);
+            LaserVisibility(false, true);   
         }; 
     }
 

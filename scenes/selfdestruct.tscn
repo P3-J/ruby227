@@ -1,0 +1,75 @@
+[gd_scene load_steps=13 format=3 uid="uid://ce73oaukj3but"]
+
+[ext_resource type="Script" uid="uid://df4wqthrx72nk" path="res://scripts/Selfdestruct.cs" id="1_2bfaj"]
+[ext_resource type="AudioStream" uid="uid://bdpkjus7n8r" path="res://sounds/explosion-sfx-405455.mp3" id="2_up56w"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_k3c6m"]
+radius = 5.0
+
+[sub_resource type="Gradient" id="Gradient_2bfaj"]
+offsets = PackedFloat32Array(0.0591133, 0.40558293, 0.73399013)
+colors = PackedColorArray(0.8235294, 0.9529412, 0, 1, 1, 0.45490196, 0.14509805, 1, 0.93333334, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_up56w"]
+gradient = SubResource("Gradient_2bfaj")
+
+[sub_resource type="Curve" id="Curve_2bfaj"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0.11023623, 4.2173166), 0.0, 0.0, 0, 0, Vector2(0.20629923, 1.850631), 0.0, 0.0, 0, 0, Vector2(0.2834646, 0.5461583), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_up56w"]
+curve = SubResource("Curve_2bfaj")
+
+[sub_resource type="Curve" id="Curve_4prfv"]
+_limits = [0.0, 10.0, 0.0, 1.0]
+_data = [Vector2(0.015748031, 0.37012613), 0.0, 0.0, 0, 0, Vector2(0.23779528, 9.478211), 0.0, 0.0, 0, 0, Vector2(0.75905514, 7.241973), 0.0, 0.0, 0, 0, Vector2(0.9968503, 0.5513189), 0.0, 0.0, 0, 0, Vector2(1, 0.14879608), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_21u2i"]
+curve = SubResource("Curve_4prfv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2bfaj"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = 1.0728835e-05
+angle_max = 585.10004
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = 9.999977
+radial_velocity_curve = SubResource("CurveTexture_up56w")
+gravity = Vector3(0, 3, 0)
+scale_curve = SubResource("CurveTexture_21u2i")
+color_ramp = SubResource("GradientTexture1D_up56w")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mc3ij"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_qv6jq"]
+material = SubResource("StandardMaterial3D_mc3ij")
+
+[node name="selfdestruct" type="Area3D" node_paths=PackedStringArray("colShape", "expl", "explosionSound")]
+script = ExtResource("1_2bfaj")
+expRadius = 10.0
+colShape = NodePath("CollisionShape3D")
+expl = NodePath("GPUParticles3D")
+explosionSound = NodePath("explosion")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_k3c6m")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 24
+lifetime = 2.0
+one_shot = true
+preprocess = 0.5
+explosiveness = 0.78
+process_material = SubResource("ParticleProcessMaterial_2bfaj")
+draw_pass_1 = SubResource("SphereMesh_qv6jq")
+
+[node name="explosion" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_up56w")
+volume_db = 10.0

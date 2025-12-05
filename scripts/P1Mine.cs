@@ -7,6 +7,8 @@ public partial class P1Mine : StaticBody3D
    // [Export] RayCast3D rayc;
     [Export] bool IsKill = false;
     [Export] Node3D minenode;
+    [Export] Selfdestruct selfD;
+    [Export] AudioStreamPlayer3D droneAudio;
       
     mineStates cState = mineStates.AFK;
     player Player;
@@ -24,6 +26,7 @@ public partial class P1Mine : StaticBody3D
         SCANNING,
         DEPLOYING,
         FIRING,
+        EXPLODE,
         DISABLED,
     }
 
@@ -49,11 +52,18 @@ public partial class P1Mine : StaticBody3D
                 scanTimer.Start();
                 break;
             case mineStates.DEPLOYING:
+                PlayDroneSound();
                 DeployMine();
                 break;
             case mineStates.FIRING:
-                GlobalPosition = GlobalPosition.MoveToward(Player.GlobalPosition, 50f * (float)delta);
+                PlayDroneSound();
+                if (Player.GlobalPosition.DistanceTo(GlobalPosition) < 10f)
+                {
+                    cState = mineStates.EXPLODE;
+                    break;
+                }
 
+                GlobalPosition = GlobalPosition.MoveToward(Player.GlobalPosition, 50f * (float)delta);
                 minenode.LookAt(Player.GlobalPosition + new Vector3(0, 5, 0));
 
                 if (rot < 180)
@@ -68,10 +78,24 @@ public partial class P1Mine : StaticBody3D
                 minenode.Basis = minenode.Basis * offset;
                 
                 break;
+            case mineStates.EXPLODE:
+                if (!firstCaseLoop) return;
+                droneAudio.Stop();
+                firstCaseLoop = false;
+                selfD.Explode(5, this.Name);
+                SceneTreeTimer tr = GetTree().CreateTimer(1.0);
+	            tr.Timeout += () => CallDeferred("queue_free");  
+                break;
             default:
                 break;
-        }
+        }   
 
+    }
+
+    private void PlayDroneSound()
+    {
+        if (droneAudio.Playing) return;
+        droneAudio.Play();
     }
 
     public void GetHit(int dmg){
