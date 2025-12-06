@@ -11,6 +11,8 @@ public partial class Guid : Control
     [Export] ProgressBar rightbar;
     [Export] RichTextLabel powerleveltext;
     [Export] Sprite2D tsSquare2;
+
+    Vector2 screenSize;
      
 
     Vector2 aimspotStartSpot;
@@ -18,20 +20,41 @@ public partial class Guid : Control
     {
         base._Ready();
         aimspotStartSpot = tsquareController.Position;
+        screenSize = GetViewport().GetVisibleRect().Size;
 
     }
 
-    public void ReposSquare(Vector3 globaltransform, bool canseeenemy){
+    public bool ReposSquare(Vector3 globaltransform, bool canseeenemy){
         Vector2 screenpos = playerCam.UnprojectPosition(globaltransform);   
         screenpos.Y += 0; //15; // OFFSET so sprite is centered.
         /// text next to it indicating distance / else Zero 
         /// do anti of unproject - project position into world to aim
+        /// 
+        /// 
+        float minX = screenSize.X * 0.32f;
+        float maxX = screenSize.X * 0.68f;
+        float minY = screenSize.Y * 0.32f;
+        float maxY = screenSize.Y * 0.68f;
 
-        if (!playerCam.IsPositionBehind(globaltransform) && playerCam.IsPositionInFrustum(globaltransform) && canseeenemy){
-            tsquareController.Position = tsquareController.Position.MoveToward(screenpos, 5f);
-            tsSquare2.Visible = tsquareController.Position == screenpos;
+        bool insideBox =
+            screenpos.X >= minX &&
+            screenpos.X <= maxX &&
+            screenpos.Y >= minY &&
+            screenpos.Y <= maxY;
+
+        if (!playerCam.IsPositionBehind(globaltransform) 
+            && playerCam.IsPositionInFrustum(globaltransform) 
+            && insideBox){
+
+            tsquareController.Position =
+                tsquareController.Position.MoveToward(screenpos, 5f);
+
+            tsSquare2.Visible = true;
+            return true;
         } else {
             ResetTargetingSquare();
+            tsSquare2.Visible = false;
+            return false;
         }
     }
 

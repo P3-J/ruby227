@@ -108,7 +108,7 @@ public partial class bullet : CharacterBody3D
 		GpuParticles3D explosionInstance = explosion.Instantiate() as GpuParticles3D;
         explosionInstance.Position = pos;
 		explosionInstance.Emitting = true;
-        GetParent().AddChild(explosionInstance); // mob dies, calls getparent, no parent anymore, so throws error -> maybe top level node as parent
+        GetTree().CurrentScene.AddChild(explosionInstance); // mob dies, calls getparent, no parent anymore, so throws error -> maybe top level node as parent
 	}
 
 }

@@ -9,8 +9,6 @@ public partial class enemy : CharacterBody3D
 
 	[Export] private NavigationAgent3D navagent;
 	[Export] public PackedScene Bullet;
-	[Export] public int ShootDistance = 60;
-	[Export] public int AggroDistance = 100;
 	[Export] CpuParticles3D shotparticle;
 	[Export] Selfdestruct selfD;
 	[Export] Node3D legs;
@@ -19,35 +17,35 @@ public partial class enemy : CharacterBody3D
 	RayCast3D los;
 	Timer deathTimer;
 	GpuParticles3D deathExplosion;
-	bool targetinlos;
-	bool hasAggro;
 	Node3D body;
 	Vector3 next = Vector3.Zero;
 	player Player;
 	AudioStreamPlayer3D booster;
 	AudioStreamPlayer3D rocket;
 	NavigationRegion3D navregion;
-
-	bool canMove = true;
 	Vector3 velocity;
-	public  float Speed;
-	public const float Gravity = -9.8f;
-	public const float jumpstr = 10f;
-
+	public Vector3 spawnLocation;
 
 	enum EnemyStates { AFK = 0, HUNTING = 1, SHOOTING = 2, PATROL = 3 }
 	private EnemyStates cState = EnemyStates.AFK;
 	enum EnemyTypes { SHOOTER = 1, BOMBER = 2 }
 	private EnemyTypes cType = EnemyTypes.SHOOTER;
 
-	int HP = 3;
-	int cHP = 3;
+	bool canMove = true;
+	public  float Speed;
+	public const float Gravity = -9.8f;
+	public const float jumpstr = 10f;
+	public int ShootDistance = 100;
+	public int AggroDistance = 200;
+	int HP = 5;
+	int cHP = 5;
     bool target;
 	bool Disabled = true;
 	float lastSawPlayerSeconds;
 	private bool canShoot = true;
 	bool hasVisionOfTarget;
-	public Vector3 spawnLocation;
+	bool targetinlos;
+	bool hasAggro;
 
     /// <summary>
     ///  TO FIX
@@ -116,7 +114,7 @@ public partial class enemy : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		//if (Disabled) return;
+		if (Disabled) return;
 		
 		if (!canMove)
 		{
@@ -137,18 +135,21 @@ public partial class enemy : CharacterBody3D
     {
 		base._Process(delta);
 		//GD.Print(cState);
-		//if (Disabled) return;
+		if (Disabled) return;
 		LosCollsionChecks();
 		StateMachine(delta);
 
     }
 
-	
+	public Vector3 GetVelo()
+    {
+        return Velocity;
+    }
 
     private void CheckAggroResetTime(float delta)
     {
         lastSawPlayerSeconds += delta;
-        if (lastSawPlayerSeconds >= 2000f)
+        if (lastSawPlayerSeconds >= 20000f)
 		{
 			GD.Print("We afk");
 			cState = EnemyStates.AFK;
@@ -225,13 +226,13 @@ public partial class enemy : CharacterBody3D
 		GD.Randomize();
 		int randi = GD.RandRange(1, 2);
 
-/* 
+ 
 		GD.Randomize();
 		int randii = GD.RandRange(-30, 30);
 		int randi2 = GD.RandRange(-30, 30);
 
 		velocity.X += randii;
-		velocity.Z += randi2; */
+		velocity.Z += randi2; 
 
 		SceneTreeTimer tr = GetTree().CreateTimer(randi);
 		tr.Timeout += ShootBullet;
@@ -257,7 +258,7 @@ public partial class enemy : CharacterBody3D
 
 		
 		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
-		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 25, true, bullet.BulletType.EXPLODING);
+		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 35, true, bullet.BulletType.EXPLODING);
 
         GetParent().AddChild(bulletInstance);
 		bulletInstance.GlobalPosition = GlobalPosition;

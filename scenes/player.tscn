@@ -293,7 +293,7 @@ debug_shape_thickness = 5
 transform = Transform3D(1, -6.597005e-08, 1.6677109e-07, 3.705948e-08, 0.9858297, 0.16774942, -1.7547431e-07, -0.16774942, 0.9858297, 0, 9.694229, 12.933797)
 current = true
 size = 22.186
-far = 7000.0
+far = 9000.0
 
 [node name="detectionarea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2008424, 0)

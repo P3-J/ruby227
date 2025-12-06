@@ -105,6 +105,12 @@ public partial class P1Mine : StaticBody3D
         }
     }
 
+
+	public Vector3 GetVelo()
+    {
+        return Vector3.Zero;
+    }
+
     public void Die()
     {
         CallDeferred("queue_free");

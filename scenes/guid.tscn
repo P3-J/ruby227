@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://btumhbmc6hq5e"]
+[gd_scene load_steps=26 format=3 uid="uid://btumhbmc6hq5e"]
 
 [ext_resource type="Texture2D" uid="uid://8wphi2e5jxcj" path="res://assets/bar1.png" id="1_bvwxv"]
 [ext_resource type="Script" uid="uid://dm8fq0dnw4j77" path="res://scripts/Guid.cs" id="1_sraot"]
@@ -138,6 +138,19 @@ shader_parameter/grain_strength = 0.2
 shader_parameter/tint_color = Vector3(0.95, 1.03, 0.9)
 shader_parameter/tint_strength = 0.15
 shader_parameter/viewport_size_override = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k12ah"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0.13333334, 0.49019608, 0, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+anti_aliasing_size = 10.0
 
 [node name="guid" type="Control" node_paths=PackedStringArray("tsquareController", "hpBar", "leftbar", "rightbar", "tsSquare2")]
 layout_mode = 3
@@ -311,3 +324,23 @@ material = SubResource("ShaderMaterial_k12ah")
 layout_mode = 0
 offset_right = 800.0
 offset_bottom = 600.0
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(392, 304)
+
+[node name="Button" type="Button" parent="."]
+z_index = -3
+layout_mode = 0
+offset_left = 224.0
+offset_top = 184.0
+offset_right = 576.0
+offset_bottom = 424.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0, 0.7053469, 0.2606495, 1)
+theme_override_colors/font_disabled_color = Color(0, 0.502985, 0.2881561, 0.5019608)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/disabled = SubResource("StyleBoxFlat_k12ah")
+disabled = true
+text = "LOCKED"
+alignment = 2

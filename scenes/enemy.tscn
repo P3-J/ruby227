@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://8mw6l4575xco"]
+[gd_scene load_steps=19 format=3 uid="uid://8mw6l4575xco"]
 
 [ext_resource type="Script" uid="uid://cjylek8l1pcbe" path="res://scripts/enemy.cs" id="1_rawnw"]
 [ext_resource type="PackedScene" uid="uid://cola0rmveia2c" path="res://scenes/bullet.tscn" id="2_5bxl6"]
 [ext_resource type="PackedScene" uid="uid://db3mfp21buc4h" path="res://assets/gunz/gunleft.tscn" id="3_xwavj"]
 [ext_resource type="AudioStream" uid="uid://dxygtbdsa8gsc" path="res://sounds/booster.mp3" id="4_85yn1"]
+[ext_resource type="PackedScene" uid="uid://dhj32tgp5xmxn" path="res://scenes/m_1.tscn" id="4_md484"]
 [ext_resource type="PackedScene" uid="uid://doaoio3xappy2" path="res://assets/enemyv2/enemy_2.tscn" id="4_xwavj"]
 [ext_resource type="AudioStream" uid="uid://t8jqmim7wdg4" path="res://sounds/shoot.mp3" id="5_617fx"]
 [ext_resource type="PackedScene" uid="uid://ce73oaukj3but" path="res://scenes/selfdestruct.tscn" id="7_nenq2"]
@@ -69,7 +70,7 @@ floor_snap_length = 0.23
 script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")
-shotparticle = NodePath("bodyController/legs/body/gunleft/gunparticle")
+shotparticle = NodePath("bodyController/legs/body/gunparticle")
 selfD = NodePath("selfdestruct")
 legs = NodePath("bodyController/legs")
 
@@ -80,16 +81,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.93012, -0.9985943)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7055348, -0.679127, 0.54595184)
 
 [node name="enemy2" parent="bodyController/legs" instance=ExtResource("4_xwavj")]
-transform = Transform3D(-4.371139e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.371139e-09, 1.1142507, 0, 2.2754154)
+transform = Transform3D(-4.371139e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.371139e-09, 1.1142507, 0, 0.54622793)
 
 [node name="body" type="Node3D" parent="bodyController/legs"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17011869, 5.3301244, 2.763598)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4600047, 6.8435383, 0.69987917)
 
-[node name="gunleft" parent="bodyController/legs/body" instance=ExtResource("3_xwavj")]
-transform = Transform3D(-1.7484555e-07, 0, -4, 0, 4, 0, 4, 0, -1.7484555e-07, -0.22294903, 0, 0)
-
-[node name="gunparticle" type="CPUParticles3D" parent="bodyController/legs/body/gunleft"]
-transform = Transform3D(-0.024829928, 0, 0.0029111332, 0, 0.025, 0, -0.0029111332, 0, -0.024829928, -1.7133121, 0, 7.4505806e-08)
+[node name="gunparticle" type="CPUParticles3D" parent="bodyController/legs/body"]
+transform = Transform3D(0.011644538, 0, 0.09931971, 0, 0.1, 0, -0.09931971, 0, 0.011644538, -0.22294903, 0, -6.8532486)
 emitting = false
 lifetime = 0.2
 one_shot = true
@@ -102,17 +100,26 @@ scale_amount_max = 3.0
 scale_amount_curve = SubResource("Curve_nenq2")
 color_ramp = SubResource("Gradient_md484")
 
+[node name="m1" parent="bodyController/legs/body" instance=ExtResource("4_md484")]
+transform = Transform3D(-0.05, 0, 4.371139e-09, 0, 0.05, 0, -4.371139e-09, 0, -0.05, 0, 0, 0)
+
+[node name="gunleft" parent="bodyController/legs/body" instance=ExtResource("3_xwavj")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, 4.878893, -0.3528235, 1.2931793)
+
+[node name="gunleft2" parent="bodyController/legs/body" instance=ExtResource("3_xwavj")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -4.743292, -0.3528235, 1.2931793)
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 10.0
 target_desired_distance = 20.0
-path_max_distance = 30.01
-path_postprocessing = 1
+path_max_distance = 10.01
 simplify_path = true
+path_search_max_distance = 1000.0
 avoidance_enabled = true
 height = 3.0
 radius = 8.0
 neighbor_distance = 20.0
-max_speed = 25.0
+max_speed = 40.0
 avoidance_priority = 0.49
 debug_path_custom_color = Color(1, 1, 0, 1)
 
@@ -133,7 +140,7 @@ autostart = true
 
 [node name="los" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14414644, -1.8873329, 2.0677195)
-target_position = Vector3(0, 0, -160)
+target_position = Vector3(0, 0, -250)
 collide_with_areas = true
 debug_shape_custom_color = Color(0.379437, 0.473598, 1, 1)
 debug_shape_thickness = 1

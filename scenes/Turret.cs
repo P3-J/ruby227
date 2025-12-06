@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Security.AccessControl;
 
 public partial class Turret : StaticBody3D
 {
@@ -18,7 +16,7 @@ public partial class Turret : StaticBody3D
 
     Timer scanTimer;     
 
-    int[] HP = [500];
+    int[] HP = [5];
     int CooldownBetweenShots = 3;      
     enum TurretStates
     {
@@ -84,6 +82,12 @@ public partial class Turret : StaticBody3D
     public void Die()
     {
         CallDeferred("queue_free");
+    }
+
+
+	public Vector3 GetVelo()
+    {
+        return Vector3.Zero;
     }
 
 

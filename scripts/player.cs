@@ -89,10 +89,6 @@ public partial class player : CharacterBody3D
             direction -= Transform.Basis.Z; 
             if (MovementSpeed < 35 ) MovementSpeed += 1; 
         }
-        if (Input.IsActionJustReleased("up"))
-        {
-            MovementSpeed = BaseMovementSpeed;
-        }
         if (Input.IsActionPressed("down"))
         {
             direction += Transform.Basis.Z; 
@@ -146,20 +142,26 @@ public partial class player : CharacterBody3D
     {
         base._Process(delta);
         PlayerCamBase.GlobalPosition = this.GlobalPosition;
+
+        HandleTurning();
+        HandleCameraTurning();
+        GroundNormalRotate();
+
+        bool canSee = false;
+
         if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
-            guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, canSeeEnemy);
+            canSee = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, true);
             TargeterPosition();
-            //cameraLocked = true;
-        } else {
+        } 
+
+        if (!canSee){
             CurrentTarget = null;
             targetLocked = false;
             cameraLocked = false;
             guid.ResetTargetingSquare();
+                   
         }
 
-        HandleTurning();
-        HandleCameraTurning(); // includes the left launcher rotation currently, should be based on targeter, doesnt have to be tho
-        GroundNormalRotate();
 
     }
 
@@ -287,7 +289,11 @@ public partial class player : CharacterBody3D
     public void genRightArm()
     {
         bullet bulletInstance = CreateBullet(true);
-        bulletInstance.SetProps(1, "player", Vector3.Zero, 25, true, bullet.BulletType.FIVEFIVESIX);
+
+        Vector3 bonusVelo = Vector3.Zero;
+        if (CurrentTarget != null) bonusVelo = GetTargetVelo();
+
+        bulletInstance.SetProps(1, "player", bonusVelo * 0.7f, 50, true, bullet.BulletType.FIVEFIVESIX);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         rgunshoot.Play("firegun");
@@ -302,15 +308,22 @@ public partial class player : CharacterBody3D
         guid.ResetCooldown(false, 3);
     }
 
+
+    private Vector3 GetTargetVelo()
+    {
+        Vector3 velo = (Vector3)CurrentTarget.Get("GetVelo");
+        return velo;
+    }
+
     private bullet CreateBullet(bool rarm)
     {
         Vector2 pos2 = guid.tsquareController.GlobalPosition;
 
         Vector3 targetPosition = playercam.ProjectPosition(pos2, 100);
 
-        if (CurrentTarget != null)
+        if (CurrentTarget != null && canSeeEnemy)
         {
-           targetPosition = CurrentTarget.GlobalPosition;
+            targetPosition = CurrentTarget.GlobalPosition;
         }
 
         bullet bulletInstance = Bullet.Instantiate() as bullet;
@@ -339,13 +352,14 @@ public partial class player : CharacterBody3D
             
             return;
         } 
+
+        
         
         Node3D collider = (Node3D)MissileTargeter.GetCollider();
         //GD.Print(collider.Name);
         if (collider.IsInGroup("enemy"))
         {
             canSeeEnemy = true;
-            //GD.Print(canSeeEnemy);
         }
     }
 
@@ -384,7 +398,6 @@ public partial class player : CharacterBody3D
             }
 
             CurrentTarget = enemy;
-            GD.Print("target");
             break;
         }
 
