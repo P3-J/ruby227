@@ -189,8 +189,13 @@ public partial class Turret : StaticBody3D
         {
             cState = TurretStates.STARTFIRE;
             SceneTreeTimer tr = GetTree().CreateTimer(CooldownBetweenShots);     
-		    tr.Timeout += () => cState = TurretStates.FIRING;
+		    tr.Timeout += FireState;
         }    
+    }
+
+    private void FireState()
+    {
+        cState = TurretStates.FIRING;
     }
 
 
@@ -218,11 +223,14 @@ public partial class Turret : StaticBody3D
         if (cState == TurretStates.DISABLED) return;
 
 	    SceneTreeTimer tr = GetTree().CreateTimer(1);
-		tr.Timeout += () => {
-            cState = TurretStates.AFK;
-            LaserVisibility(false, false);
-            LaserVisibility(false, true);   
-        }; 
+		tr.Timeout += DisableLaserGoAfk;
+    }
+
+    private void DisableLaserGoAfk()
+    {    
+        cState = TurretStates.AFK;
+        LaserVisibility(false, false);
+        LaserVisibility(false, true);   
     }
 
     private void AdjustLazor()

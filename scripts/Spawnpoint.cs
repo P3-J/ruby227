@@ -44,7 +44,7 @@ public partial class Spawnpoint : Marker3D
 
         if (findnavlink != null)
         {
-            findnavlink.CallDeferred("add_child",toSpawn);
+            findnavlink.CallDeferred("add_child", toSpawn);
         }
     }
 }

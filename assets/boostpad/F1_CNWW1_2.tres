@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://ftkin5y5b2f6"]
+
+[ext_resource type="Texture2D" uid="uid://duwmaw0cxtlue" path="res://textures/F1/CNWW1_2.png" id="1_p1p70"]
+
+[resource]
+resource_name = "F1/CNWW1_2"
+albedo_texture = ExtResource("1_p1p70")

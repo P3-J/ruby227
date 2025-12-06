@@ -1,0 +1,9 @@
+newmtl F1/CNWW1_10
+map_Kd ../../textures/F1/CNWW1_10.png
+
+newmtl F1/CNWW1_2
+map_Kd ../../textures/F1/CNWW1_2.png
+
+newmtl Metal/Materials/metal_misc
+map_Kd ../../textures/Metal/Materials/metal_misc.png
+

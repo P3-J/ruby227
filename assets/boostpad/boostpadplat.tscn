@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://sx3l7d7u614h"]
+
+[ext_resource type="PackedScene" uid="uid://qkmnkpp0yqso" path="res://assets/boostpad/boostpad.tscn" id="1_diqtu"]
+[ext_resource type="Script" uid="uid://b6iv7xd5t14v2" path="res://assets/boostpad/Boostpadplat.cs" id="1_q3joi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_diqtu"]
+size = Vector3(8, 1.875, 15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q3joi"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_ga6s7"]
+material = SubResource("StandardMaterial3D_q3joi")
+
+[sub_resource type="Curve" id="Curve_rcgfj"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 2.1317058), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_1yv6l"]
+offsets = PackedFloat32Array(0.14791988, 0.6009245)
+colors = PackedColorArray(0.42352942, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="boostpadplat" type="Node3D" node_paths=PackedStringArray("boostdir", "boostdir2")]
+script = ExtResource("1_q3joi")
+boostdir = NodePath("dir")
+boostdir2 = NodePath("dir2")
+
+[node name="boostpad" parent="." instance=ExtResource("1_diqtu")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="scanner" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="scanner"]
+transform = Transform3D(1, 0, 0, 0, 0.9451201, -0.32672307, 0, 0.32672307, 0.9451201, 0.06446952, 3.4684548, 8.791363)
+shape = SubResource("BoxShape3D_diqtu")
+
+[node name="dir" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 44.67209, -49.889)
+
+[node name="dir2" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1086621, 5.185898)
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2035284, 9.851445, -8.68405)
+amount = 16
+mesh = SubResource("SphereMesh_ga6s7")
+emission_shape = 1
+emission_sphere_radius = 5.0
+particle_flag_rotate_y = true
+direction = Vector3(0, 0, 0)
+spread = 10.34
+flatness = 0.64
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 3.0
+angular_velocity_max = 451.03
+linear_accel_min = -66.54
+linear_accel_max = 20.24
+angle_min = -380.7
+angle_max = 326.9
+scale_amount_curve = SubResource("Curve_rcgfj")
+color_ramp = SubResource("Gradient_1yv6l")
+hue_variation_max = 0.51
+
+[connection signal="body_entered" from="scanner" to="." method="_on_scanner_body_entered"]

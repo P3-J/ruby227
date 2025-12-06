@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://qkmnkpp0yqso"]
+
+[ext_resource type="PackedScene" uid="uid://db5sa8pn7qfnp" path="res://assets/boostpad/boostpad.obj" id="1_axxpc"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_axxpc"]
+data = PackedVector3Array(-24, -16, 104, -24, -16, -56, -24, 32, -24, -24, 32, -24, 24, 32, -24, -24, -16, 104, -24, -16, 104, 24, 32, -24, 24, -16, 104, -24, -16, 104, 24, -16, 104, -24, -16, -56, -24, -16, -56, 24, -16, 104, 24, -16, -56, -24, -16, -56, 24, -16, -56, -24, 32, -24, -24, 32, -24, 24, -16, -56, 24, 32, -24, 24, -16, -56, 24, -16, 104, 24, 32, -24)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_t5ut6"]
+data = PackedVector3Array(24, -16, 104, 24, -16, 80, 24, -11.2, 80, 24, -11.2, 80, 40, -11.2, 80, 24, -16, 104, 24, -16, 104, 40, -11.2, 80, 40, -16, 104, 24, -16, 104, 40, -16, 104, 24, -16, 80, 24, -16, 80, 40, -16, 104, 40, -16, 80, 24, -16, 80, 40, -16, 80, 24, -11.2, 80, 24, -11.2, 80, 40, -16, 80, 40, -11.2, 80, 40, -16, 80, 40, -16, 104, 40, -11.2, 80)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7sff6"]
+data = PackedVector3Array(-40, -16, 104, -40, -16, 80, -40, -11.2, 80, -40, -11.2, 80, -24, -11.2, 80, -40, -16, 104, -40, -16, 104, -24, -11.2, 80, -24, -16, 104, -40, -16, 104, -24, -16, 104, -40, -16, 80, -40, -16, 80, -24, -16, 104, -24, -16, 80, -40, -16, 80, -24, -16, 80, -40, -11.2, 80, -40, -11.2, 80, -24, -16, 80, -24, -11.2, 80, -24, -16, 80, -24, -16, 104, -24, -11.2, 80)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ry50u"]
+data = PackedVector3Array(24, -16, 88, 24, -16, -64, 24, 16, 63.9991, 24, 16, 63.9991, 24, -16, -64, 24, 16, -64, 24, 16, 64, 40, 16, 64, 24, -16, 88, 24, -16, 88, 40, 16, 64, 48, -16, 88, 24, -16, 88, 48, -16, 88, 24, -16, -64, 24, -16, -64, 48, -16, 88, 40, -16, -64, 24, 16, -64, 31.999899, 16, -64, 24, 16, 64, 24, 16, 64, 31.999899, 16, -64, 40, 16, 64, 24, -16, -64, 40, -16, -64, 24, 16, -64, 24, 16, -64, 40, -16, -64, 31.999899, 16, -64, 32, 16, -64, 40, -16, -64, 40, 16, 64, 40, 16, 63.9991, 40, -16, -64, 48, -16, 88)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mko4m"]
+data = PackedVector3Array(-32, 0, -40, -32, 0, -56, -32, 63.9997, -40, -32, 63.9997, -40, -32, 0, -56, -32, 67.2, -56, -32, 64, -40, -28, 64, -40, -32, 0, -40, -32, 0, -40, -28, 64, -40, -28, 0, -40, -32, 67.2, -56, -28, 67.2, -56, -32, 64, -40, -32, 64, -40, -28, 67.2, -56, -28, 64, -40, -32, 0, -40, -28, 0, -40, -32, 0, -56, -32, 0, -56, -28, 0, -40, -28, 0, -56, -32, 0, -56, -28, 0, -56, -32, 67.2, -56, -32, 67.2, -56, -28, 0, -56, -28, 67.2, -56, -28, 0, -40, -28, 63.9997, -40, -28, 0, -56, -28, 0, -56, -28, 63.9997, -40, -28, 67.2, -56)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_l1ygx"]
+data = PackedVector3Array(-40, 16, 63.9991, -48, -16, 88, -40, -16, -64, -40, 16, 64, -40, -16, -64, -32, 16, -64, -40, 16, 64, -24, 16, 64, -48, -16, 88, -48, -16, 88, -24, 16, 64, -24, -16, 88, -48, -16, 88, -24, -16, 88, -40, -16, -64, -40, -16, -64, -24, -16, 88, -24, -16, -64, -32.0001, 16, -64, -24, 16, -64, -40, 16, 64, -40, 16, 64, -24, 16, -64, -24, 16, 64, -40, -16, -64, -24, -16, -64, -32.0001, 16, -64, -32.0001, 16, -64, -24, -16, -64, -24, 16, -64, -24, 16, -64, -24, -16, -64, -24, 16, 63.9991, -24, 16, 63.9991, -24, -16, -64, -24, -16, 88)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_xm7vn"]
+data = PackedVector3Array(28, 0, -44, 28, 0, -60, 28, 63.9997, -44, 28, 63.9997, -44, 28, 0, -60, 28, 67.2, -60, 28, 64, -44, 32, 64, -44, 28, 0, -44, 28, 0, -44, 32, 64, -44, 32, 0, -44, 28, 67.2, -60, 32, 67.2, -60, 28, 64, -44, 28, 64, -44, 32, 67.2, -60, 32, 64, -44, 28, 0, -44, 32, 0, -44, 28, 0, -60, 28, 0, -60, 32, 0, -44, 32, 0, -60, 28, 0, -60, 32, 0, -60, 28, 67.2, -60, 28, 67.2, -60, 32, 0, -60, 32, 67.2, -60, 32, 0, -44, 32, 63.9997, -44, 32, 0, -60, 32, 0, -60, 32, 63.9997, -44, 32, 67.2, -60)
+
+[node name="boostpad" instance=ExtResource("1_axxpc")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="entity0_brush0" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity0_brush0/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_axxpc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="entity0_brush1" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity0_brush1/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_t5ut6")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="entity0_brush2" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity0_brush2/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_7sff6")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="entity0_brush3" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity0_brush3/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_ry50u")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="entity0_brush4" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity0_brush4/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_mko4m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="entity0_brush5" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity0_brush5/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_l1ygx")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="entity0_brush6" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity0_brush6/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_xm7vn")

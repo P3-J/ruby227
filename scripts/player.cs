@@ -35,8 +35,8 @@ public partial class player : CharacterBody3D
     GpuParticles3D deathExplosion;
     Node3D CurrentTarget = null;
 
-    private const float Gravity = -2.8f;
-    private const float JumpForce = 45.0f; //55
+    private const float Gravity = -6.8f;
+    private const float JumpForce = 5.0f; //55
     private float MovementSpeed = 35F; //15
     private const float BaseMovementSpeed = 15F;
 
@@ -52,6 +52,10 @@ public partial class player : CharacterBody3D
     bool cameraLocked = false;
     bool enemyinview = false;
     bool canMove = true;
+    bool jumping = false;
+    float jumpAirTime = 0.3f;
+    Vector3 BoostDir = Vector3.Zero;
+
 
     public override void _Ready()
     {
@@ -73,66 +77,45 @@ public partial class player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-
-        if (!canMove){
-        // most likely death.
-            booster.Stop();
-            steam.Stop();
-            return;
-        }
-
+        PlayerCamBase.GlobalPosition = this.GlobalPosition;
         Vector3 fakeVelo = Velocity;
         Vector3 direction = new();
+        direction = GetInput(direction);
 
-        if (Input.IsActionPressed("up"))
-        {
-            direction -= Transform.Basis.Z; 
-            if (MovementSpeed < 35 ) MovementSpeed += 1; 
-        }
-        if (Input.IsActionPressed("down"))
-        {
-            direction += Transform.Basis.Z; 
-            if (MovementSpeed >= 16) MovementSpeed -= 1;
-        }
+      
 
-
-        direction = direction.Normalized();
-     
-/*         if (IsOnFloor())
-        {
-            if (playDropSound && !dropsound.Playing){
-                dropsound.Play();
-            }
-            playDropSound = false;
-            fakeVelo.Y = 0;
-        }  */
-
+        bool onFloor = IsOnFloor();
         fakeVelo.X = direction.X * MovementSpeed;
         fakeVelo.Z = direction.Z * MovementSpeed;
 
-
-
-        if (direction == Vector3.Zero){
-            booster.Stop();
-            fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f);
-        }  else {
-            if (!booster.Playing) booster.Play();
+        if (direction == Vector3.Zero && BoostDir == Vector3.Zero)
+        {   
+            if (!onFloor)
+            {
+               fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f); 
+            } else
+            {
+                fakeVelo = Velocity.MoveToward(Vector3.Zero, 1f);
+            }
         }
-
+        
+        if (jumping) fakeVelo.Y += JumpForce; 
+        
         if (!IsOnFloor())
         {
-            fakeVelo = Velocity.MoveToward(Vector3.Zero, 0.5f);
             fakeVelo.Y += Gravity;
-        } 
-
-        if (Input.IsActionJustPressed("jump") && IsOnFloor())
+        } else
         {
-            fakeVelo.Y = JumpForce;
-            jumpboostsound.Play();
+            fakeVelo.Y = 0;
         }
 
+        if (BoostDir != Vector3.Zero)
+        {
+            fakeVelo = BoostDir * 200;
+        }
+
+
         Velocity = fakeVelo;
-              
         MoveAndSlide();
 
     }
@@ -141,9 +124,7 @@ public partial class player : CharacterBody3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        PlayerCamBase.GlobalPosition = this.GlobalPosition;
 
-        HandleTurning();
         HandleCameraTurning();
         GroundNormalRotate();
 
@@ -162,7 +143,52 @@ public partial class player : CharacterBody3D
                    
         }
 
+    }
 
+    private Vector3 GetInput(Vector3 dir)
+    {
+        if (Input.IsActionPressed("up"))
+        {
+            dir -= Transform.Basis.Z; 
+            if (MovementSpeed < 45 ) MovementSpeed += 0.5f; 
+        }
+        if (Input.IsActionPressed("down"))
+        {
+            dir += Transform.Basis.Z; 
+        }
+
+        if (Input.IsActionJustPressed("jump") && IsOnFloor() && !jumping)
+        {
+            jumping = true;
+            jumpboostsound.Play();
+            SceneTreeTimer tr = GetTree().CreateTimer(jumpAirTime);
+		    tr.Timeout += DisableJump;
+        }
+
+        if (Input.IsActionPressed("left")){
+            RotateY(0.04f);
+            PlaySteamAudioIfCan();
+        }
+        if (Input.IsActionPressed("right")){
+            RotateY(-0.04f);
+            PlaySteamAudioIfCan();
+        }
+
+        if (dir != Vector3.Zero){
+            if (!booster.Playing) booster.Play();
+            if (!IsOnFloor()) dir = Vector3.Zero;
+        } else {
+            MovementSpeed = 10f;
+            booster.Stop();
+        }
+ 
+        return dir.Normalized();
+
+    }
+
+    private void DisableJump()
+    {
+        jumping = false;
     }
 
     private void GroundNormalRotate()
@@ -191,21 +217,17 @@ public partial class player : CharacterBody3D
 
     }
 
-    public void HandleTurning(){
-        float rotationInput = 0f;
-        if (Input.IsActionPressed("left")){
-            rotationInput += 0.01f;
-            PlaySteamAudioIfCan();
-        }
-        if (Input.IsActionPressed("right")){
-            rotationInput -= 0.01f;
-            PlaySteamAudioIfCan();
-        }
+ 
+    public void InBoost(Vector3 dir)
+    {
+        if (BoostDir != Vector3.Zero) return;
+        BoostDir = dir;
+		GetTree().CreateTimer(1.5).Timeout += BoostDirReset;
+    }
 
-        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
-            steam.Stop();
-        }
-        RotateY(rotationInput);
+    private void BoostDirReset()
+    {
+        BoostDir = Vector3.Zero;
     }
 
     public void GetHit(int dmg){
@@ -219,12 +241,7 @@ public partial class player : CharacterBody3D
     }
 
     public void HandleCameraTurning(){
-/*         if (Input.IsActionPressed("camleft")){
-			Vector3 v = PlayerCamBase.RotationDegrees;
-			v.Y += 3f;
-			PlayerCamBase.RotationDegrees = v;
-		} */
-        
+
         if (cameraLocked && CurrentTarget != null && IsInstanceValid(CurrentTarget))
         {
            PlayerCamBase.LookAt(CurrentTarget.GlobalPosition);
@@ -248,8 +265,14 @@ public partial class player : CharacterBody3D
         if (Input.IsActionJustPressed("lockon") && CurrentTarget != null)
         {
             GD.Print(CurrentTarget);
-            cameraLocked = !cameraLocked;
+            //cameraLocked = !cameraLocked;
         }
+
+
+        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
+            steam.Stop();
+        }
+        
 
 
         if (@event is InputEventMouseMotion eventy && !cameraLocked)
@@ -414,6 +437,9 @@ public partial class player : CharacterBody3D
         // start death explosion, trigger below to scene reset rn
         //GetTree().ReloadCurrentScene();
         if (!canMove){return;} // stops a loop from happening. just a band aid to a bigger problem
+        booster.Stop();
+        steam.Stop();
+
         AudioServer.SetBusVolumeDb(0, -40f);
         deathExplosion.Emitting = true;
         canMove = false;

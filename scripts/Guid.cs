@@ -73,6 +73,7 @@ public partial class Guid : Control
     {
         Tween tween = GetTree().CreateTween();
         tween.TweenProperty(hpBar, "value", cHP, 0.5);
+        tween.Finished += () => tween.Dispose();
     }
 
     public void SetupHud(int HP)
@@ -85,6 +86,7 @@ public partial class Guid : Control
         bar.Value = 0;
         Tween tween = GetTree().CreateTween();
         tween.TweenProperty(bar, "value", 100, cdr);
+        tween.Finished += () => tween.Dispose();
    }
 
 

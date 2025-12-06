@@ -28,21 +28,22 @@ public partial class CamBase : Node3D
             
         }
         
-        TweenFov(30);
+        TweenFov(40);
 
     }
 
 
-    private async void TweenFov(float targetFov, float duration = 0.3f)
+    private async void TweenFov(float targetFov)
     {
-
-        if (fovTween != null && fovTween.IsRunning())
-            fovTween.Kill();
-
-        fovTween = GetTree().CreateTween();
-        fovTween.TweenProperty(playercam, "fov", targetFov, duration)
-            .SetTrans(Tween.TransitionType.Sine)
-            .SetEase(Tween.EaseType.Out);
+        float fov = playercam.Fov;
+        
+        if (fov > targetFov)
+        {
+            playercam.Fov -= 1;
+        } else if (fov < targetFov)
+        {
+            playercam.Fov += 1;
+        }
     }
 
 
