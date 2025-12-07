@@ -35,8 +35,8 @@ public partial class enemy : CharacterBody3D
 	public  float Speed;
 	public const float Gravity = -9.8f;
 	public const float jumpstr = 10f;
-	public int ShootDistance = 100;
-	public int AggroDistance = 200;
+	public int ShootDistance = 200;
+	public int AggroDistance = 400;
 	int HP = 5;
 	int cHP = 5;
     bool target;

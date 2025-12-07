@@ -113,7 +113,6 @@ public partial class enemy : CharacterBody3D
         RaisePatrolPointStep();
         
         retargetTimer.Stop();
-        GD.Print("reached2");
         _on_retarget_timeout();
         
     }
@@ -144,7 +143,7 @@ public partial class enemy : CharacterBody3D
                 if (hasAggro) cState = EnemyStates.HUNTING;
                 break;
 
-            case EnemyStates.HUNTING:
+            case EnemyStates.HUNTING or EnemyStates.PATROL:
                 canMove = true;
                 //CheckAggroResetTime((float)delta);        
                 MoveTowardsTarget();
@@ -152,12 +151,6 @@ public partial class enemy : CharacterBody3D
                 RotateBodyTowards(Velocity.Normalized(), "legs", delta);
                 if (velocity.Length() > 0.001f) legs.LookAt(legs.GlobalTransform.Origin + velocity, Vector3.Up);
 
-                if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
-                break;
-
-            case EnemyStates.PATROL:
-                canMove = true;
-                MoveTowardsTarget();
                 if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
                 break;
         }
@@ -191,10 +184,10 @@ public partial class enemy : CharacterBody3D
 
     private void MoveTowardsTarget()
     {
-        //GD.Print(next);
+        GD.Print(next);
 
   
-        Vector3 dir = GlobalPosition.DirectionTo(next);
+        Vector3 dir = GlobalPosition.DirectionTo(next).Normalized();
         velocity.X = dir.X * Speed;
         velocity.Z = dir.Z * Speed;
 
@@ -208,13 +201,16 @@ public partial class enemy : CharacterBody3D
     private void RaisePatrolPointStep()
     {
         if (cState != EnemyStates.PATROL) return;
+     
         
         if (patrolPointsPos.Count - 1 <= currentPatrolStep)
         {
             currentPatrolStep = 0;
+            GD.Print("raised step", currentPatrolStep);
             return;
         }
         currentPatrolStep += 1;
+           GD.Print("raised step", currentPatrolStep);
 
     }
 

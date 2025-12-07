@@ -87,7 +87,7 @@ transform = Transform3D(-4.371139e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.371139e-09
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4600047, 6.8435383, 0.69987917)
 
 [node name="gunparticle" type="CPUParticles3D" parent="bodyController/legs/body"]
-transform = Transform3D(0.011644538, 0, 0.09931971, 0, 0.1, 0, -0.09931971, 0, 0.011644538, -0.22294903, 0, -6.8532486)
+transform = Transform3D(0.023289075, 0, 0.19863942, 0, 0.2, 0, -0.19863942, 0, 0.023289075, -4.9506636, 0, -2.4148018)
 emitting = false
 lifetime = 0.2
 one_shot = true
@@ -110,8 +110,8 @@ transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, 4.87
 transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -4.743292, -0.3528235, 1.2931793)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_desired_distance = 10.0
-target_desired_distance = 20.0
+path_desired_distance = 15.0
+target_desired_distance = 15.0
 path_max_distance = 10.01
 simplify_path = true
 path_search_max_distance = 1000.0
@@ -120,7 +120,6 @@ height = 3.0
 radius = 8.0
 neighbor_distance = 20.0
 max_speed = 40.0
-avoidance_priority = 0.49
 debug_path_custom_color = Color(1, 1, 0, 1)
 
 [node name="shotCooldown" type="Timer" parent="."]
@@ -165,6 +164,14 @@ shape = SubResource("SphereShape3D_nenq2")
 
 [node name="selfdestruct" parent="." instance=ExtResource("7_nenq2")]
 expRadius = 5.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2223167, -4.245018, 0.5602703)
+light_color = Color(1, 0.1882353, 0, 1)
+light_energy = 7.051
+light_bake_mode = 1
+omni_range = 11.115
+omni_attenuation = 3.034
 
 [connection signal="waypoint_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_waypoint_reached"]
 [connection signal="timeout" from="shotCooldown" to="." method="_on_shot_cooldown_timeout"]
