@@ -8,7 +8,7 @@ public partial class WorldBase : Node3D
     double dd = 0f;
     public override void _Process(double delta)
     {
-
+        return;
         if (dd <= 200f)
         {
             dd += 1f;

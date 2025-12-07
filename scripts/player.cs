@@ -36,7 +36,7 @@ public partial class player : CharacterBody3D
     Node3D CurrentTarget = null;
 
     private const float Gravity = -6.8f;
-    private const float JumpForce = 5.0f; //55
+    private const float JumpForce = 20.0f; //55
     private float MovementSpeed = 35F; //15
     private const float BaseMovementSpeed = 15F;
 
@@ -104,14 +104,11 @@ public partial class player : CharacterBody3D
         if (!IsOnFloor())
         {
             fakeVelo.Y += Gravity;
-        } else
-        {
-            fakeVelo.Y = 0;
-        }
+        }   
 
         if (BoostDir != Vector3.Zero)
         {
-            fakeVelo = BoostDir * 200;
+            fakeVelo = BoostDir * 150;
         }
 
 
