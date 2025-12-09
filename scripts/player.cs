@@ -71,7 +71,7 @@ public partial class player : CharacterBody3D
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
 
        
-        Input.MouseMode = Input.MouseModeEnum.Captured;
+        //Input.MouseMode = Input.MouseModeEnum.Captured;
         guid.SetupHud(HP);
     }
 
@@ -127,7 +127,7 @@ public partial class player : CharacterBody3D
 
         bool canSee = false;
 
-        if (CurrentTarget != null && IsInstanceValid(CurrentTarget)) {
+        if (CurrentTarget != null) {
             canSee = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, true);
             TargeterPosition();
         } 
@@ -154,21 +154,21 @@ public partial class player : CharacterBody3D
             dir += Transform.Basis.Z; 
         }
 
-        if (Input.IsActionJustPressed("jump") && IsOnFloor() && !jumping)
+/*         if (Input.IsActionJustPressed("jump") && IsOnFloor() && !jumping)
         {
             jumping = true;
             jumpboostsound.Play();
             SceneTreeTimer tr = GetTree().CreateTimer(jumpAirTime);
 		    tr.Timeout += DisableJump;
-        }
+        } */
 
         if (Input.IsActionPressed("left")){
             RotateY(0.04f);
-            PlaySteamAudioIfCan();
+            //PlaySteamAudioIfCan();
         }
         if (Input.IsActionPressed("right")){
             RotateY(-0.04f);
-            PlaySteamAudioIfCan();
+            //PlaySteamAudioIfCan();
         }
 
         if (dir != Vector3.Zero){
@@ -178,6 +178,29 @@ public partial class player : CharacterBody3D
             MovementSpeed = 10f;
             booster.Stop();
         }
+
+        if (Input.IsActionJustPressed("shoot") && shotcooldown.IsStopped())
+        {
+            shotcooldown.Start();
+            _ = ShootRightArm();
+        }
+        if (Input.IsActionJustPressed("shootleft") && shotcooldownLeft.IsStopped()) {
+            shotcooldownLeft.Start();
+            ShootLeftArm();
+        }
+
+        if (Input.IsActionJustPressed("lockon") && CurrentTarget != null)
+        {
+            GD.Print(CurrentTarget);
+            //cameraLocked = !cameraLocked;
+        }
+
+
+        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
+            steam.Stop();
+        }
+        
+
  
         return dir.Normalized();
 
@@ -239,7 +262,7 @@ public partial class player : CharacterBody3D
 
     public void HandleCameraTurning(){
 
-        if (cameraLocked && CurrentTarget != null && IsInstanceValid(CurrentTarget))
+        if (cameraLocked && CurrentTarget != null && IsInstanceValid(CurrentTarget))    
         {
            PlayerCamBase.LookAt(CurrentTarget.GlobalPosition);
         }
@@ -249,28 +272,7 @@ public partial class player : CharacterBody3D
 
     public override void _Input(InputEvent @event)
     {
-        if (Input.IsActionJustPressed("shoot") && shotcooldown.IsStopped())
-        {
-            shotcooldown.Start();
-            _ = ShootRightArm();
-        }
-        if (Input.IsActionJustPressed("shootleft") && shotcooldownLeft.IsStopped()) {
-            shotcooldownLeft.Start();
-            ShootLeftArm();
-        }
-
-        if (Input.IsActionJustPressed("lockon") && CurrentTarget != null)
-        {
-            GD.Print(CurrentTarget);
-            //cameraLocked = !cameraLocked;
-        }
-
-
-        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
-            steam.Stop();
-        }
-        
-
+     
 
         if (@event is InputEventMouseMotion eventy && !cameraLocked)
         {
@@ -424,6 +426,7 @@ public partial class player : CharacterBody3D
     }
 
     public void PlaySteamAudioIfCan(){
+        return;
         if (!steam.Playing)
         {
             steam.Play();

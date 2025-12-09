@@ -184,7 +184,7 @@ public partial class enemy : CharacterBody3D
 
     private void MoveTowardsTarget()
     {
-        GD.Print(next);
+        //GD.Print(next);
 
   
         Vector3 dir = GlobalPosition.DirectionTo(next).Normalized();

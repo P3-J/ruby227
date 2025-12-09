@@ -19,21 +19,18 @@ public partial class CamBase : Node3D
 
     public override void _Process(double delta)
     {
-
+        return;
         pCameraRay.TargetPosition = playercam.Position - new Vector3(0, 2, 0);
 
         if (!pCameraRay.IsColliding()) { 
             TweenFov(75);
             return ;
-            
         }
-        
         TweenFov(40);
-
     }
 
 
-    private async void TweenFov(float targetFov)
+    private void TweenFov(float targetFov)
     {
         float fov = playercam.Fov;
         

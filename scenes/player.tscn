@@ -196,10 +196,9 @@ groundnormal = NodePath("hlevel/m1legs/groundnormal")
 hlevel = NodePath("hlevel")
 
 [node name="hlevel" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16491187, 0)
 
 [node name="bodymanager" type="Node3D" parent="hlevel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08830428, 2.5695453, 0.04058838)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.57, 0)
 
 [node name="m1" parent="hlevel/bodymanager" instance=ExtResource("10_y4r1p")]
 transform = Transform3D(-0.025, 0, -3.774895e-09, 0, 0.025, 0, 3.774895e-09, 0, -0.025, 0, 0, 0)
@@ -237,7 +236,7 @@ scale_amount_curve = SubResource("Curve_oprun")
 color_ramp = SubResource("Gradient_a8ls1")
 
 [node name="m1legs" parent="hlevel" instance=ExtResource("4_y4r1p")]
-transform = Transform3D(0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04, -0.10571277, 0.5931376, -0.4949274)
+transform = Transform3D(0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04, 0, 0.593, -0.5)
 
 [node name="groundnormal" type="RayCast3D" parent="hlevel/m1legs"]
 transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0.43521237, -45.353054, 13.387895)
