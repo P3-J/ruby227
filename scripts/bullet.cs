@@ -39,7 +39,7 @@ public partial class bullet : CharacterBody3D
 				body.Scale = new Vector3(1f, 1f, 1f);
                 break;
             case BulletType.FIVEFIVESIX:
-				trail.Emitting = false;
+				trail.Emitting = true;
 				body.Scale = new Vector3(0.3f, 0.3f, 0.3f);
 				break;
         }

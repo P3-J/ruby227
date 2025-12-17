@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cola0rmveia2c"]
+[gd_scene load_steps=10 format=3 uid="uid://cola0rmveia2c"]
 
 [ext_resource type="Script" uid="uid://cjldolkiud52o" path="res://scripts/bullet.cs" id="1_4n7bp"]
 [ext_resource type="PackedScene" uid="uid://c5mxi6blb072k" path="res://scenes/explosion.tscn" id="2_ugt12"]
@@ -12,15 +12,23 @@ material = SubResource("StandardMaterial3D_l5glv")
 top_radius = 0.4
 bottom_radius = 0.3
 
+[sub_resource type="Curve" id="Curve_y25gk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_l5glv"]
+curve = SubResource("Curve_y25gk")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2j4ib"]
 gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_l5glv")
 sub_emitter_keep_velocity = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y25gk"]
 transparency = 3
 alpha_hash_scale = 0.3
 alpha_antialiasing_mode = 0
-albedo_color = Color(1, 1, 1, 0.15294118)
+vertex_color_use_as_albedo = true
 
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_y25gk"]
 material = SubResource("StandardMaterial3D_y25gk")
@@ -57,12 +65,16 @@ debug_shape_custom_color = Color(1, 1, 0, 1)
 debug_shape_thickness = 4
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="bcontroller"]
-transform = Transform3D(-0.000522099, 0.03430235, 0.999411, 0.999884, 0.0152187, 0, -0.0152097, 0.9992943, -0.0343064, 0.0062501123, -0.0029664095, 0.18206339)
+transform = Transform3D(-0.000522099, 0.03430235, 0.999411, 0.999884, 0.0152187, 0, -0.0152097, 0.99929416, -0.0343064, -0.0118107395, -0.0029664095, -0.34408382)
 amount = 32
 trail_enabled = true
 trail_lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_2j4ib")
 draw_pass_1 = SubResource("TubeTrailMesh_y25gk")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="bcontroller"]
+transform = Transform3D(1.0000004, 0, 3.7252903e-09, 0, 1, 0, -3.7252903e-09, 0, 1.0000004, 0.05049519, 0, 1.4710213)
+light_color = Color(0.7788939, 0.47695506, 0.069762856, 1)
 
 [node name="queuefree" type="Timer" parent="."]
 wait_time = 4.0

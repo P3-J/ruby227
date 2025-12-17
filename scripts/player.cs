@@ -40,6 +40,14 @@ public partial class player : CharacterBody3D
     private float MovementSpeed = 35F; //15
     private const float BaseMovementSpeed = 15F;
 
+    static readonly StringName up = new StringName("up");
+    static readonly StringName down = "down";
+    static readonly StringName left = "left";
+    static readonly StringName right = "right";
+    static readonly StringName shootleft = "shootleft";
+    static readonly StringName shoot = "shoot"; 
+    static readonly StringName lockon = "lockon";
+
     float MaxScanDistance = 300.0f; //cutoff
 
     int HP = 400;
@@ -71,8 +79,9 @@ public partial class player : CharacterBody3D
         deathanim = GetNode<AnimationPlayer>("guid/deathscreen/anim");
 
        
-        //Input.MouseMode = Input.MouseModeEnum.Captured;
+        Input.MouseMode = Input.MouseModeEnum.Captured;
         guid.SetupHud(HP);
+        SetupTicks();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -124,49 +133,27 @@ public partial class player : CharacterBody3D
 
         HandleCameraTurning();
         GroundNormalRotate();
-
-        bool canSee = false;
-
-        if (CurrentTarget != null) {
-            canSee = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, true);
-            TargeterPosition();
-        } 
-
-        if (!canSee){
-            CurrentTarget = null;
-            targetLocked = false;
-            cameraLocked = false;
-            guid.ResetTargetingSquare();
-                   
-        }
-
+        TargeterPosition();
     }
 
     private Vector3 GetInput(Vector3 dir)
     {
-        if (Input.IsActionPressed("up"))
+
+        if (Input.IsActionPressed(up))
         {
             dir -= Transform.Basis.Z; 
             if (MovementSpeed < 45 ) MovementSpeed += 0.5f; 
         }
-        if (Input.IsActionPressed("down"))
+        if (Input.IsActionPressed(down))
         {
             dir += Transform.Basis.Z; 
         }
 
-/*         if (Input.IsActionJustPressed("jump") && IsOnFloor() && !jumping)
-        {
-            jumping = true;
-            jumpboostsound.Play();
-            SceneTreeTimer tr = GetTree().CreateTimer(jumpAirTime);
-		    tr.Timeout += DisableJump;
-        } */
-
-        if (Input.IsActionPressed("left")){
+        if (Input.IsActionPressed(left)){
             RotateY(0.04f);
             //PlaySteamAudioIfCan();
         }
-        if (Input.IsActionPressed("right")){
+        if (Input.IsActionPressed(right)){
             RotateY(-0.04f);
             //PlaySteamAudioIfCan();
         }
@@ -179,30 +166,43 @@ public partial class player : CharacterBody3D
             booster.Stop();
         }
 
-        if (Input.IsActionJustPressed("shoot") && shotcooldown.IsStopped())
+        if (Input.IsActionJustPressed(shoot) && shotcooldown.IsStopped())
         {
             shotcooldown.Start();
             _ = ShootRightArm();
         }
-        if (Input.IsActionJustPressed("shootleft") && shotcooldownLeft.IsStopped()) {
+        if (Input.IsActionJustPressed(shootleft) && shotcooldownLeft.IsStopped()) {
             shotcooldownLeft.Start();
             ShootLeftArm();
         }
 
-        if (Input.IsActionJustPressed("lockon") && CurrentTarget != null)
+      /*   if (Input.IsActionJustPressed(lockon) && CurrentTarget != null)
         {
-            GD.Print(CurrentTarget);
+            //GD.Print(CurrentTarget);
             //cameraLocked = !cameraLocked;
-        }
+        } */
 
 
-        if (!Input.IsActionPressed("left") && !Input.IsActionPressed("right")){
+        if (!Input.IsActionPressed(left) && !Input.IsActionPressed(right)){
             steam.Stop();
         }
         
 
- 
         return dir.Normalized();
+
+    }
+
+    private void SetupTicks()
+    {
+        return;
+       /*  Timer _guidtimer = new()
+        {
+            OneShot = false,
+            Autostart = true,
+            WaitTime = 0.1,
+        };
+        AddChild(_guidtimer);
+        _guidtimer.Timeout += TargeterPosition; */
 
     }
 
@@ -273,10 +273,10 @@ public partial class player : CharacterBody3D
     public override void _Input(InputEvent @event)
     {
      
-
-        if (@event is InputEventMouseMotion eventy && !cameraLocked)
+        // leak here
+        if (@event is InputEventMouseMotion e && !cameraLocked)
         {
-            PlayerCamBase.Rotation += new Vector3(-eventy.Relative.Y * 0.01f,-eventy.Relative.X * 0.01f,0); 
+            PlayerCamBase.Rotation += new Vector3(-e.Relative.Y * 0.01f,-e.Relative.X * 0.01f,0); 
             
             float pitch = PlayerCamBase.Rotation.X;
             pitch = Mathf.Clamp(pitch, Mathf.DegToRad(-80f), Mathf.DegToRad(80f));
@@ -286,7 +286,7 @@ public partial class player : CharacterBody3D
                 0
             );
 
-            RotateMechBodyWithCamera();            
+            RotateMechBodyWithCamera();          
         }
      
 
@@ -366,23 +366,28 @@ public partial class player : CharacterBody3D
 
     public void TargeterPosition(){
         //if (!IsInstanceValid(CurrentTarget)) return;
-
-        MissileTargeter.LookAt(CurrentTarget.GlobalPosition);
-        if (!MissileTargeter.IsColliding()){
-            canSeeEnemy = false;
-            cameraLocked = false;
-            
-            return;
-        } 
-
-        
-        
-        Node3D collider = (Node3D)MissileTargeter.GetCollider();
-        //GD.Print(collider.Name);
-        if (collider.IsInGroup("enemy"))
+        canSeeEnemy = false;
+        if (CurrentTarget != null && IsInstanceValid(CurrentTarget))
         {
-            canSeeEnemy = true;
+            MissileTargeter.LookAt(CurrentTarget.GlobalPosition);
+            if (!MissileTargeter.IsColliding()){
+                cameraLocked = false;
+                guid.ResetTargetingSquare();
+                return;
+            }
+            Node3D collider = (Node3D)MissileTargeter.GetCollider();
+            if (!collider.IsInGroup("enemy")) return;
+            canSeeEnemy = guid.ReposSquare(CurrentTarget.GlobalTransform.Origin, true); 
         }
+    
+        if (!canSeeEnemy){
+            CurrentTarget = null;
+            targetLocked = false;
+            cameraLocked = false;
+            guid.ResetTargetingSquare();        
+        }
+        
+
     }
 
 

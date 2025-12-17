@@ -19,7 +19,6 @@ public partial class CamBase : Node3D
 
     public override void _Process(double delta)
     {
-        return;
         pCameraRay.TargetPosition = playercam.Position - new Vector3(0, 2, 0);
 
         if (!pCameraRay.IsColliding()) { 
