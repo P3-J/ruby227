@@ -315,7 +315,7 @@ public partial class player : CharacterBody3D
         Vector3 bonusVelo = Vector3.Zero;
         if (CurrentTarget != null) bonusVelo = GetTargetVelo();
 
-        bulletInstance.SetProps(1, "player", bonusVelo * 0.7f, 50, true, bullet.BulletType.FIVEFIVESIX);
+        bulletInstance.SetProps(1, "player", bonusVelo * 0.8f, 75, true, bullet.BulletType.FIVEFIVESIX);
         GetParent().AddChild(bulletInstance);
         rocket.Play();
         rgunshoot.Play("firegun");

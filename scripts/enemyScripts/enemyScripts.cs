@@ -78,31 +78,17 @@ public partial class enemy : CharacterBody3D
 
     private void _on_retarget_timeout(){
 		if (cState == EnemyStates.AFK) return;
-        //GD.Print("called");
 
         Vector3 targetPos = cState == EnemyStates.PATROL ? patrolPointsPos[currentPatrolStep] : Player.GlobalPosition;
-
-     /*    if (cState == EnemyStates.HUNTING && Player != null)
-        {
-            targetPos = Player.GlobalPosition;
-        } */
-
-
         if (PlayerDistance > 50)
         {
             SetTargetPos(targetPos);
+            last = next;
             next = navagent.GetNextPathPosition();
         }
         
         
-		
-        Node3D parent = GetParent<Node3D>();
-        //RotateBodyTowards(next, "legs");
-        
-
-        
 		GD.Randomize();
-		int randi = GD.RandRange(0, 1);
 		retargetTimer.WaitTime = 0.5f;
 		retargetTimer.Start();
 	}
@@ -117,13 +103,6 @@ public partial class enemy : CharacterBody3D
         
     }
 
-    private void _on_navigation_agent_3d_waypoint_reached(Dictionary details)
-    {
-        //GD.Print("reached1");
-        //next = navagent.GetNextPathPosition();
-    }
-
-
     private void _shooterLoop(double delta)
     {
         switch (cState)
@@ -131,7 +110,7 @@ public partial class enemy : CharacterBody3D
             case EnemyStates.SHOOTING:
                 canMove = false;
                 RotateBodyTowards(Player.GlobalPosition, "body", delta);
-                if (hasAggro) TryToShoot(PlayerDistance);
+                if (hasAggro) TryToShoot();
                 break;
 
             case EnemyStates.AFK:
@@ -148,8 +127,7 @@ public partial class enemy : CharacterBody3D
                 //CheckAggroResetTime((float)delta);        
                 MoveTowardsTarget();
 
-                RotateBodyTowards(Velocity.Normalized(), "legs", delta);
-                if (velocity.Length() > 0.001f) legs.LookAt(legs.GlobalTransform.Origin + velocity, Vector3.Up);
+                //RotateBodyTowards(Velocity.Normalized(), "legs", delta);
 
                 if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
                 break;
@@ -184,10 +162,15 @@ public partial class enemy : CharacterBody3D
 
     private void MoveTowardsTarget()
     {
-        //GD.Print(next);
+    
 
-  
+        if (last == next)
+        {
+            return;
+        }
+            GD.Print(next);
         Vector3 dir = GlobalPosition.DirectionTo(next).Normalized();
+
         velocity.X = dir.X * Speed;
         velocity.Z = dir.Z * Speed;
 

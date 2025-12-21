@@ -1,4 +1,4 @@
-[gd_scene load_steps=271 format=4 uid="uid://bcswvaap8fymt"]
+[gd_scene load_steps=268 format=4 uid="uid://bcswvaap8fymt"]
 
 [ext_resource type="Script" uid="uid://cn46hnbpnmitv" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_b0qwf"]
 [ext_resource type="Script" uid="uid://bxliqrabwc4pn" path="res://scenes/WorldBase.cs" id="1_gwh05"]
@@ -36,29 +36,6 @@
 [ext_resource type="PackedScene" uid="uid://dyexssxt0u08b" path="res://scenes/spawnpoint.tscn" id="34_adi7d"]
 [ext_resource type="PackedScene" uid="uid://sx3l7d7u614h" path="res://assets/boostpad/boostpadplat.tscn" id="34_gwh05"]
 [ext_resource type="PackedScene" uid="uid://b4msscfgc40q3" path="res://scenes/turret.tscn" id="51_ofa4v"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vxi3m"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-sky_energy_multiplier = 0.3
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_energy_multiplier = 0.3
-
-[sub_resource type="Sky" id="Sky_adi7d"]
-sky_material = SubResource("ProceduralSkyMaterial_vxi3m")
-
-[sub_resource type="Environment" id="Environment_gwh05"]
-background_mode = 2
-sky = SubResource("Sky_adi7d")
-tonemap_mode = 2
-glow_enabled = true
-fog_enabled = true
-fog_mode = 1
-fog_light_color = Color(0.7398655, 0.5735493, 0.47112817, 1)
-fog_light_energy = 0.63
-fog_density = 0.1773
-fog_sky_affect = 0.767
-fog_depth_begin = 3081.4
-fog_depth_end = 8000.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_gwh05"]
 _surfaces = [{
@@ -1100,14 +1077,9 @@ data = PackedVector3Array(0, 17.2509, 0, 5, 19.0263, 5, 0, 18.622799, 5, 0, 17.2
 [node name="worldBase" type="Node3D"]
 script = ExtResource("1_gwh05")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_gwh05")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, -1.6840468e-07, 4.701943e-08, 0, 0.2689198, 0.96316254, -1.7484555e-07, -0.96316254, 0.2689198, 0, 0, 0)
-light_energy = 0.1
+transform = Transform3D(-0.8660254, -0.43301278, 0.24999999, 0.48873752, -0.83863205, 0.24048266, 0.10552596, 0.3304485, 0.9379062, 0, 0, 0)
 shadow_enabled = true
-shadow_blur = 0.209
 directional_shadow_max_distance = 4096.0
 
 [node name="FuncGodotMap" type="Node3D" parent="." groups=["terrain"]]

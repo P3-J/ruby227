@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using Microsoft.VisualBasic;
 using System;
+using System.Threading.Tasks;
 
 public partial class enemy : CharacterBody3D
 {
@@ -12,13 +13,15 @@ public partial class enemy : CharacterBody3D
 	[Export] CpuParticles3D shotparticle;
 	[Export] Selfdestruct selfD;
 	[Export] Node3D legs;
-	Timer timer;
+	[Export] Marker3D gunshotspot1;
+	[Export] Marker3D gunshotspot2;
 	Timer retargetTimer;
 	RayCast3D los;
 	Timer deathTimer;
 	GpuParticles3D deathExplosion;
 	Node3D body;
 	Vector3 next = Vector3.Zero;
+	Vector3 last;
 	player Player;
 	AudioStreamPlayer3D booster;
 	AudioStreamPlayer3D rocket;
@@ -26,7 +29,7 @@ public partial class enemy : CharacterBody3D
 	Vector3 velocity;
 	public Vector3 spawnLocation;
 
-	enum EnemyStates { AFK = 0, HUNTING = 1, SHOOTING = 2, PATROL = 3 }
+	enum EnemyStates { AFK = 0, HUNTING = 1, SHOOTING = 2, PATROL = 3, COOLDOWN = 4 }
 	private EnemyStates cState = EnemyStates.AFK;
 	enum EnemyTypes { SHOOTER = 1, BOMBER = 2 }
 	private EnemyTypes cType = EnemyTypes.SHOOTER;
@@ -47,28 +50,14 @@ public partial class enemy : CharacterBody3D
 	bool targetinlos;
 	bool hasAggro;
 
-    /// <summary>
-    ///  TO FIX
-    ///  los can target other enemies, this should not be a factor - ? i think fake news
-    ///  look at, is looking at the final destination. not good +
-    ///  randomize speed, instead of latency to introduce some randomness? 
-    ///  plus minus bullet angle, so that it has the ability to be a tracing shot \\ would miss standing targets -- quite ok
-    ///  death anim +
-    ///  invisible barriers just for bots +
-	/// 
-	/// dodge bullets? jump 
-	/// target lock on unlock
-	/// wings//wol
-    /// </summary>
     public override void _Ready()
     {
 
 		navagent = GetNode<NavigationAgent3D>("NavigationAgent3D");
 		body = GetNode<Node3D>("bodyController/legs/body");
-		timer = GetNode<Timer>("shotCooldown");
 		los = GetNode<RayCast3D>("los");
 
-		retargetTimer = GetNode<Timer>("retarget");
+		retargetTimer = GetNode<Timer>("timers/retarget");
 		booster = GetNode<AudioStreamPlayer3D>("booster");
 		rocket  = GetNode<AudioStreamPlayer3D>("rocket");
 
@@ -118,7 +107,7 @@ public partial class enemy : CharacterBody3D
 		
 		if (!canMove)
 		{
-			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 4f * (float)delta);
+			velocity = velocity.MoveToward(new Vector3(0, velocity.Y, 0), 1f * (float)delta);
 		}
 		if (!IsOnFloor() && velocity.Y > -10)
 		{
@@ -196,16 +185,29 @@ public partial class enemy : CharacterBody3D
 
 	public void RotateBodyTowards(Vector3 lookPos, string part, double delta){
 		Node3D cBody = part == "legs" ? legs : body;
-	
-		Vector3 lookDir = lookPos - cBody.GlobalPosition;
-		lookDir.Y = 0;
+		
+		var dir = lookPos - cBody.GlobalPosition;
+		dir.Y = 0;
 
-		if (lookDir.LengthSquared() < 0.0001f)
+
+    	if (dir.LengthSquared() < 0.0001f)
         	return;
 
-		Basis targetBasis = Basis.LookingAt(lookDir.Normalized(), Vector3.Up);
-		cBody.GlobalBasis = cBody.GlobalBasis.Slerp(targetBasis, 20f * (float)delta).Orthonormalized();
+    	dir = dir.Normalized();
 
+		float targetYaw = Mathf.Atan2(dir.X, dir.Z);
+		float currentYaw = Mathf.DegToRad(cBody.RotationDegrees.Y);
+
+		float newYaw = Mathf.LerpAngle(currentYaw, targetYaw, (float)delta * 5f);
+
+		cBody.RotationDegrees = new Vector3(		
+			cBody.RotationDegrees.X,
+			Mathf.RadToDeg(newYaw),
+			cBody.RotationDegrees.Z
+		);
+
+
+	
 
 	}
 
@@ -218,25 +220,24 @@ public partial class enemy : CharacterBody3D
 		return false;
 	}
 	
-	public void TryToShoot(float PlayerDistance)
+	public void TryToShoot()
     {
 		if (!canShoot) return;
 		canShoot = false;
 
 		GD.Randomize();
-		int randi = GD.RandRange(1, 2);
+		ShootBullet("left");
+		ShootBullet("right");
+		SceneTreeTimer tr = GetTree().CreateTimer(1);     
+		tr.Timeout += stateSwap;
 
- 
-		GD.Randomize();
-		int randii = GD.RandRange(-30, 30);
-		int randi2 = GD.RandRange(-30, 30);
-
-		velocity.X += randii;
-		velocity.Z += randi2; 
-
-		SceneTreeTimer tr = GetTree().CreateTimer(randi);
-		tr.Timeout += ShootBullet;
     }	
+
+	private void stateSwap()
+    {
+        canShoot = true;
+		cState = EnemyStates.HUNTING;
+    }
 
 	public void Jump()
 	{
@@ -247,23 +248,23 @@ public partial class enemy : CharacterBody3D
         }
 	}
 
-	public void ShootBullet()
+	public void ShootBullet(String hand)
 	{
 		if (Disabled) return;
-		canShoot = true;
 		shotparticle.Emitting = true;
+
+		Marker3D handSpot = hand == "left" ? gunshotspot1 : gunshotspot2;
+
         bullet bulletInstance = Bullet.Instantiate() as bullet;
-       
 		// mybe shootbug?
 
 		
 		bulletInstance.SetDirection((Player.GlobalPosition - GlobalTransform.Origin).Normalized() * Speed);
-		bulletInstance.SetProps(1, "enemy", Player.Velocity * 3, 35, true, bullet.BulletType.EXPLODING);
+		bulletInstance.SetProps(1, "enemy", Player.Velocity * 4, 35, true, bullet.BulletType.EXPLODING);
 
         GetParent().AddChild(bulletInstance);
-		bulletInstance.GlobalPosition = GlobalPosition;
+		bulletInstance.GlobalPosition = handSpot.GlobalPosition;
 		rocket.Play();
-		cState = EnemyStates.HUNTING;
 
     }
 
