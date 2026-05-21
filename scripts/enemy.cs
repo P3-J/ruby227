@@ -228,7 +228,7 @@ public partial class enemy : CharacterBody3D
 		GD.Randomize();
 		ShootBullet("left");
 		ShootBullet("right");
-		SceneTreeTimer tr = GetTree().CreateTimer(1);     
+		SceneTreeTimer tr = GetTree().CreateTimer(2);     
 		tr.Timeout += stateSwap;
 
     }	

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://disjwemeeg1ah"
-path.s3tc="res://.godot/imported/CNAL9.png-b2f25ab75b9d1886cfdb13340e851273.s3tc.ctex"
+uid="uid://s5ol0473bfyk"
+path.s3tc="res://.godot/imported/Screenshot_20260521_204652.jpg-976647f83c517e52a15da00dae3c0e17.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/F1/CNAL9.png"
-dest_files=["res://.godot/imported/CNAL9.png-b2f25ab75b9d1886cfdb13340e851273.s3tc.ctex"]
+source_file="res://textures/Screenshot_20260521_204652.jpg"
+dest_files=["res://.godot/imported/Screenshot_20260521_204652.jpg-976647f83c517e52a15da00dae3c0e17.s3tc.ctex"]
 
 [params]
 

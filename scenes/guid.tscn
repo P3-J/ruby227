@@ -319,7 +319,6 @@ theme_override_font_sizes/normal_font_size = 32
 text = "power 1000"
 
 [node name="filter1" type="ColorRect" parent="."]
-visible = false
 z_index = -2
 material = SubResource("ShaderMaterial_k12ah")
 layout_mode = 0

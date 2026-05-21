@@ -113,3 +113,4 @@ baking/use_crash_prevention_checks=false
 [rendering]
 
 renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=true

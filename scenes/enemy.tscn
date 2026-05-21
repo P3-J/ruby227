@@ -231,7 +231,6 @@ height = 3.0
 radius = 8.0
 neighbor_distance = 20.0
 max_speed = 40.0
-debug_enabled = true
 debug_path_custom_color = Color(1, 1, 0, 1)
 
 [node name="booster" type="AudioStreamPlayer3D" parent="."]
