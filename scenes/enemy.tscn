@@ -9,33 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://c6agxrp3l5fvt" path="res://scenes/m_1_legs.tscn" id="5_md484"]
 [ext_resource type="PackedScene" uid="uid://ce73oaukj3but" path="res://scenes/selfdestruct.tscn" id="7_nenq2"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3v2ag"]
-vertex_color_use_as_albedo = true
-emission_enabled = true
-emission = Color(0.80784315, 1, 0, 1)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_xwavj"]
-material = SubResource("StandardMaterial3D_3v2ag")
-radius = 0.25
-height = 0.5
-
-[sub_resource type="Curve" id="Curve_nenq2"]
-_limits = [0.0, 20.0, 0.0, 1.0]
-_data = [Vector2(0.050370365, 10.515022), 0.0, 0.0, 0, 0, Vector2(0.30666667, 18.674894), 0.0, 0.0, 0, 0, Vector2(0.7140741, 8.910945), 0.0, 0.0, 0, 0, Vector2(0.93777776, 7.725322), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="Gradient" id="Gradient_md484"]
-offsets = PackedFloat32Array(0.2542373, 0.59322035)
-colors = PackedColorArray(1.5876135, 1.5876135, 0, 1, 1.5876759, 0.66414523, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_md484"]
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_ipns3"]
-material = SubResource("StandardMaterial3D_md484")
-size = Vector3(4, 1, 0.2)
-
 [sub_resource type="Curve" id="Curve_ipns3"]
 _data = [Vector2(0.1543307, 0.1875), 0.0, 0.0, 0, 0, Vector2(0.6251968, 0.8434633), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -81,6 +54,33 @@ vertex_color_use_as_albedo = true
 [sub_resource type="SphereMesh" id="SphereMesh_j0cyh"]
 material = SubResource("StandardMaterial3D_a8ls1")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3v2ag"]
+vertex_color_use_as_albedo = true
+emission_enabled = true
+emission = Color(0.80784315, 1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xwavj"]
+material = SubResource("StandardMaterial3D_3v2ag")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="Curve" id="Curve_nenq2"]
+_limits = [0.0, 20.0, 0.0, 1.0]
+_data = [Vector2(0.050370365, 10.515022), 0.0, 0.0, 0, 0, Vector2(0.30666667, 18.674894), 0.0, 0.0, 0, 0, Vector2(0.7140741, 8.910945), 0.0, 0.0, 0, 0, Vector2(0.93777776, 7.725322), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Gradient" id="Gradient_md484"]
+offsets = PackedFloat32Array(0.2542373, 0.59322035)
+colors = PackedColorArray(1.5876135, 1.5876135, 0, 1, 1.5876759, 0.66414523, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_md484"]
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ipns3"]
+material = SubResource("StandardMaterial3D_md484")
+size = Vector3(4, 1, 0.2)
+
 [sub_resource type="Curve" id="Curve_akbyu"]
 _data = [Vector2(0.0253165, 0.0503778), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.192161), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -123,65 +123,19 @@ floor_snap_length = 0.23
 script = ExtResource("1_rawnw")
 navagent = NodePath("NavigationAgent3D")
 Bullet = ExtResource("2_5bxl6")
-shotparticle = NodePath("bodyController/legs/body/gunparticle")
+shotparticle = NodePath("bodyController/body/gunparticle")
 selfD = NodePath("selfdestruct")
 legs = NodePath("bodyController/legs")
-gunshotspot1 = NodePath("bodyController/legs/body/m1/gunleft/gunshotspot")
-gunshotspot2 = NodePath("bodyController/legs/body/m1/gunleft2/gunshotspot2")
+gunshotspot1 = NodePath("bodyController/body/m1/gunleft/gunshotspot")
+gunshotspot2 = NodePath("bodyController/body/m1/gunleft2/gunshotspot2")
 
 [node name="bodyController" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.93012, -0.9985943)
 
 [node name="legs" type="Node3D" parent="bodyController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7055348, -0.679127, 0.54595184)
-
-[node name="body" type="Node3D" parent="bodyController/legs"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4600047, 6.8435383, 0.69987917)
-
-[node name="gunparticle" type="CPUParticles3D" parent="bodyController/legs/body"]
-transform = Transform3D(0.023289075, 0, 0.19863942, 0, 0.2, 0, -0.19863942, 0, 0.023289075, -4.9506636, 0, -2.4148018)
-emitting = false
-lifetime = 0.2
-one_shot = true
-explosiveness = 1.0
-local_coords = true
-mesh = SubResource("CapsuleMesh_xwavj")
-gravity = Vector3(-50, 0, 0)
-initial_velocity_max = 206.9
-scale_amount_max = 3.0
-scale_amount_curve = SubResource("Curve_nenq2")
-color_ramp = SubResource("Gradient_md484")
-
-[node name="m1" parent="bodyController/legs/body" instance=ExtResource("4_md484")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
-
-[node name="gunleft" parent="bodyController/legs/body/m1" instance=ExtResource("3_xwavj")]
-transform = Transform3D(-1.7484556e-06, 0, 40, 0, 40, 0, -40, 0, -1.7484556e-06, -97.57785, -7.056473, -25.863577)
-skeleton = NodePath("../..")
-
-[node name="gunshotspot" type="Marker3D" parent="bodyController/legs/body/m1/gunleft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6654589, 0, 0)
-
-[node name="gunleft2" parent="bodyController/legs/body/m1" instance=ExtResource("3_xwavj")]
-transform = Transform3D(-1.7484556e-06, 0, 40, 0, 40, 0, -40, 0, -1.7484556e-06, 94.865845, -7.056473, -25.863592)
-skeleton = NodePath("../..")
-
-[node name="gunshotspot2" type="Marker3D" parent="bodyController/legs/body/m1/gunleft2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6654589, 0, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="bodyController/legs/body/m1"]
-transform = Transform3D(-20, -5.1038177e-07, -1.672306e-06, 0, 19.12895, -5.8380866, 1.7484556e-06, -5.8380866, -19.12895, -1.9073486e-06, 45.54557, -20.901442)
-mesh = SubResource("BoxMesh_ipns3")
-skeleton = NodePath("../..")
-
-[node name="SpotLight3D" type="SpotLight3D" parent="bodyController/legs/body/m1/MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 0.84482324, 0.5350456, 0, -0.5350456, 0.84482324, 0, 0, 0)
-light_energy = 2.517
-spot_range = 995.909
-spot_attenuation = 10.0
+transform = Transform3D(-0.99876314, 0, 0.04972139, 0, 1, 0, -0.04972139, 0, -0.99876314, 0.7055348, -0.679127, 0.54595184)
 
 [node name="m1legs" parent="bodyController/legs" instance=ExtResource("5_md484")]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.4685707, 1.8497491, -1.1599464)
+transform = Transform3D(-0.1, 0, -9.313226e-09, 0, 0.1, 0, 9.313226e-09, 0, -0.1, 0.19041854, 0, 2.1504261)
 
 [node name="groundnormal" type="RayCast3D" parent="bodyController/legs/m1legs"]
 transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0.43521237, -45.353054, 13.387895)
@@ -219,6 +173,51 @@ randomness = 0.34
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_wtq4b")
 draw_pass_1 = SubResource("SphereMesh_j0cyh")
+
+[node name="body" type="Node3D" parent="bodyController"]
+transform = Transform3D(0.9967113, 0, -0.08103396, 0, 1, 0, 0.08103396, 0, 0.9967113, 0.24553013, 4.0885773, 1.1620984)
+
+[node name="gunparticle" type="CPUParticles3D" parent="bodyController/body"]
+transform = Transform3D(0.023289075, 0, 0.19863942, 0, 0.2, 0, -0.19863942, 0, 0.023289075, -4.9506636, 0, -2.4148018)
+emitting = false
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+mesh = SubResource("CapsuleMesh_xwavj")
+gravity = Vector3(-50, 0, 0)
+initial_velocity_max = 206.9
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_nenq2")
+color_ramp = SubResource("Gradient_md484")
+
+[node name="m1" parent="bodyController/body" instance=ExtResource("4_md484")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="gunleft" parent="bodyController/body/m1" instance=ExtResource("3_xwavj")]
+transform = Transform3D(-1.7484556e-06, 0, 40, 0, 40, 0, -40, 0, -1.7484556e-06, -97.57785, -7.056473, -25.863577)
+skeleton = NodePath("../..")
+
+[node name="gunshotspot" type="Marker3D" parent="bodyController/body/m1/gunleft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6654589, 0, 0)
+
+[node name="gunleft2" parent="bodyController/body/m1" instance=ExtResource("3_xwavj")]
+transform = Transform3D(-1.7484556e-06, 0, 40, 0, 40, 0, -40, 0, -1.7484556e-06, 94.865845, -7.056473, -25.863592)
+skeleton = NodePath("../..")
+
+[node name="gunshotspot2" type="Marker3D" parent="bodyController/body/m1/gunleft2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6654589, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="bodyController/body/m1"]
+transform = Transform3D(-20, -5.1038177e-07, -1.672306e-06, 0, 19.12895, -5.8380866, 1.7484556e-06, -5.8380866, -19.12895, -1.9073486e-06, 45.54557, -20.901442)
+mesh = SubResource("BoxMesh_ipns3")
+skeleton = NodePath("../..")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="bodyController/body/m1/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 0.84482324, 0.5350456, 0, -0.5350456, 0.84482324, 0, 0, 0)
+light_energy = 2.517
+spot_range = 995.909
+spot_attenuation = 10.0
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 50.0

@@ -224,7 +224,7 @@ public partial class player : CharacterBody3D
             {
                 float t = (angle - 35) / angle;
                 normal = normal.Slerp(Vector3.Up, t);
-            }
+            }                                       
         }
 
         Vector3 forward = this.GlobalTransform.Basis.Z.Slide(normal).Normalized();
@@ -366,6 +366,8 @@ public partial class player : CharacterBody3D
 
     public void TargeterPosition(){
         //if (!IsInstanceValid(CurrentTarget)) return;
+
+        MissileTargeter.Position = this.Position;
         canSeeEnemy = false;
         if (CurrentTarget != null && IsInstanceValid(CurrentTarget))
         {

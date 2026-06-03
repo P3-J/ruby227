@@ -2,7 +2,6 @@ using Godot;
 using Godot.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.Marshalling;
 
 public partial class enemy : CharacterBody3D
 {
@@ -13,54 +12,59 @@ public partial class enemy : CharacterBody3D
     int currentPatrolStep = 0;
     bool hasSeenPlayer = false;
 
+    // ── Wander / movement config ────────────────────────────────────────────
+    [Export] public float WanderRadius = 180f;
+    [Export] public float WanderMinDist = 50f;
+    [Export] public float StopDistance = 40f;
+    [Export] public float Accel = 4f;
+
+    private Vector3 _wanderTarget;
+    private readonly RandomNumberGenerator _rng = new();
+
+    // ── State machine ────────────────────────────────────────────────────────
     private void StateMachine(double delta)
     {
-        // GD.Print(cState);
-        // silent crash when path not found
         switch (cType)
         {
-            case EnemyTypes.SHOOTER:
-                _shooterLoop(delta);
-                break;
-            case EnemyTypes.BOMBER:
-                _bomberLoop(delta);
-                break;
+            case EnemyTypes.SHOOTER: _shooterLoop(delta); break;
+            case EnemyTypes.BOMBER: _bomberLoop(delta); break;
         }
     }
 
+    // ── Setup ────────────────────────────────────────────────────────────────
     private void SetupProps()
     {
+        _rng.Randomize(); // only once, here at setup
+
         switch (cType)
         {
-            case EnemyTypes.SHOOTER:
-                Speed = 220f;
-                break;
-            case EnemyTypes.BOMBER:
-                Speed = 30f;
-                break;
+            case EnemyTypes.SHOOTER: Speed = 30f; break;
+            case EnemyTypes.BOMBER: Speed = 30f; break;
         }
 
-        // collect patrol points
         if (patrolPoints == null) return;
-
 
         foreach (Marker3D p in patrolPoints)
         {
-            Vector3 point = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), p.GlobalPosition);
+            Vector3 point = NavigationServer3D.RegionGetClosestPoint(
+                navregion.GetRid(), p.GlobalPosition);
             patrolPointsPos.Add(point);
         }
     }
 
-
+    // ── Line-of-sight ────────────────────────────────────────────────────────
     private void LosCollsionChecks()
     {
-        if (target) los.LookAt(Player.GlobalPosition, Vector3.Up);
-		PlayerDistance = 999; // default = out of range
-	
-		Node Collider = null;
-        if (los.IsColliding()) Collider = (Node)los.GetCollider();
+        if (target && GlobalPosition.DistanceTo(Player.GlobalPosition) > 0.01f)
+            los.LookAt(Player.GlobalPosition, Vector3.Up);
 
-        if (Collider is player)
+        PlayerDistance = 999f;
+        Node collider = null;
+
+        if (los.IsColliding())
+            collider = (Node)los.GetCollider();
+
+        if (collider is player)
         {
             PlayerDistance = GetPlayerDistance();
             lastSawPlayerSeconds = 0;
@@ -72,37 +76,48 @@ public partial class enemy : CharacterBody3D
             hasVisionOfTarget = false;
         }
 
-
-		hasAggro = PlayerDistance < AggroDistance;
+        hasAggro = PlayerDistance < AggroDistance;
     }
 
-    private void _on_retarget_timeout(){
-		if (cState == EnemyStates.AFK) return;
+    // ── Retarget timer ───────────────────────────────────────────────────────
+    private void _on_retarget_timeout()
+    {
+        if (cState == EnemyStates.AFK) return;
 
-        Vector3 targetPos = cState == EnemyStates.PATROL ? patrolPointsPos[currentPatrolStep] : Player.GlobalPosition;
-        if (PlayerDistance > 50)
+        if (cState == EnemyStates.PATROL)
         {
-            SetTargetPos(targetPos);
+            // Navigate to the current patrol waypoint
+            SetTargetPos(patrolPointsPos[currentPatrolStep]);
+        }
+        else if (cState == EnemyStates.HUNTING)
+        {
+            // Pick a random wander point near the player and navigate there
+            PickNewWanderPoint();
+            SetTargetPos(_wanderTarget);
+        }
+
+        // Advance the nav agent one step
+        if (PlayerDistance > 50f)
+        {
             last = next;
             next = navagent.GetNextPathPosition();
         }
-        
-        
-		GD.Randomize();
-		retargetTimer.WaitTime = 0.5f;
-		retargetTimer.Start();
-	}
 
-    private void OnNavigationAgentTargetReached()
-	{
-		if (cState == EnemyStates.AFK) return;
-        RaisePatrolPointStep();
-        
-        retargetTimer.Stop();
-        _on_retarget_timeout();
-        
+        retargetTimer.WaitTime = _rng.RandfRange(0.4f, 0.8f); // slight variance keeps groups desync'd
+        retargetTimer.Start();
     }
 
+    private void OnNavigationAgentTargetReached()
+    {
+        if (cState == EnemyStates.AFK) return;
+
+        RaisePatrolPointStep();
+
+        retargetTimer.Stop();
+        _on_retarget_timeout();
+    }
+
+    // ── Shooter loop ─────────────────────────────────────────────────────────
     private void _shooterLoop(double delta)
     {
         switch (cState)
@@ -110,91 +125,119 @@ public partial class enemy : CharacterBody3D
             case EnemyStates.SHOOTING:
                 canMove = false;
                 RotateBodyTowards(Player.GlobalPosition, "body", delta);
+                RotateBodyTowards(next, "legs", delta);
                 if (hasAggro) TryToShoot();
+
+                // Return to hunting if player moves out of shoot range
+                if (!CheckIfCanShoot(PlayerDistance))
+                    cState = EnemyStates.HUNTING;
                 break;
 
             case EnemyStates.AFK:
                 canMove = false;
-                if (patrolPointsPos.Count > 0 && !hasSeenPlayer) {
-                    cState = EnemyStates.PATROL; // costly?
+                if (patrolPointsPos.Count > 0 && !hasSeenPlayer)
+                {
+                    cState = EnemyStates.PATROL;
                     SetTargetPos(patrolPointsPos[currentPatrolStep]);
                 }
                 if (hasAggro) cState = EnemyStates.HUNTING;
                 break;
 
-            case EnemyStates.HUNTING or EnemyStates.PATROL:
+            case EnemyStates.HUNTING:
+            case EnemyStates.PATROL:
                 canMove = true;
-                //CheckAggroResetTime((float)delta);        
-                MoveTowardsTarget();
+                MoveTowardsTarget(delta);
 
-                //RotateBodyTowards(Velocity.Normalized(), "legs", delta);
+                RotateBodyTowards(Player.GlobalPosition, "body", delta);  // upper always watches player
+                RotateBodyTowards(next, "legs", delta);
 
-                if (CheckIfCanShoot(PlayerDistance)) cState = EnemyStates.SHOOTING;
+                if (CheckIfCanShoot(PlayerDistance))
+                    cState = EnemyStates.SHOOTING;
                 break;
         }
     }
-    
+
+    // ── Bomber loop ──────────────────────────────────────────────────────────
     private void _bomberLoop(double delta)
     {
-        return;
         switch (cState)
         {
+            case EnemyStates.AFK:
+                if (hasAggro) cState = EnemyStates.HUNTING;
+                break;
+
+            case EnemyStates.HUNTING:
+                canMove = true;
+                CheckAggroResetTime((float)delta);
+                MoveTowardsTarget(delta);
+
+                if (PlayerDistance < 5f)
+                    cState = EnemyStates.SHOOTING;
+                break;
+
             case EnemyStates.SHOOTING:
-				canMove = true;
+                canMove = false;
                 Die();
-				break;
-			case EnemyStates.AFK:
-				if (hasAggro) cState = EnemyStates.HUNTING;
-				break;
-			case EnemyStates.HUNTING:
-				CheckAggroResetTime((float)delta);
-				//RotateBodyTowards(next, "legs");
-                Vector3 dir = GlobalPosition.DirectionTo(next);
-                if (PlayerDistance < 5) cState = EnemyStates.SHOOTING;
-				if (next != Vector3.Zero)
-				{
-					velocity.X = dir.X * Speed;
-					velocity.Z = dir.Z * Speed;
-				} 
-				break;
+                break;
         }
     }
 
-    private void MoveTowardsTarget()
+    // ── Wander ───────────────────────────────────────────────────────────────
+    private void PickNewWanderPoint()
     {
-    
+        if (Player == null) return;
 
-        if (last == next)
+        float angle = _rng.RandfRange(0f, Mathf.Tau);
+        float radius = _rng.RandfRange(WanderMinDist, WanderRadius);
+
+        Vector3 offset = new(
+            Mathf.Cos(angle) * radius,
+            0f,
+            Mathf.Sin(angle) * radius
+        );
+
+        // Snap to navmesh so the agent never targets inside a wall
+        Vector3 raw = Player.GlobalPosition + offset;
+        _wanderTarget = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), raw);
+    }
+
+    // ── Movement ─────────────────────────────────────────────────────────────
+    private void MoveTowardsTarget(double delta)
+    {
+        // No waypoint yet — request one
+        if (next == Vector3.Zero || last == next)
         {
+            _on_retarget_timeout();
             return;
         }
-            GD.Print(next);
-        Vector3 dir = GlobalPosition.DirectionTo(next).Normalized();
 
-        velocity.X = dir.X * Speed;
-        velocity.Z = dir.Z * Speed;
+        float dist = GlobalPosition.DistanceTo(next);
 
-      /*   if (Velocity == Vector3.Zero)
+        // Arrived at waypoint
+        if (dist < StopDistance)
         {
-            next = NavigationServer3D.RegionGetClosestPoint(navregion.GetRid(), GlobalPosition);
-        } */
-        
+            //GlobalPosition = new Vector3(next.X, GlobalPosition.Y, next.Z);
+            velocity.X = 0f;
+            velocity.Z = 0f;
+            last = next;
+            return;
+        }
+
+        // Steer toward waypoint with acceleration smoothing
+        Vector3 dir = (next - GlobalPosition).Normalized();
+        Vector3 targetVel = new(dir.X * Speed, velocity.Y, dir.Z * Speed);
+        velocity = velocity.Lerp(targetVel, Accel * (float)delta);
     }
 
+    // ── Patrol step ──────────────────────────────────────────────────────────
     private void RaisePatrolPointStep()
     {
-        if (cState != EnemyStates.PATROL) return;
-     
-        
-        if (patrolPointsPos.Count - 1 <= currentPatrolStep)
-        {
-            currentPatrolStep = 0;
-            GD.Print("raised step", currentPatrolStep);
-            return;
-        }
-        currentPatrolStep += 1;
-           GD.Print("raised step", currentPatrolStep);
+        if (cState != EnemyStates.PATROL || patrolPoints == null) return;
 
+        currentPatrolStep = (currentPatrolStep >= patrolPointsPos.Count - 1)
+            ? 0
+            : currentPatrolStep + 1;
+
+        GD.Print("patrol step → ", currentPatrolStep);
     }
-
 }
